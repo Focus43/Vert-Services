@@ -1,0 +1,89 @@
+# encoding: utf-8
+
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "precise64"
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  
+  # set the name for the VM as displayed in VirtualBox, and resource usage
+  config.vm.provider "virtualbox" do |v|
+    v.name = File.basename(File.expand_path("../"))
+    v.customize ['modifyvm', :id, '--cpuexecutioncap', '40']
+    v.customize ['modifyvm', :id, '--cpus', '2']
+    v.customize ['modifyvm', :id, '--memory', '512']
+  end
+
+  # nginx
+  config.vm.network :forwarded_port, guest: 80, host: 8080
+  # if you want to use rails or sinatra
+  config.vm.network :forwarded_port, guest: 3000, host: 3000
+
+  # synced folders and port forwarding
+  config.ssh.forward_agent = true
+  config.vm.synced_folder "../", "/home/vagrant/app"
+
+  # upgrade chef provisioner
+  config.vm.provision :shell, :inline => "gem install chef --version 11.4.2 --no-rdoc --no-ri --conservative"
+
+  # VM is setup w/out uft8 locales by default; this fixes.
+  config.vm.provision :shell, :path => "shell_scripts/configure_vm_locales.sh"
+
+  # provision this bitch w/ Chef
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = ["cookbooks", "project_cookbooks"]
+    chef.add_recipe :apt
+    chef.add_recipe 'git'
+    chef.add_recipe 'nodejs'
+    chef.add_recipe 'nginx'
+    chef.add_recipe 'ruby_build'
+    chef.add_recipe 'rbenv::user'
+    chef.add_recipe 'project_custom'
+
+    chef.json = {
+      # custom settings for the project
+      :project_custom => {
+        :app_name     => "vert-services",
+        :web_root     => "/home/vagrant/app/builds/dev"
+      },
+
+      # build Git so other tools can use it
+      :git        => {
+        :prefix => "/usr/local"
+      },
+
+      # web server
+      :nginx      => {
+        :dir                => "/etc/nginx",
+        :log_dir            => "/var/log/nginx",
+        :binary             => "/usr/sbin/nginx",
+        :user               => "vagrant", #{}"www-data",
+        :init_style         => "runit",
+        :pid                => "/var/run/nginx.pid",
+        :worker_connections => "1024",
+        # customizations
+        :default_site_enabled => false
+      },
+
+      # set default ruby version for user vagrant -> 2.0
+      :rbenv      => {
+        :user_installs => [
+          {
+            :user   => "vagrant",
+            :rubies => ["2.0.0-p247"],
+            :global => "2.0.0-p247",
+            :gems   => {
+              "2.0.0-p247" => [
+                {'name' => 'bundler'},
+                {'name' => 'sass'},
+                {'name' => 'erubis'}
+              ]
+            }
+          }
+        ]
+      }
+    }
+  end
+end
