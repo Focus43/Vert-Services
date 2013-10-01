@@ -17,7 +17,8 @@ module.exports = function(grunt) {
         concat: {
           options: {
             banner: '<%= banner %>',
-            stripBanners: true
+            stripBanners: true,
+            separator: ';'
           },
           build: {
             src: ['application/js/libraries/angular.min.js', 'application/js/vert.js'],
@@ -78,7 +79,8 @@ module.exports = function(grunt) {
             dev: {
                 options: {
                     data: {
-                        projectName: 'Jons Project'
+                        assetPath: 'assets/',
+                        pageTitle: 'VERT Services'
                     }
                 },
                 files: [{
@@ -88,24 +90,40 @@ module.exports = function(grunt) {
                     dest: 'builds/dev/',
                     ext: '.html'
                 }]
+            },
+
+            release: {
+                options: {
+                    data: {
+                        assetPath: 'assets/',
+                        pageTitle: 'VERT Services'
+                    }
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'application/',
+                    src: ['*.tpl.html'],
+                    dest: 'builds/release/',
+                    ext: '.html'
+                }]
             }
         },
 
-        /*copy: {
+        // Copy image assets
+        copy: {
             dev: {
                 files: [
-                    {expand: true, cwd: 'application/', src: ['img/**'], dest: 'builds/dev/assets/'},
-                    {expand: true, cwd: 'application/', src: ['*.html.erb'], dest: 'builds/dev/', filter: 'isFile'}
+                    {expand: true, cwd: 'application/', src: ['img/**'], dest: 'builds/dev/assets/'}
                 ]
             },
             release: {
                 files: [
-                    {expand: true, cwd: 'application/', src: ['img/**'], dest: 'builds/release/assets/'},
-                    {expand: true, cwd: 'application/', src: ['*.html.erb'], dest: 'builds/release/', filter: 'isFile'}
+                    {expand: true, cwd: 'application/', src: ['img/**'], dest: 'builds/release/assets/'}
                 ]
             }
-        },*/
+        },
 
+        // Sassy stylesheets
         sass: {
           dev: {
             options: {
@@ -126,6 +144,7 @@ module.exports = function(grunt) {
           }
         },
 
+        // Watch tasks
         watch: {
           gruntfile: {
             files: '<%= jshint.gruntfile.src %>',
@@ -133,14 +152,18 @@ module.exports = function(grunt) {
           },
           lib_test: {
             files: '<%= jshint.lib_test.src %>',
-            tasks: ['jshint']
+            tasks: ['jshint', 'concat']
           },
           sassy_pants: {
             files: 'application/scss/**/*.scss',
             tasks: ['sass:dev']
           },
           markup: {
-              files: ['application/*.html.erb'],
+              files: ['application/*.tpl.html'],
+              tasks: ['template:dev']
+          },
+          image_assets: {
+              files: ['application/img/*'],
               tasks: ['copy:dev']
           }
         }
@@ -158,11 +181,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-strip');
     grunt.loadNpmTasks('grunt-bump');
 
-    grunt.registerTask('loggable', function(){
-        grunt.log.writeln( grunt.tasks('template') );
-    });
-
-  grunt.registerTask('default', ['jshint', 'concat', 'sass:dev', 'template']);
-  grunt.registerTask('release', ['jshint', 'concat', 'strip', 'uglify', 'sass:release', 'bump']);
+    // Tasks
+    grunt.registerTask('default', ['jshint', 'concat', 'sass:dev', 'template:dev', 'copy:dev']);
+    grunt.registerTask('release', ['jshint', 'concat', 'strip', 'uglify', 'sass:release', 'template:release', 'copy:release', 'bump']);
 
 };
