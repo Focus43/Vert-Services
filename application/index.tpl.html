@@ -1,11 +1,20 @@
-<html>
+<!doctype html>
+<html lang="en" ng-app>
 <head>
-  <title><%- pageTitle %></title>
-  <link rel="stylesheet" type="text/css" href="<%= assetPath %>css/vert-services.css" />
+    <meta charset="utf-8">
+    <title><%- pageTitle %></title>
+    <link rel="stylesheet" type="text/css" href="<%= assetPath %>css/vert-services.css" />
 </head>
 
-<body>
+<body ng-controller="PhoneListCtrl">
 
-    <script type="text/javascript" src="<%= assetPath %>js/vert-services.js"></script>
+    <ul>
+        <li ng-repeat="phone in phones">
+            {{phone.name}}
+            <p>{{phone.snippet}}</p>
+        </li>
+    </ul>
+
+    <script async type="text/javascript" src="<%= assetPath %>js/vert-services.js"></script>
 </body>
 </html>

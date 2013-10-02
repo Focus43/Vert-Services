@@ -13,6 +13,13 @@ module.exports = function(grunt) {
         // Pkg.name as filename
         filename: '<%= pkg.name %>',
 
+        // Karma (test runner)
+        karma: {
+            unit: {
+                configFile: 'karma.conf.js'
+            }
+        },
+
         // Task configuration.
         concat: {
           options: {
@@ -59,7 +66,7 @@ module.exports = function(grunt) {
                 noarg: true,
                 sub: true,
                 undef: true,
-                unused: true,
+                //unused: true,
                 boss: true,
                 eqnull: true,
                 browser: true,
@@ -67,7 +74,8 @@ module.exports = function(grunt) {
                 jquery: true,
                 es5: true,
                 globals: {
-                    modernizr: true
+                    modernizr: true,
+                    angular: true
                 }
             },
             gruntfile: {src: 'Gruntfile.js'},
@@ -177,6 +185,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-template');
+    grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-strip');
     grunt.loadNpmTasks('grunt-bump');
