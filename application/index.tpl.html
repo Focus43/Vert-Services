@@ -1,19 +1,57 @@
 <!doctype html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="procard">
 <head>
     <meta charset="utf-8">
     <title><%- pageTitle %></title>
     <link rel="stylesheet" type="text/css" href="<%= assetPath %>css/vert-services.css" />
 </head>
 
-<body ng-controller="PhoneListCtrl">
+<body ng-app>
 
-    <ul>
+    <form id="login" class="form-inline">
+        <input type="text" class="input-small" placeholder="Email">
+        <input type="password" class="input-small" placeholder="Password">
+        <button type="submit" class="btn">Sign in</button>
+    </form>
+
+    <ul ng-controller="PhoneListCtrl">
         <li ng-repeat="phone in phones">
             {{phone.name}}
             <p>{{phone.snippet}}</p>
         </li>
     </ul>
+
+
+    <div ng-controller="MemberController">
+        List
+        <ol>
+            <li ng-repeat="member in members">{{trip.lastName}}</li>
+        </ol>
+    </div>
+
+
+    <table class="table table-bordered" id="trip-table" style="background-color: #fff">
+        <thead>
+        <tr>
+            <td>Name</td>
+            <td>Date</td>
+            <td>Start Odometer</td>
+            <td>End Odometer</td>
+            <!--<td>Total</td>-->
+        </tr>
+        </thead>
+        <tbody ng-controller="MemberController">
+        <tr ng-repeat="member in members">
+            <td>{{trip.firstName}}</td>
+            <td>{{trip.lastName}}</td>
+            <td>{{trip.birthDate}}</td>
+            <td>{{trip.endOdometer}}</td>
+            <!--<td>{{totalTraveled(trip.endOdometer,trip.startOdometer)}}</td>-->
+        </tr>
+        </tbody>
+    </table>
+
+
 
     <script async type="text/javascript" src="<%= assetPath %>js/vert-services.js"></script>
 </body>

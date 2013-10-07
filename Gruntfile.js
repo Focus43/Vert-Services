@@ -16,7 +16,8 @@ module.exports = function(grunt) {
         // Karma (test runner)
         karma: {
             unit: {
-                configFile: 'karma.conf.js'
+                configFile: 'karma.conf.js',
+                background: true
             }
         },
 
@@ -28,7 +29,7 @@ module.exports = function(grunt) {
             separator: ';'
           },
           build: {
-            src: ['application/js/libraries/angular.min.js', 'application/js/vert.js'],
+            src: ['application/js/libraries/jquery-1.10.2.min.js', 'application/js/libraries/base64.js', 'application/js/libraries/angular.min.js', 'application/js/libraries/angular-resource.min.js', 'application/js/vert.js'],
             dest: 'builds/dev/assets/js/<%= filename %>.js'
           }
         },
@@ -75,7 +76,8 @@ module.exports = function(grunt) {
                 es5: true,
                 globals: {
                     modernizr: true,
-                    angular: true
+                    angular: true,
+                    Base64: true
                 }
             },
             gruntfile: {src: 'Gruntfile.js'},
