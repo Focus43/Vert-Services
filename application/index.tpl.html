@@ -4,11 +4,13 @@
     <meta charset="utf-8">
     <title><%- pageTitle %></title>
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="<%= assetPath %>css/vert-services.css" />
 </head>
 
-<body ng-app="proCard" ng-class="className">
+<body ng-app="proCard">
 
     <div id="cBackground"></div>
 
@@ -29,6 +31,14 @@
                                 <li class="list-group-item"><a>Second one</a></li>
                                 <li class="list-group-item"><a>Third one</a></li>
                                 <li class="list-group-item"><a>Fourth one</a></li>
+                                <li class="list-group-item"><a>First one</a></li>
+                                <li class="list-group-item"><a>Second one</a></li>
+                                <li class="list-group-item"><a>Third one</a></li>
+                                <li class="list-group-item"><a>Fourth one</a></li>
+                                <li class="list-group-item"><a>First one</a></li>
+                                <li class="list-group-item"><a>Second one</a></li>
+                                <li class="list-group-item"><a>Third one</a></li>
+                                <li class="list-group-item"><a>Fourth one</a></li>
                             </ul>
                         </div>
                     </div>
@@ -38,7 +48,7 @@
 
         <div id="cL2">
             <div id="topBar">
-                <div class="locationTitle">This Is The Location</div>
+                <div class="locationTitle">Login</div>
                 <div class="pull-left">
                     <a toggle-class="#cL1,sidebar-viz">
                         <span class="glyphicon glyphicon-th"></span>
@@ -46,6 +56,29 @@
                 </div>
                 <div class="pull-right">
                     <a><span class="glyphicon glyphicon-user"></span></a>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="well">
+                            <h2 class="centerize"><strong>Vert</strong>Solutions</h2>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Email or username" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Password" />
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-success btn-lg btn-block">Login</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,16 +1,25 @@
 html, body {height:100%;}
 a {cursor:pointer;}
+.centerize {text-align:center;}
 
 #cBackground {position:fixed;top:0;right:0;bottom:0;left:0;background:#f5f5f5 url('#{$imgPath}bg_skier.jpg') no-repeat center center;background-size:cover;}
 
 #cL1, #cL2 {width:100%;min-height:100%;position:relative;}
   #cL1 {overflow:hidden;}
-  #cL2, #cSidebar {@include cssTransform(translate3d(0,0,0)); @include cssTransition(all .25s ease-out);}
+  #cL2, #cSidebar {@include cssTransform(translate3d(0,0,0)); @include cssTransition(all .25s ease-in);}
 
-#topBar {color:#fff;font-size:1.55em;position:relative;width:100%;background:rgba(255,255,255,.52); @include clearfix; @include boxShadow(0 0 8px rgba(0,0,0,.75));
-  a {color:inherit;display:block;padding:6px 8px 5px;}
-  .locationTitle {position:absolute;top:0;right:0;left:0;text-align:center;font-weight:200;padding-top:6px;text-shadow:0 1px 0 #000;}
-}
+  #cL2 {
+    #topBar {color:#fff;font-size:1.55em;position:relative;width:100%;background:rgba(255,255,255,.52); @include clearfix; @include boxShadow(0 0 8px rgba(0,0,0,.75));
+      a {color:inherit;display:block;padding:6px 8px 5px;}
+      .locationTitle {position:absolute;top:0;right:0;left:0;text-align:center;font-weight:200;padding-top:6px;text-shadow:0 1px 0 #000;}
+    }
+    .container {padding-top:2em;
+      h2 {font-weight:100;text-transform:uppercase;margin:-19px -19px .7em;padding:.35em 0;background:#333;color:#fff;@include rounded(4px, 4px, 0, 0);
+        strong {font-weight:400;}
+      }
+    }
+  }
+
 
 #cSidebar {position:absolute;top:0;right:100%;bottom:0;width:100%;
   //-webkit-overflow-scrolling: touch; FAILS ON IOS 7
@@ -24,8 +33,8 @@ a {cursor:pointer;}
 }
 
 #cL1.sidebar-viz {height:100%;
-  #cL2 {@include cssTransform(translate3d(100%,0,0));left:-35px;  //right:-100%;margin-left:-35px;
+  #cL2 {@include cssTransform(translate3d(100%,0,0));left:-35px;
     #topBar {background:#c7254e; @include boxShadow(none);}
   }
-  #cSidebar {@include cssTransform(translate3d(100%,0,0));} //right:35px;}
+  #cSidebar {@include cssTransform(translate3d(100%,0,0));}
 }
