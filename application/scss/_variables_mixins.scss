@@ -1,0 +1,49 @@
+// reusable variables
+$imgPath: '/assets/img/';
+$fontPath: '/assets/fonts/';
+
+@mixin clearfix {
+  *zoom:1;
+  &:before,&:after {display:table;content:"";line-height:0;}
+  &:after {clear:both;}
+}
+
+@mixin rounded($a, $b: null, $c: null, $d: null){
+  @if $b == null { $b: $a; $c: $a; $d: $a; }
+  -webkit-border-radius: $a $b $c $d;
+  -moz-border-radius: $a $b $c $d;
+  border-radius: $a $b $c $d;
+}
+
+@mixin boxShadow($shadows){
+  -webkit-box-shadow: $shadows;
+  -moz-box-shadow: $shadows;
+  box-shadow: $shadows;
+}
+
+@mixin borderBox {
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
+@mixin cssFilter($filter) {
+  -webkit-filter: $filter;
+  -moz-filter: $filter;
+  filter: $filter;
+}
+
+@mixin cssTransition($transitions) {
+  -webkit-transition: $transitions;
+  -moz-transition: $transitions;
+  -o-transition: $transitions;
+  transition: $transitions;
+}
+
+@mixin cssTransform($transform){
+  -webkit-transform: $transform;
+  -moz-transform:    $transform;
+  -ms-transform:     $transform;
+  -o-transform:      $transform;
+  transform:         $transform;
+}

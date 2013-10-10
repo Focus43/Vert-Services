@@ -29,7 +29,7 @@ module.exports = function(grunt) {
             separator: ';'
           },
           build: {
-            src: ['application/js/libraries/jquery-1.10.2.min.js', 'application/js/libraries/base64.js', 'application/js/libraries/angular.min.js', 'application/js/libraries/angular-resource.min.js', 'application/js/vert.js'],
+            src: ['application/js/libraries/base64.js', 'application/js/libraries/angular.min.js', 'application/js/libraries/angular-resource.min.js', 'application/js/main.js'],
             dest: 'builds/dev/assets/js/<%= filename %>.js'
           }
         },
@@ -123,12 +123,12 @@ module.exports = function(grunt) {
         copy: {
             dev: {
                 files: [
-                    {expand: true, cwd: 'application/', src: ['img/**'], dest: 'builds/dev/assets/'}
+                    {expand: true, cwd: 'application/', src: ['img/**', 'fonts/**'], dest: 'builds/dev/assets/'}
                 ]
             },
             release: {
                 files: [
-                    {expand: true, cwd: 'application/', src: ['img/**'], dest: 'builds/release/assets/'}
+                    {expand: true, cwd: 'application/', src: ['img/**', 'fonts/**'], dest: 'builds/release/assets/'}
                 ]
             }
         },

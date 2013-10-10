@@ -1,57 +1,56 @@
 <!doctype html>
-<html lang="en" ng-app="procard">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title><%- pageTitle %></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" href="<%= assetPath %>css/vert-services.css" />
 </head>
 
-<body ng-app>
+<body ng-app="proCard" ng-class="className">
 
-    <form id="login" class="form-inline">
-        <input type="text" class="input-small" placeholder="Email">
-        <input type="password" class="input-small" placeholder="Password">
-        <button type="submit" class="btn">Sign in</button>
-    </form>
+    <div id="cBackground"></div>
 
-    <ul ng-controller="PhoneListCtrl">
-        <li ng-repeat="phone in phones">
-            {{phone.name}}
-            <p>{{phone.snippet}}</p>
-        </li>
-    </ul>
+    <div id="cL1">
 
+        <div id="cSidebar">
+            <div class="sidebarInner">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <input type="text" class="form-control" placeholder="Search" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <ul class="list-group">
+                                <li class="list-group-item"><a>First one</a></li>
+                                <li class="list-group-item"><a>Second one</a></li>
+                                <li class="list-group-item"><a>Third one</a></li>
+                                <li class="list-group-item"><a>Fourth one</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div ng-controller="MemberController">
-        List
-        <ol>
-            <li ng-repeat="member in members">{{trip.lastName}}</li>
-        </ol>
+        <div id="cL2">
+            <div id="topBar">
+                <div class="locationTitle">This Is The Location</div>
+                <div class="pull-left">
+                    <a toggle-class="#cL1,sidebar-viz">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </a>
+                </div>
+                <div class="pull-right">
+                    <a><span class="glyphicon glyphicon-user"></span></a>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-
-    <table class="table table-bordered" id="trip-table" style="background-color: #fff">
-        <thead>
-        <tr>
-            <td>Name</td>
-            <td>Date</td>
-            <td>Start Odometer</td>
-            <td>End Odometer</td>
-            <!--<td>Total</td>-->
-        </tr>
-        </thead>
-        <tbody ng-controller="MemberController">
-        <tr ng-repeat="member in members">
-            <td>{{trip.firstName}}</td>
-            <td>{{trip.lastName}}</td>
-            <td>{{trip.birthDate}}</td>
-            <td>{{trip.endOdometer}}</td>
-            <!--<td>{{totalTraveled(trip.endOdometer,trip.startOdometer)}}</td>-->
-        </tr>
-        </tbody>
-    </table>
-
-
 
     <script async type="text/javascript" src="<%= assetPath %>js/vert-services.js"></script>
 </body>
