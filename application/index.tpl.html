@@ -59,28 +59,34 @@
                 </div>
             </div>
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="well">
-                            <h2 class="centerize"><strong>Vert</strong>Solutions</h2>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Email or username" />
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" class="form-control" placeholder="Password" />
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="button" class="btn btn-success btn-lg btn-block">Login</button>
+            <div>
+                <form ng-submit="submit()" ng-controller="LoginController">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="well">
+                                    <h2 class="centerize"><strong>Vert</strong>Solutions</h2>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Email or username" />
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="password" class="form-control" placeholder="Password" />
+                                            </div>
+                                            <div class="form-group">
+                                                <!--<button type="button" class="btn btn-success btn-lg btn-block">Login</button>-->
+                                                <a href="#pro-card.html" class="btn btn-success btn-lg btn-block">Sign In</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
+
         </div>
 
     </div>

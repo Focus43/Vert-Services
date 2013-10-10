@@ -1,10 +1,25 @@
 
     // @application :: namespace
-    var proCard = angular.module('proCard', []);
+    var proCard = angular.module('proCard', [$routeProvider]);
+
+
+    proCard.config(function($routeProvider){
+        $routeProvider.when('/pro-card', {
+            controller: 'RouteController',
+            templateUrl: '_pro-card.html'
+        });
+    });
+
+
+    proCard.controller('RouteController', function( $scope ){
+
+    });
 
 
     proCard.controller('LoginController', function( $scope ){
-
+        $scope.submit = function(){
+            console.log(this);
+        };
     });
 
 
