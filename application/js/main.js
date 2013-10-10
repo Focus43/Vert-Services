@@ -1,18 +1,44 @@
 
     // @application :: namespace
-    var proCard = angular.module('proCard', [$routeProvider]);
+    var proCard = angular.module('proCard', ['ngResource']);
 
 
     proCard.config(function($routeProvider){
         $routeProvider.when('/pro-card', {
             controller: 'RouteController',
             templateUrl: '_pro-card.html'
+        }).otherwise({
+            redirectTo: '/',
+            templateUrl: '_login.html'
         });
     });
 
 
-    proCard.controller('RouteController', function( $scope ){
+    // http://stackoverflow.com/questions/12008908/how-can-i-pass-variables-between-controllers-in-angularjs
+    proCard.service('sharedProperties', function(){
+        var pageName = 'Login';
 
+        return {
+            getPageName: function(){
+                return pageName;
+            },
+            setPageName: function(value){
+                pageName = value;
+            }
+        };
+    });
+
+
+    proCard.controller('TopbarController', function( $scope ){
+        $scope.pageName = 'Login';
+    });
+
+
+    proCard.controller('RouteController', function( $scope, $injector ){
+        $scope.nav = function(_route){
+            
+            //console.log(_route);
+        };
     });
 
 
