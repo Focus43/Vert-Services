@@ -189,14 +189,12 @@ function ProCardController ($scope, ProCard) {
 
 function ContactListController ($scope, Contact) {
 
-//    $scope.contacts =  Contact.query;
     $scope.contacts =  [{'firstName': 'Nexus S', 'lastName': 'Fast just got faster'},
         {'firstName': 'Motorola XOOM', 'lastName': 'The next, next generation tablet'} ];
+    // TODO: uncomment this, to get the correct data
+//    $scope.contacts = Contact.query();
+    $scope.contact =  Contact.get();
 
-    Contact.get({},
-        function (data) {
-        $scope.contacts =  data.result;
-    });
 }
 
 function CalendarController ($scope, Calendar) {
