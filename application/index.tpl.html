@@ -14,44 +14,49 @@
         <button type="submit" class="btn">Sign in</button>
     </form>
 
-    <ul ng-controller="PhoneListCtrl">
-        <li ng-repeat="phone in phones">
-            {{phone.name}}
-            <p>{{phone.snippet}}</p>
-        </li>
-    </ul>
-
-
-    <div ng-controller="MemberController">
-        List
-        <ol>
-            <li ng-repeat="member in members">{{trip.lastName}}</li>
-        </ol>
-    </div>
-
-
+    LIST OF CONTACTS
     <table class="table table-bordered" id="trip-table" style="background-color: #fff">
         <thead>
         <tr>
-            <td>Name</td>
-            <td>Date</td>
-            <td>Start Odometer</td>
-            <td>End Odometer</td>
+            <td>First</td>
+            <td>Last</td>
+            <td>Birthday</td>
+            <td>Email</td>
             <!--<td>Total</td>-->
         </tr>
         </thead>
-        <tbody ng-controller="MemberController">
-        <tr ng-repeat="member in members">
-            <td>{{trip.firstName}}</td>
-            <td>{{trip.lastName}}</td>
-            <td>{{trip.birthDate}}</td>
-            <td>{{trip.endOdometer}}</td>
-            <!--<td>{{totalTraveled(trip.endOdometer,trip.startOdometer)}}</td>-->
+        <tbody ng-controller="ContactListController">
+        <tr ng-repeat="contact in contacts">
+            <td>{{contact.firstName}}</td>
+            <td>{{contact.lastName}}</td>
+            <td>{{contact.birthDate}}</td>
+            <td>{{contact.email}}</td>
         </tr>
         </tbody>
     </table>
+    <br><br><br>
+    PROCARD<br>
+    <div ng-controller="ProCardController">
 
+        <img class="school" width="115" height="115" src="data:image/png;base64, {{procard.schoolImage}}" >
+        <span class='name'>{{procard.name}}</span><span class='nickname'>{{nickNameDisplay(procard.nickName)}}</span> <br>
 
+        <ul class="badges">
+            <li><img class="shield tenure" width="115" height="115" src="data:image/png;base64, {{procard.memberTenureShield}}" > </li>
+            <li ng-repeat="designation in procard.memberProfessionalDesignations | limitTo:3"><img class="shield {{designation.certificationAwardShortName}}" width="115" height="115" src="data:image/png;base64, {{designation.shield}}" > </li>
+        </ul>
+
+        <span class='phone'>{{procard.mobilePhone}}</span><br>
+        <span class='email'>{{procard.emailAddress}}</span>
+
+    </div>
+    <br><br><br><br>
+    <div ng-controller="MemberController">
+        LIST OF MEMBERS (Not needed?)
+        <ol>
+            <li ng-repeat="member in members">{{member.lastName}}</li>
+        </ol>
+    </div>
 
     <script async type="text/javascript" src="<%= assetPath %>js/vert-services.js"></script>
 </body>
