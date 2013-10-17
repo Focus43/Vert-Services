@@ -51,7 +51,34 @@
         <span class='phone'>{{procard.mobilePhone}}</span><br>
         <span class='email'>{{procard.emailAddress}}</span>
 
+        <br><br><br>
+        EDIT PROCARD
+        <br><br>
+        <div class="secret-form">
+            <form name="procardForm">
+                <input type="hidden" name="affiliation" ng-model="procard.schoolId" required>
+                <input type="hidden" name="startOdometer" ng-model="procard.mobilePhone" >
+                <input type="hidden" name="endOdometer" ng-model="procard.emailAddress" >
+            </form>
+        </div>
+
+        <div class="edit-off-buttons">
+            <button class="btn edit">Edit</button>
+            <button class="btn share">Share</button>
+        </div>
+
+        <div class="edit-on-buttons" style="display: none;">
+            <button class="btn">Cancel</button>
+            <button ng-click="save(procard);" ng-disabled="procard.$invalid" class="btn btn-primary save">Save</button>
+            <!--<button ng-click="destroy(procard, $index);hide()"  ng-show="procard.objectId" class="btn btn-danger">Delete</button>-->
+        </div>
+
+
+
     </div>
+
+
+
     <br><br><br><br>
     <div ng-controller="MemberController">
         LIST OF MEMBERS (Not needed?)

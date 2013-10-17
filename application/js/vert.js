@@ -11,6 +11,17 @@ var ProCardApp = {
             ProCardApp.login(evt.target);
         });
 
+        $("div.edit-off-buttons .btn.edit").click( function ( evt ) {
+            $("div.edit-off-buttons").hide();
+            $("div.edit-on-buttons").show();
+        });
+
+        $("div.edit-on-buttons").click( function ( evt ) {
+            evt.preventDefault();
+            $("div.edit-on-buttons").hide();
+            $("div.edit-off-buttons").show();
+        });
+
 //        $.ajax({
 //            crossDomain: true,
 //            dataType: 'jsonp',
@@ -85,7 +96,7 @@ angular.module('vertservice', ['ngResource']).
     }).
     factory('ProCard', function($resource) {
 
-        var ProCard = $resource("http://rest.thesnowpros.org/member/procard.ashx?id=:personId", { personId:'@id' });
+        var ProCard = $resource("http://rest.thesnowpros.org/member/procard?id=:personId", { personId:'@id' });
 
         ProCard.prototype.sendProcard = function (contactId, cb) {
             return ProCard.sendCard({personId: this.personId, contactId: contactId },
@@ -101,7 +112,7 @@ angular.module('vertservice', ['ngResource']).
     })
     .factory('Contact', function($resource) {
 
-        var Contact = $resource("http://rest.thesnowpros.org/contact/profile.ashx?id=:personId", { personId:'@id' });
+        var Contact = $resource("http://rest.thesnowpros.org/contact/profile?id=:personId", { personId:'@id' });
 
 //        Contact.prototype.update = function(cb) {
 //            return Contact.update({personId: this.personId},
@@ -200,6 +211,7 @@ function ContactListController ($scope, Contact) {
 function CalendarController ($scope, Calendar) {
 
 }
+
 angular.module ('procard', ['vertservice']).
     config( function($routeProvider, $locationProvider) {
         // TODO: remove random number to get caching back
