@@ -84,10 +84,19 @@
             <!--<button ng-click="destroy(procard, $index);hide()"  ng-show="procard.objectId" class="btn btn-danger">Delete</button>-->
         </div>
 
-
-
     </div>
-
+    <br><br>
+    CALENDAR<br>
+    <div ng-controller="CalendarController">
+        <ul>
+            <li ng-repeat="event in events">
+                <span class="name">{{event.name}}</span><br>
+                <span class="date">{{event.date}}</span><br>
+                <span class="location">{{event.location}}</span><br>
+                <span class="description">{{event.description}}</span>
+            </li>
+        </ul>
+    </div>
 
 
     <br><br><br><br>
