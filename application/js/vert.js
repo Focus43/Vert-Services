@@ -16,6 +16,10 @@ var ProCardApp = {
             $("div.edit-on-buttons").show();
         });
 
+        $("div.edit-off-buttons .btn.share").click( function ( evt ) {
+            $("div.contact-list").show();
+        });
+
         $("div.edit-on-buttons").click( function ( evt ) {
             evt.preventDefault();
             $("div.edit-on-buttons").hide();
@@ -78,11 +82,6 @@ angular.module('vertservice', ['ngResource']).
         var Member = $resource("http://rest.thesnowpros.org/member/profile?ctyp=json&mnum=:personId", { personId:'@id' });
         // TODO: add sendCard action (if it uses similar url
 
-//        Member.prototype.sendProcard = function (contactId, cb) {
-//            return Member.sendCard({personId: this.personId, contactId: contactId },
-//                angular.extend({}, this, {_id:undefined}), cb);
-//        };
-
         Member.prototype.update = function(cb) {
             return Member.update({personId: this.personId},
                 angular.extend({}, this, {_id:undefined}), cb);
@@ -98,9 +97,9 @@ angular.module('vertservice', ['ngResource']).
 
         var ProCard = $resource("http://rest.thesnowpros.org/member/procard?id=:personId", { personId:'@id' });
 
-        ProCard.prototype.sendProcard = function (contactId, cb) {
-            return ProCard.sendCard({personId: this.personId, contactId: contactId },
-                angular.extend({}, this, {_id:undefined}), cb);
+        ProCard.prototype.send = function (contactId, cb) {
+            console.log("send it!");
+            // send request to vert server
         };
 
         ProCard.prototype.update = function(cb) {
@@ -113,15 +112,6 @@ angular.module('vertservice', ['ngResource']).
     .factory('Contact', function($resource) {
 
         var Contact = $resource("http://rest.thesnowpros.org/contact/profile?id=:personId", { personId:'@id' });
-
-//        Contact.prototype.update = function(cb) {
-//            return Contact.update({personId: this.personId},
-//                angular.extend({}, this, {_id:undefined}), cb);
-//        };
-//
-//        Contact.prototype.destroy = function(cb) {
-//            return Contact.remove({personId: this.personId}, cb);
-//        };
 
         return Contact;
     })
@@ -151,12 +141,6 @@ function MemberController ($scope, Member) {
         return member.resorts[0];
     };
 
-    $scope.sendCardTo = function (mem, contactId) {
-        var member = new Member(mem);
-        member.sendProcard(contactId, function () {
-            confirm("Your card was sent.");
-        });
-    };
 }
 
 function ProCardController ($scope, ProCard) {
@@ -164,6 +148,9 @@ function ProCardController ($scope, ProCard) {
     ProCard.get({personId:ProCardApp.currentUserId}, function( data ) {
         $scope.procard = data;
     });
+
+    $scope.contacts =  [{'name': 'Nexus S', 'email': 'email@email.com', 'mobilePhone': '123 456 7890', 'id': '1234'},
+                        {'name': 'Motorola XOOM', 'email': 'email@email.com', 'mobilePhone': '123 456 7890', 'id': '1234'} ];
 
     $scope.fullNameDisplay = function (firstName, middlename, lastName) {
         var _nameStr = "" ;
@@ -190,10 +177,15 @@ function ProCardController ($scope, ProCard) {
         procard.$save();
     };
 
-    $scope.sendCardTo = function (card, contactId) {
+    $scope.send = function (card, $event) {
+        var _target = $($event.target);
+        var contactId = _target.siblings(".id").attr("data-contactId");
         var procard = new ProCard(card);
-        procard.sendProcard(contactId, function () {
-            confirm("Your card was sent.");
+        // TODO: remove this when send is linked up, since hide should happen on success
+        $("div.contact-list").hide();
+        procard.send(contactId, function () {
+            $("div.contact-list").hide();
+            confirm("Your card was sent to " + contactId);
         });
     };
 }

@@ -67,6 +67,17 @@
             <button class="btn share">Share</button>
         </div>
 
+        <div class="contact-list" style="display: none;">
+            <ul>
+                <li ng-repeat="contact in contacts">
+                    <span class="name">{{contact.name}}</span><br>
+                    <button class="email" ng-click="send(procard, $event);">{{contact.email}}</button><br>
+                    <button class="phone" ng-click="send(procard, $event);">{{contact.mobilePhone}}</button>
+                    <span class="id" data-contactId="{{contact.id}}" style="display: none;"></span>
+                </li>
+            </ul>
+        </div>
+
         <div class="edit-on-buttons" style="display: none;">
             <button class="btn">Cancel</button>
             <button ng-click="save(procard);" ng-disabled="procard.$invalid" class="btn btn-primary save">Save</button>
