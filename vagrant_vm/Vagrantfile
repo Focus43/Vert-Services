@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     v.name = File.basename(File.expand_path("../"))
     v.customize ['modifyvm', :id, '--cpuexecutioncap', '40']
     v.customize ['modifyvm', :id, '--cpus', '2']
-    v.customize ['modifyvm', :id, '--memory', '512']
+    v.customize ['modifyvm', :id, '--memory', '1024']
   end
 
   # nginx

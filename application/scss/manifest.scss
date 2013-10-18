@@ -1,3 +1,7 @@
 @import 'variables_mixins';
 @import 'bootstrap';
 @import 'app-styles';
+
+// individual pages
+@import 'pages/login';
+@import 'pages/pro_card';

@@ -1,0 +1,43 @@
+#pageTemplateView {
+
+  //$pcBtnColor: #;
+
+  // PRO CARD INLINE MOCKUP; HEIGHT SHOULD BE AUTOMATICALLY SET AND ADJUST TO CONTENT
+  #proCardOmg {color:#fff;width:100%;max-width:750px;margin:0 auto 1em;padding:8px;background-color:#005577;border:4px solid #0d3349; @include boxSizing; @include boxShadow(0 0 12px rgba(0,0,0,.5)); @include clearfix;
+    .topHalf, .bottomHalf {width:100%;position:relative;@include clearfix;}
+
+    .btn {opacity:.8;background:#0f192a;color:#fff;text-shadow:0 1px 0 #000;
+      i {font-size:14px;}
+    }
+
+    // top half styles
+    .pseudoCol {float:left; @include boxSizing;
+      // affiliation logo
+      &.affiliation {width:20%;
+        .logo {display:block;}
+      }
+      // name, badges, etc.
+      &.basicInfo {width:80%;
+        .infoInner {margin-left:12px;
+          h4 {font-size:1.6em;color:#fff;margin-top:0; @include fontSanchez;
+            small {font-size:.5em;color:#f1f1f1;display:block;padding-top:.3em;letter-spacing:1px;}
+          }
+          .mailCard {position:absolute;top:-5px;right:-5px;}
+          .badgeRow {@include clearfix;
+            .shield {float:left;width:25%;text-align:center;
+              img {width:90%;margin:0 auto;}
+            }
+          }
+        }
+      }
+    }
+
+    // bottom half styles
+    p.contact {font-size:13px;font-weight:200;letter-spacing:1px;margin:12px 0 0;}
+    .editCard {position:absolute;right:-5px;bottom:-5px;}
+  }
+
+  #actionButtons {padding-bottom:1em;
+  }
+
+}

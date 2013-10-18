@@ -7,6 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href='http://fonts.googleapis.com/css?family=Sanchez' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="<%= assetPath %>css/vert-services.css" />
 </head>
 
@@ -47,7 +48,7 @@
         </div>
 
         <div id="cL2">
-            <div id="topBar" ng-controller="TopbarController">
+            <div id="topBar">
                 <div class="locationTitle">{{pageName}}</div>
                 <div class="pull-left">
                     <a toggle-class="#cL1,sidebar-viz">
@@ -59,9 +60,13 @@
                 </div>
             </div>
 
-            <div ng-controller="RouteController">
+            <div id="pageTemplateView">
                 <ng-view></ng-view>
             </div>
+        </div>
+
+        <div id="footerNav">
+            asdfwe
         </div>
 
     </div>

@@ -11,6 +11,6 @@ server {
 
     location / {
     	root <%= node[:project_custom][:web_root] %>;
-    	index index.html index.htm;
-	}
+    	try_files $uri /index.html;
+    }
 }

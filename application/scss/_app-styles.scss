@@ -11,34 +11,43 @@ a {cursor:pointer;}
 #cL1 {overflow:hidden;}
 #cL2, #cSidebar {@include cssTransform(translate3d(0,0,0)); @include cssTransition(all .25s ease-in);}
 
+// SIDEBAR
+#cL1 {padding-bottom:40px;
+  #cSidebar {position:absolute;top:0;right:100%;bottom:0;width:100%;
+    //-webkit-overflow-scrolling: touch; FAILS ON IOS 7
+    .sidebarInner {height:100%;margin-right:35px;overflow-y:auto;background:#f5f5f5; @include boxShadow(inset -8px 0 8px rgba(0,0,0,.25));
+      .container {
+        .row:first-child {padding-top:1em;
+          input[type="text"] {margin-bottom:1em;@include rounded(1.25em);}
+        }
+      }
+    }
+  }
+
+  // SIDEBAR CSS3 ANIMATIONS (just toggle the body class)
+  &.sidebar-viz {height:100%;
+    #cL2 {@include cssTransform(translate3d(100%,0,0));left:-35px;
+      #topBar {background:#c7254e; @include boxShadow(none);}
+    }
+    #cSidebar {@include cssTransform(translate3d(100%,0,0));}
+  }
+
+  #footerNav {
+    position:absolute;bottom:0;left:0;right:0;height:40px;background:rgba(0,0,0,.65);
+  }
+}
+
+// MAIN BODY CONTENT (TEMPLATE AREA)
 #cL2 {
   #topBar {color:#fff;font-size:1.55em;position:relative;width:100%;background:rgba(255,255,255,.52); @include clearfix; @include boxShadow(0 0 8px rgba(0,0,0,.75));
     a {color:inherit;display:block;padding:6px 8px 5px;}
     .locationTitle {position:absolute;top:0;right:0;left:0;text-align:center;font-weight:200;padding-top:6px;text-shadow:0 1px 0 #000;}
   }
-  .container {padding-top:2em;
-    h2 {font-weight:100;text-transform:uppercase;margin:-19px -19px .7em;padding:.35em 0;background:#333;color:#fff;@include rounded(4px, 4px, 0, 0);
-      strong {font-weight:400;}
-    }
-  }
+  .container.content {padding-top:1.6em;}
 }
 
-// SIDEBAR
-#cSidebar {position:absolute;top:0;right:100%;bottom:0;width:100%;
-  //-webkit-overflow-scrolling: touch; FAILS ON IOS 7
-  .sidebarInner {height:100%;margin-right:35px;overflow-y:auto;background:#f5f5f5; @include boxShadow(inset -8px 0 8px rgba(0,0,0,.25));
-    .container {
-      .row:first-child {padding-top:1em;
-        input[type="text"] {margin-bottom:1em;@include rounded(1.25em);}
-      }
-    }
-  }
-}
+// WRAPPER WHERE ALL THE TEMPLATES GET LOADED INTO. ANY FILES IN pages/*.scss SHOULD WRAP EVERYTHING
+// INSIDE OF THIS ID
+#pageTemplateView {
 
-// SIDEBAR CSS3 ANIMATIONS (just toggle the body class!)
-#cL1.sidebar-viz {height:100%;
-  #cL2 {@include cssTransform(translate3d(100%,0,0));left:-35px;
-    #topBar {background:#c7254e; @include boxShadow(none);}
-  }
-  #cSidebar {@include cssTransform(translate3d(100%,0,0));}
 }

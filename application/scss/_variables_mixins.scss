@@ -2,10 +2,20 @@
 $imgPath: '/assets/img/';
 $fontPath: '/assets/fonts/';
 
+@mixin fontSanchez {
+  font-family:'Sanchez';
+}
+
 @mixin clearfix {
   *zoom:1;
   &:before,&:after {display:table;content:"";line-height:0;}
   &:after {clear:both;}
+}
+
+@mixin boxSizing {
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
 }
 
 @mixin rounded($a, $b: null, $c: null, $d: null){
