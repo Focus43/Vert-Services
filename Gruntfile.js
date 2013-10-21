@@ -29,7 +29,7 @@ module.exports = function(grunt) {
             separator: ';'
           },
           build: {
-            src: ['application/js/libraries/base64.js', 'application/js/libraries/angular.min.js', 'application/js/libraries/angular-resource.min.js', 'application/js/main.js'],
+            src: ['application/js/libraries/base64.js', 'application/js/libraries/angular-1.0.8.js', 'application/js/libraries/angular-resource.min.js', 'application/js/main.js'],
             dest: 'builds/dev/assets/js/<%= filename %>.js'
           }
         },

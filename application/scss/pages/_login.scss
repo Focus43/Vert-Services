@@ -2,6 +2,7 @@
 
   .container.content {
     h2 {font-weight:100;text-transform:uppercase;margin:-19px -19px .7em;padding:.35em 0;background:#333;color:#fff;@include rounded(4px, 4px, 0, 0);
+      i {font-size:.7em;color:#c7254e;text-transform:lowercase;font-weight:400;}
       strong {font-weight:400;}
     }
     .form-group:last-child {margin-bottom:0;}

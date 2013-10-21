@@ -46,17 +46,17 @@
     /**
      * Login controller
      */
-    proCard.controller('LoginCtrl', function( $scope, $rootScope ){
+    proCard.controller('LoginCtrl', ['$scope', '$rootScope', '$http', function( $scope, $rootScope ){
         $rootScope.pageName = 'Login';
-    });
+    }]);
 
 
     /**
      * Procard controller
      */
-    proCard.controller('ProCardCtrl', function( $scope, $rootScope ){
+    proCard.controller('ProCardCtrl', ['$scope', '$rootScope', '$http', function( $scope, $rootScope ){
         $rootScope.pageName = 'Pro Card';
-    });
+    }]);
 
 
     /**
