@@ -6,16 +6,18 @@
                 <div class="topHalf">
                     <div class="affiliation pseudoCol">
                         <a class="logo">
-                            <img src="<%= assetPath %>img/placeholders/jh_logo.png" class="img-responsive img-rounded" />
+                            <!-- <img src="<%= assetPath %>img/placeholders/jh_logo.png" class="img-responsive img-rounded" /> -->
+                            <img ng-src="data:image/png;base64, {{_proCard.schoolImage}}" class="img-responsive img-rounded" />
                         </a>
                     </div>
                     <div class="basicInfo pseudoCol">
                         <div class="infoInner">
-                            <h4>Grant Bishop<small>PSIA Certified Instructor</small></h4>
+                            <h4>{{_proCard.name}}<small>PSIA Certified Instructor</small></h4>
                             <a class="mailCard btn btn-sm">
                                 <i class="glyphicon glyphicon-paperclip"></i>
                             </a>
                             <div class="badgeRow">
+                                <!-- first shield is the -->
                                 <a class="shield">
                                     <img src="<%= assetPath %>/img/placeholders/badge_1.png" class="img-responsive" />
                                 </a>
@@ -43,7 +45,8 @@
             </div>
 
             <div id="actionButtons">
-                <a href="report-card" class="btn btn-lg btn-block btn-default"><i class="glyphicon glyphicon-check"></i> Report Card</a>
+                <!-- @notes: exclude: score card, report card, message -->
+                <!--<a href="report-card" class="btn btn-lg btn-block btn-default"><i class="glyphicon glyphicon-check"></i> Report Card</a>-->
                 <a href="calendar" class="btn btn-lg btn-block btn-default"><i class="glyphicon glyphicon-calendar"></i> Calendar</a>
                 <a href="contacts" class="btn btn-lg btn-block btn-default"><i class="glyphicon glyphicon-th-list"></i> Contacts</a>
                 <a class="btn btn-lg btn-block btn-default"><i class="glyphicon glyphicon-share"></i> Message</a>

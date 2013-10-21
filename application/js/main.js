@@ -1,22 +1,26 @@
 
     // @application :: namespace
-    var proCard = angular.module('proCard', ['ngResource']);
+    var snowPro = angular.module('snowPro', ['ngResource']);
 
 
     /**
      * On initialize
      */
-    /*proCard.run(function( $rootScope ){
-        $rootScope.pageName = 'Vert';
-    });*/
+    snowPro.run(function( $rootScope ){
+        // hardcoded for now...
+        $rootScope.userID = '13a4604b-433e-de11-9555-005056834df6';
+    });
 
 
     /**
      * Config (routes)
      */
-    proCard.config(function($routeProvider, $locationProvider){
+    snowPro.config(function($locationProvider, $httpProvider, $routeProvider){
         // push state vs hash-based urls
         $locationProvider.html5Mode(true);
+
+        // Fix CORS pre-flighting
+        //delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
         $routeProvider.when('/pro-card', {templateUrl: '_pro-card.html', controller: 'ProCardCtrl'})
             .when('/report-card', {templateUrl: '_report-card.html', controller: 'ReportCardCtrl'})
@@ -29,10 +33,21 @@
             });
     });
 
+
+    /**
+     * Factories
+     */
+    snowPro.factory('ProCard', ['$resource', function( $resource ){
+        return $resource('http://rest.thesnowpros.org/member/procard', {callback: 'JSON_CALLBACK'}, {
+            get: {method: 'JSONP'}
+        });
+    }]);
+
+
     /**
      * @note Corresponds to <el toggle-class="" />
      */
-    proCard.directive('toggleClass', function(){
+    snowPro.directive('toggleClass', function(){
         return function(scope, element, attrs){
             element.bind('click', function(){
                 var selector_class = attrs.toggleClass.split(',');
@@ -46,7 +61,7 @@
     /**
      * Login controller
      */
-    proCard.controller('LoginCtrl', ['$scope', '$rootScope', '$http', function( $scope, $rootScope ){
+    snowPro.controller('LoginCtrl', ['$scope', '$rootScope', '$http', function( $scope, $rootScope ){
         $rootScope.pageName = 'Login';
     }]);
 
@@ -54,15 +69,20 @@
     /**
      * Procard controller
      */
-    proCard.controller('ProCardCtrl', ['$scope', '$rootScope', '$http', function( $scope, $rootScope ){
+    snowPro.controller('ProCardCtrl', ['$scope', '$rootScope', 'ProCard', function( $scope, $rootScope, ProCard ){
         $rootScope.pageName = 'Pro Card';
+
+        ProCard.get({id: $scope.userID}, function(data){
+            $scope._proCard = data;
+            console.log(data);
+        });
     }]);
 
 
     /**
      * Report card controller
      */
-    proCard.controller('ReportCardCtrl', function( $scope, $rootScope ){
+    snowPro.controller('ReportCardCtrl', function( $scope, $rootScope ){
         $rootScope.pageName = 'Report Card';
     });
 
@@ -70,7 +90,7 @@
     /**
      * Calendar controller
      */
-    proCard.controller('CalendarCtrl', function( $scope, $rootScope ){
+    snowPro.controller('CalendarCtrl', function( $scope, $rootScope ){
         $rootScope.pageName = 'Calendar';
     });
 
@@ -78,6 +98,6 @@
     /**
      * Contacts controller
      */
-    proCard.controller('ContactsCtrl', function( $scope, $rootScope ){
+    snowPro.controller('ContactsCtrl', function( $scope, $rootScope ){
         $rootScope.pageName = 'Contacts';
     });
