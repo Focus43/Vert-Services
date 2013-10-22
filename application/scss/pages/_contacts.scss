@@ -1,0 +1,11 @@
+#pageTemplateView.contacts {
+
+  .details {display:none;
+    a {text-decoration:none;font-size:13px;display:inline-block;padding:5px 0 3px;margin-right:8px;
+      &:hover {text-decoration:inherit;}
+      span.glyphicon {color:#222;}
+      strong {text-decoration:underline;}
+    }
+  }
+
+}

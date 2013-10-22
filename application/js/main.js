@@ -25,7 +25,7 @@
 
 
     var vertService = angular.module('vertservice', ['ngResource']).
-        config(function($locationProvider, $httpProvider, $routeProvider){
+        config(['$locationProvider', '$httpProvider', '$routeProvider', '$compileProvider', function($locationProvider, $httpProvider, $routeProvider, $compileProvider){
             // push state vs hash-based urls
             $locationProvider.html5Mode(true);
 
@@ -40,9 +40,13 @@
                     controller: 'LoginCtrl'
                 });
 
+            // white-list the tel: prefix for urls so we can auto-link phone numbers for mobile
+            // https://groups.google.com/forum/#!topic/angular/YiP02I1wkNU
+            $compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+
             // $httpProvider.defaults.headers.common['Authorization'] = ProCard.securitytoken;   // replace with token
             delete $httpProvider.defaults.headers.common["X-Requested-With"];
-        }).
+        }]).
         factory('ProCard', function($resource, $rootScope) {
 
             var ProCard = $resource('http://rest.thesnowpros.org/member/:verb', { verb: '@verb', callback: 'JSON_CALLBACK'}, {
@@ -73,7 +77,11 @@
         }).
         factory('Contacts', ['$resource', function( $resource ){
 
-            var ContactList = $resource('http://rest.thesnowpros.org/member/contacts');
+            var ContactList = $resource('http://rest.thesnowpros.org/member/contacts', { callback: 'JSON_CALLBACK' }, {
+                get: { method: 'JSONP', isArray: true }
+            });
+
+            return ContactList;
 
         }]);
 
@@ -149,6 +157,10 @@
     /**
      * Contacts controller
      */
-    snowPro.controller('ContactsCtrl', function( $scope, $rootScope ){
+    snowPro.controller('ContactsCtrl', ['$scope', '$rootScope', 'Contacts', function( $scope, $rootScope, Contacts ){
         $rootScope.pageName = 'Contacts';
-    });
+
+        Contacts.get({}, function(data){
+            $scope.contacts = data;
+        });
+    }]);

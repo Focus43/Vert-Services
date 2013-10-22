@@ -11,3 +11,13 @@
             });
         };
     });
+
+
+    angular.module('snowPro').directive('toggleSiblingVisibility', function(){
+        return function(scope, $element, attr){
+            $element.on('click', function(){
+                console.log('test', $element.siblings(attr));
+                $element.siblings(attr).toggle();
+            });
+        };
+    });
