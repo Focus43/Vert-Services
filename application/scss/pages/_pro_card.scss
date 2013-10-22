@@ -1,6 +1,11 @@
 #pageTemplateView {
 
-  //$pcBtnColor: #;
+  #editProCard {padding-bottom:1em; @include clearfix;
+    /*&.active {display:block;}*/
+    a.shield {display:block;float:left;width:25%;
+      img {max-width:75%;margin:0 auto;}
+    }
+  }
 
   // PRO CARD INLINE MOCKUP; HEIGHT SHOULD BE AUTOMATICALLY SET AND ADJUST TO CONTENT
   #proCardOmg {color:#fff;width:100%;max-width:750px;margin:0 auto 1em;padding:8px;background-color:#005577;border:4px solid #0d3349; @include boxSizing; @include boxShadow(0 0 12px rgba(0,0,0,.5)); @include clearfix;

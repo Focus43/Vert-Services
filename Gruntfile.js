@@ -123,12 +123,14 @@ module.exports = function(grunt) {
         copy: {
             dev: {
                 files: [
-                    {expand: true, cwd: 'application/', src: ['img/**', 'fonts/**'], dest: 'builds/dev/assets/'}
+                    {expand: true, cwd: 'application/', src: ['img/**', 'fonts/**'], dest: 'builds/dev/assets/'},
+                    {expand: true, cwd: 'application/', src: ['ajax_mocks/**'], dest: 'builds/dev/'}
                 ]
             },
             release: {
                 files: [
-                    {expand: true, cwd: 'application/', src: ['img/**', 'fonts/**'], dest: 'builds/release/assets/'}
+                    {expand: true, cwd: 'application/', src: ['img/**', 'fonts/**'], dest: 'builds/release/assets/'},
+                    {expand: true, cwd: 'application/', src: ['ajax_mocks/**'], dest: 'builds/release/'}
                 ]
             }
         },
@@ -171,6 +173,10 @@ module.exports = function(grunt) {
           markup: {
               files: ['application/*.tpl.html'],
               tasks: ['template:dev']
+          },
+          ajax_mocks: {
+              files: ['application/ajax_mocks/*'],
+              tasks: ['copy:dev']
           },
           image_assets: {
               files: ['application/img/*'],

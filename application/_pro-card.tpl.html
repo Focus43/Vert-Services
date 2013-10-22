@@ -1,6 +1,10 @@
-<div class="container content">
+<div class="container content"> <!-- see ngCloak directive? -->
     <div class="row">
         <div class="col-sm-12">
+
+            <div id="editProCard" ng-include="'_pro-card-edit.html'">
+
+            </div>
 
             <div id="proCardOmg">
                 <div class="topHalf">
@@ -47,6 +51,8 @@
                         {{_proCard.emailAddress}}<br />
                         {{_proCard.mobilePhone}}
                     </p>
+
+                    <!-- <a class="editCard btn btn-sm" toggle-class="#editProCard,active">Edit</a> -->
                     <a class="editCard btn btn-sm" ng-click="toggleEditMode()">Edit</a>
                 </div>
             </div>

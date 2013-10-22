@@ -88,6 +88,8 @@
     snowPro.controller('ProCardCtrl', ['$scope', '$rootScope', 'ProCard', function( $scope, $rootScope, ProCard ){
         $rootScope.pageName = 'Pro Card';
 
+        $scope.showEditForm = false;
+
         ProCard.get({id: $scope.userID}, function(data){
             $scope._proCard = data;
         });
