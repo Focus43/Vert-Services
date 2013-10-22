@@ -1,0 +1,11 @@
+<div id="event-detail">
+    <ul>
+        {{event.meeting}} <br>
+        {{event.meetingStartDate}} - {{event.meetingEndDate}}<br>
+        <li ng-repeat="session in sessions">
+            <span class="date">{{session.sessionStartDate}} </span><br>
+            <!--<span class="location">{{event.meetingLocation}}</span><br>-->
+            <!--<span class="description">{{event.meetingDescription}}</span>-->
+        </li>
+    </ul>
+</div>

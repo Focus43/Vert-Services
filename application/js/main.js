@@ -150,8 +150,9 @@
                 console.log(data);
                 $scope.sessions = data;
                 var eventDetail = $('#event-detail');
-                eventDetail.show();
-                eventDetail.html(data);
+//                eventDetail.show();
+//                eventDetail.html(data);
+
             });
 
         };
