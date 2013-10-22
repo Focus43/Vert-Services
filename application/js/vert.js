@@ -72,7 +72,6 @@ var ProCardApp = {
     }
 };
 
-
 angular.module('vertservice', ['ngResource']).
     config(function($httpProvider){
 //        $httpProvider.defaults.headers.common['Authorization'] = ProCard.securitytoken;   // replace with token

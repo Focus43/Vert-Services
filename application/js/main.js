@@ -5,8 +5,9 @@
  * @type {*}
  */
 
+
     // @application :: namespace
-    var snowPro = angular.module('snowPro', ['ngResource']);
+    var snowPro = angular.module('snowPro', ['ngResource', 'vertservice']);
 
 
     /**
@@ -23,36 +24,54 @@
     });
 
 
-    /**
-     * Config (routes)
-     */
-    snowPro.config(function($locationProvider, $httpProvider, $routeProvider){
-        // push state vs hash-based urls
-        $locationProvider.html5Mode(true);
+    var vertService = angular.module('vertservice', ['ngResource']).
+        config(function($locationProvider, $httpProvider, $routeProvider){
+            // push state vs hash-based urls
+            $locationProvider.html5Mode(true);
 
-        // Fix CORS pre-flighting
-        //delete $httpProvider.defaults.headers.common['X-Requested-With'];
+            // routes
+            $routeProvider.when('/pro-card', {templateUrl: '_pro-card.html', controller: 'ProCardCtrl'})
+                .when('/report-card', {templateUrl: '_report-card.html', controller: 'ReportCardCtrl'})
+                .when('/calendar', {templateUrl: '_calendar.html', controller: 'CalendarCtrl'})
+                .when('/contacts', {templateUrl: '_contacts.html', controller: 'ContactsCtrl'})
+                .otherwise({
+                    redirectTo: '/',
+                    templateUrl: '_login.html',
+                    controller: 'LoginCtrl'
+                });
 
-        $routeProvider.when('/pro-card', {templateUrl: '_pro-card.html', controller: 'ProCardCtrl'})
-            .when('/report-card', {templateUrl: '_report-card.html', controller: 'ReportCardCtrl'})
-            .when('/calendar', {templateUrl: '_calendar.html', controller: 'CalendarCtrl'})
-            .when('/contacts', {templateUrl: '_contacts.html', controller: 'ContactsCtrl'})
-            .otherwise({
-                redirectTo: '/',
-                templateUrl: '_login.html',
-                controller: 'LoginCtrl'
+            // $httpProvider.defaults.headers.common['Authorization'] = ProCard.securitytoken;   // replace with token
+            delete $httpProvider.defaults.headers.common["X-Requested-With"];
+        }).
+        factory('ProCard', function($resource, $rootScope) {
+
+            var ProCard = $resource('http://rest.thesnowpros.org/member/:verb', { verb: '@verb', callback: 'JSON_CALLBACK'}, {
+                get: { method: 'JSONP', params: { memnum:$rootScope.userID } },
+                send: { method: 'POST' }
             });
-    });
 
+            ProCard.prototype.send = function (config, cb) {
+                // send request to vert server
+                return ProCard.send(config,
+                    angular.extend({}, this, {_id:undefined}), cb);
+            };
 
-    /**
-     * Factories
-     */
-    snowPro.factory('ProCard', ['$resource', function( $resource ){
-        return $resource('http://rest.thesnowpros.org/member/procard', {callback: 'JSON_CALLBACK'}, {
-            get: {method: 'JSONP'}
+            ProCard.prototype.update = function(cb) {
+                return ProCard.update({personId: this.personId},
+                    angular.extend({}, this, {_id:undefined}), cb);
+            };
+
+            return ProCard;
+        }).
+        factory("Calendar", function ($resource, $rootScope) {
+
+            var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
+                get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
+            });
+
+            return Calendar;
         });
-    }]);
+
 
 
     /**
@@ -72,7 +91,7 @@
     /**
      * Slide-in sidebar controller
      */
-    snowPro.controller('SidebarCtrl', ['$scope', '$http', function( $scope, $http ){
+    snowPro.controller('LeftSidebarCtrl', ['$scope', '$http', function( $scope, $http ){
         $http.jsonp('http://rest.thesnowpros.org/asea/sitelinks?callback=JSON_CALLBACK').success(function( data ){
             $scope.links = data;
         });
@@ -95,25 +114,45 @@
 
         $rootScope.sidebar.incld = '_pro-card-edit.html';
 
-        ProCard.get({id: $scope.userID}, function(data){
+        ProCard.get({ verb:'procard' }, function( data ) {
             $scope._proCard = data;
         });
+
+//        ProCard.get({ verb:'contacts' }, function( data ) {
+//            $scope._contacts = data;
+//        });
     }]);
-
-
-    /**
-     * Report card controller
-     */
-    snowPro.controller('ReportCardCtrl', function( $scope, $rootScope ){
-        $rootScope.pageName = 'Report Card';
-    });
 
 
     /**
      * Calendar controller
      */
-    snowPro.controller('CalendarCtrl', function( $scope, $rootScope ){
+    snowPro.controller('CalendarCtrl', function( $scope, $rootScope, $resource, Calendar ){
         $rootScope.pageName = 'Calendar';
+
+        this.Sessions = $resource('http://rest.thesnowpros.org/meeting/sessions', { callback: 'JSON_CALLBACK' }, {
+            get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
+        });
+
+        Calendar.get( { det: 'snap' }, function (data) {
+            $scope.events = data;
+        });
+
+        $scope.controller = this;
+
+        $scope.showDetail = function (meeting, $event) {
+            var _target = $($event.target);
+
+            this.controller.Sessions.get({ id: meeting.meetingId }, function (data) {
+                console.log(data);
+                $scope.sessions = data;
+                var eventDetail = $('#event-detail');
+                eventDetail.show();
+                eventDetail.html(data);
+            });
+
+        };
+
     });
 
 
