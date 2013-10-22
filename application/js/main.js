@@ -66,7 +66,6 @@
             return ProCard;
         }]).
         factory("Calendar", ['$resource', '$rootScope', function ($resource, $rootScope) {
-
             var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
                 get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
             });
@@ -74,38 +73,19 @@
             return Calendar;
         }]).
         factory('Contacts', ['$resource', function( $resource ){
-
             var ContactList = $resource('http://rest.thesnowpros.org/member/contacts', { callback: 'JSON_CALLBACK' }, {
                 get: { method: 'JSONP', isArray: true }
             });
 
             return ContactList;
-
         }]).
-        factory("Sessions", ['$resource', '$rootScope', function($resource, $rootScope) {
+        factory("Sessions", ['$resource', function($resource) {
             var Sessions = $resource('http://rest.thesnowpros.org/meeting/sessions', { callback: 'JSON_CALLBACK' }, {
-                get: { method: 'JSONP', isArray: true, params: { id: "@id" } },
-                getSessionsForId: { method: 'JSONP', isArray: true, params: { id: "@id" } }
+                get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
             });
-
-            Sessions.prototype.getSessions = function (id, cb) {
-                console.log("getSessions");
-                console.log(cb);
-                return Sessions.getSessionsForId({}, { id: id },
-                    angular.extend({}, this, {_id:id}), cb);
-            };
 
             return Sessions;
         }]);
-
-    /**
-     * Service for shared state between controller of meeting sessions
-
-    snowPro.service('SessionService', function(){
-        return {
-
-        }
-    });*/
 
 
     /**
@@ -152,29 +132,6 @@
             $scope.events = data;
         });
 
-//        $scope.getSessionsForMeeting = function (event, events) {
-//            var _sessions = new Sessions();
-//            _sessions.getSessions(event.meetingId, function (data) {
-//                console.log("done");
-//                $rootScope.sessions = data;
-//                $scope.sessions = data;
-//
-//                angular.element( document.querySelector("#bodyWrap") )
-//                    .toggleClass("show-right");
-
-//        $scope.showDetail = function (meeting, $event) {
-//            var _target = $($event.target);
-//
-//            this.controller.Sessions.get({ id: meeting.meetingId }, function (data) {
-//                console.log(data);
-//                $scope.sessions = data;
-//                var eventDetail = $('#event-detail');
-//                eventDetail.show();
-//                eventDetail.html(data);
-//            });
-//
-//        };
-
         $scope.showSessions = function( meeting ){
             $rootScope.$broadcast('loadSessionsForEvent', meeting);
         };
@@ -189,7 +146,6 @@
             console.log(meeting);
             Sessions.get({id: meeting.meetingId}, function(data){
                 $scope.meetingSessions = data;
-                console.log('Session data:', data);
             });
         });
     }]);

@@ -1,15 +1,3 @@
-
-<!--<script type="text/ng-template" id="sessionTemplate">
-    <div class="template" ng-controller="CalendarCtrl">
-        events = {{events}}
-        <li ng-repeat="session in events.sessions">
-            <span class="date">{{session.sessionStartDate}} </span><br>
-        </li>
-    </div>
-</script>
-
-<div ng-include="" src="'sessionTemplate'"></div>-->
-
 <div ng-controller="CalendarSessionsCtrl">
     <a ng-repeat="session in meetingSessions">{{session.session}}</a>
 </div>
