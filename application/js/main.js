@@ -70,22 +70,12 @@
             });
 
             return Calendar;
-        });
+        }).
+        factory('Contacts', ['$resource', function( $resource ){
 
+            var ContactList = $resource('http://rest.thesnowpros.org/member/contacts');
 
-
-    /**
-     * @note Corresponds to <el toggle-class="" />
-     */
-    snowPro.directive('toggleClass', function(){
-        return function(scope, element, attrs){
-            element.bind('click', function(){
-                var selector_class = attrs.toggleClass.split(',');
-                angular.element( document.querySelector(selector_class[0]) )
-                    .toggleClass(selector_class[1]);
-            });
-        };
-    });
+        }]);
 
 
     /**

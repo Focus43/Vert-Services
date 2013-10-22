@@ -1,4 +1,4 @@
-<div ng-controller="CalendarCtrl">
+<div>
     <ul>
         <li ng-repeat="event in events">
             <button class="name btn btn-primary" ng-click="showDetail(event, $event)">{{event.meeting}}</button><br>
@@ -7,18 +7,4 @@
             <span class="description">{{event.meetingDescription}}</span>
         </li>
     </ul>
-
-    <div ng-include="" src=" 'MyTemplate.html' "  <!-- =""  ng-controller="CtrlA" --> id="event-detail" style="display: none;">
-    <div id="event-detail" style="display: none;">
-        <ul compile="html">
-            {{event.meeting}} <br>
-            {{event.meetingStartDate}} - {{event.meetingEndDate}}<br>
-            <li ng-repeat="session in sessions">
-                <button class="name btn btn-primary" ng-click="showDetail(event, $event)">{{event.meeting}}</button><br>
-                <span class="date">{{event.meetingStartDate}} - {{event.meetingEndDate}}</span><br>
-                <span class="location">{{event.meetingLocation}}</span><br>
-                <span class="description">{{event.meetingDescription}}</span>
-            </li>
-        </ul>
-    </div>
 </div>
