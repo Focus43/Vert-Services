@@ -5,7 +5,6 @@
  * @type {*}
  */
 
-
     // @application :: namespace
     var snowPro = angular.module('snowPro', ['ngResource', 'vertservice']);
 
@@ -67,9 +66,31 @@
 
             var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
                 get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
+//                getSessionsForId: { method: 'JSONP', isArray: true, params: { id: "@id" } }
             });
 
+//            Calendar.prototype.getSessions = function (id, cb) {
+//                console.log("getSessions : " + id);
+//                return Calendar.getSessionsForId({ verb: "sessions" }, { id: id },
+//                    angular.extend({}, this, {_id:undefined}), cb);
+//            };
+
             return Calendar;
+        }).
+        factory("Sessions", function($resource, $rootScope) {
+            var Sessions = $resource('http://rest.thesnowpros.org/meeting/sessions', { callback: 'JSON_CALLBACK' }, {
+                get: { method: 'JSONP', isArray: true, params: { id: "@id" } },
+                getSessionsForId: { method: 'JSONP', isArray: true, params: { id: "@id" } }
+            });
+
+            Sessions.prototype.getSessions = function (id, cb) {
+                console.log("getSessions");
+                console.log(cb);
+                return Sessions.getSessionsForId({}, { id: id },
+                    angular.extend({}, this, {_id:id}), cb);
+            };
+
+            return Sessions;
         });
 
 
@@ -87,7 +108,6 @@
         };
     });
 
-
     /**
      * Slide-in sidebar controller
      */
@@ -97,14 +117,12 @@
         });
     }]);
 
-
     /**
      * Login controller
      */
     snowPro.controller('LoginCtrl', ['$scope', '$rootScope', function( $scope, $rootScope ){
         $rootScope.pageName = 'Login';
     }]);
-
 
     /**
      * Procard controller
@@ -123,38 +141,49 @@
 //        });
     }]);
 
-
     /**
      * Calendar controller
      */
-    snowPro.controller('CalendarCtrl', function( $scope, $rootScope, $resource, Calendar ){
+    snowPro.controller('CalendarCtrl', function( $scope, $rootScope, $resource, Calendar, Sessions ){
         $rootScope.pageName = 'Calendar';
 
-        this.Sessions = $resource('http://rest.thesnowpros.org/meeting/sessions', { callback: 'JSON_CALLBACK' }, {
-            get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
-        });
+        $scope.sidebar.incld = '_calendar-sessions.html';
+
+        $scope.controller = this;
+
+//        this.Sessions = $resource('http://rest.thesnowpros.org/meeting/sessions', { callback: 'JSON_CALLBACK' }, {
+//            get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
+//        });
 
         Calendar.get( { det: 'snap' }, function (data) {
             $scope.events = data;
         });
 
-        $scope.controller = this;
+        $scope.getSessionsForMeeting = function (event, events) {
+            var _sessions = new Sessions();
+            _sessions.getSessions(event.meetingId, function (data) {
+                console.log("done");
+//                $rootScope.sessions = data;
+//                $scope.sessions = data;
+//
+//                angular.element( document.querySelector("#bodyWrap") )
+//                    .toggleClass("show-right");
 
-        $scope.showDetail = function (meeting, $event) {
-            var _target = $($event.target);
-
-            this.controller.Sessions.get({ id: meeting.meetingId }, function (data) {
-                console.log(data);
-                $scope.sessions = data;
-                var eventDetail = $('#event-detail');
-                eventDetail.show();
-                eventDetail.html(data);
             });
-
         };
-
     });
 
+    /**
+     * Sessions controller
+     */
+//    snowPro.controller('SessionsCtrl', ['$scope', '$rootScope', 'Sessions', function( $scope, $rootScope, Sessions ){
+//
+//        Sessions.get({}, function( data ) {
+//            $scope.sessions = data;
+//            console.log(data);
+//        });
+//    }]);
+//
 
     /**
      * Contacts controller

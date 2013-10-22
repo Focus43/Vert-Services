@@ -1,0 +1,13 @@
+
+<script type="text/ng-template" id="sessionTemplate">
+    <div class="template" ng-controller="CalendarCtrl">
+        events = {{events}}
+        <li ng-repeat="session in events.sessions">
+            <span class="date">{{session.sessionStartDate}} </span><br>
+            <!--<span class="location">{{event.meetingLocation}}</span><br>-->
+            <!--<span class="description">{{event.meetingDescription}}</span>-->
+        </li>
+    </div>
+</script>
+
+<div ng-include="" src="'sessionTemplate'"></div>
