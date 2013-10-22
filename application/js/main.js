@@ -1,3 +1,9 @@
+/**
+ * VertSolutions / The Snow Pros angular app.
+ *
+ * @resource Listing: rest.thesnowpros.org/map?ctyp=json
+ * @type {*}
+ */
 
     // @application :: namespace
     var snowPro = angular.module('snowPro', ['ngResource']);
@@ -59,9 +65,19 @@
 
 
     /**
+     * Slide-in sidebar controller
+     */
+    snowPro.controller('SidebarCtrl', ['$scope', '$http', function( $scope, $http ){
+        $http.jsonp('http://rest.thesnowpros.org/asea/sitelinks?callback=JSON_CALLBACK').success(function( data ){
+            $scope.links = data;
+        });
+    }]);
+
+
+    /**
      * Login controller
      */
-    snowPro.controller('LoginCtrl', ['$scope', '$rootScope', '$http', function( $scope, $rootScope ){
+    snowPro.controller('LoginCtrl', ['$scope', '$rootScope', function( $scope, $rootScope ){
         $rootScope.pageName = 'Login';
     }]);
 
@@ -74,8 +90,11 @@
 
         ProCard.get({id: $scope.userID}, function(data){
             $scope._proCard = data;
-            console.log(data);
         });
+
+        $scope.toggleEditMode = function(){
+            alert('fuck');
+        };
     }]);
 
 

@@ -17,7 +17,7 @@
 
     <div id="cL1">
 
-        <div id="cSidebar">
+        <div id="cSidebar" ng-controller="SidebarCtrl">
             <div class="sidebarInner">
                 <div class="container">
                     <div class="row">
@@ -28,18 +28,9 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <ul class="list-group">
-                                <li class="list-group-item"><a>First one</a></li>
-                                <li class="list-group-item"><a>Second one</a></li>
-                                <li class="list-group-item"><a>Third one</a></li>
-                                <li class="list-group-item"><a>Fourth one</a></li>
-                                <li class="list-group-item"><a>First one</a></li>
-                                <li class="list-group-item"><a>Second one</a></li>
-                                <li class="list-group-item"><a>Third one</a></li>
-                                <li class="list-group-item"><a>Fourth one</a></li>
-                                <li class="list-group-item"><a>First one</a></li>
-                                <li class="list-group-item"><a>Second one</a></li>
-                                <li class="list-group-item"><a>Third one</a></li>
-                                <li class="list-group-item"><a>Fourth one</a></li>
+                                <li class="list-group-item" ng-repeat="link in links">
+                                    <a href="{{link.url}}" target="_blank">{{link.text}}</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
