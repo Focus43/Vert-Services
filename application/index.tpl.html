@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link href='http://fonts.googleapis.com/css?family=Sanchez' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Sanchez" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="<%= assetPath %>css/vert-services.css" />
 </head>
 
@@ -15,9 +15,10 @@
 
     <div id="cBackground"></div>
 
-    <div id="cL1">
+    <div id="bodyWrap">
 
-        <div id="cSidebar" ng-controller="SidebarCtrl">
+        <!-- LEFT SIDEBAR -->
+        <div class="sidebar left" ng-controller="SidebarCtrl">
             <div class="sidebarInner">
                 <div class="container">
                     <div class="row">
@@ -38,11 +39,12 @@
             </div>
         </div>
 
-        <div id="cL2">
+        <!-- MAIN PAGE CONTENT -->
+        <div id="bodyContent">
             <div id="topBar">
                 <div class="locationTitle">{{pageName}}</div>
                 <div class="pull-left">
-                    <a toggle-class="#cL1,sidebar-viz">
+                    <a toggle-class="#bodyWrap,show-left">
                         <span class="glyphicon glyphicon-th"></span>
                     </a>
                 </div>
@@ -56,13 +58,17 @@
             </div>
         </div>
 
-        <div id="cSidebarRight">
-            testing this
+        <!-- RIGHT SIDEBAR -->
+        <div class="sidebar right">
+            <a class="closer" toggle-class="#bodyWrap,show-right">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+            <div class="sidebarInner">
+                <div ng-include src="sidebar.incld" onload="alert('ahh')">
+                    <!-- templates included programatically -->
+                </div>
+            </div>
         </div>
-
-        <!--<div id="footerNav">
-            asdfwe
-        </div>-->
 
     </div>
 

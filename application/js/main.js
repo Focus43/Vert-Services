@@ -15,6 +15,11 @@
     snowPro.run(function( $rootScope ){
         // hardcoded for now...
         $rootScope.userID = '13a4604b-433e-de11-9555-005056834df6';
+
+        // right sidebar includes
+        $rootScope.sidebar = {
+            incld: ''
+        };
     });
 
 
@@ -88,15 +93,11 @@
     snowPro.controller('ProCardCtrl', ['$scope', '$rootScope', 'ProCard', function( $scope, $rootScope, ProCard ){
         $rootScope.pageName = 'Pro Card';
 
-        $scope.showEditForm = false;
+        $rootScope.sidebar.incld = '_pro-card-edit.html';
 
         ProCard.get({id: $scope.userID}, function(data){
             $scope._proCard = data;
         });
-
-        $scope.toggleEditMode = function(){
-            alert('fuck');
-        };
     }]);
 
 

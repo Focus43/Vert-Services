@@ -2,10 +2,6 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <div id="editProCard" ng-include="'_pro-card-edit.html'">
-
-            </div>
-
             <div id="proCardOmg">
                 <div class="topHalf">
                     <div class="affiliation pseudoCol">
@@ -47,13 +43,13 @@
                 </div>
                 <div class="bottomHalf">
                     <p class="contact">
-                        <strong>{{_proCard.school}} School Name Here</strong><br />
+                        <strong>{{_proCard.school}}</strong><br />
                         {{_proCard.emailAddress}}<br />
                         {{_proCard.mobilePhone}}
                     </p>
 
                     <!-- <a class="editCard btn btn-sm" toggle-class="#editProCard,active">Edit</a> -->
-                    <a class="editCard btn btn-sm" ng-click="toggleEditMode()">Edit</a>
+                    <a class="editCard btn btn-sm" toggle-class="#bodyWrap,show-right">Edit</a>
                 </div>
             </div>
 

@@ -6,45 +6,47 @@ a {cursor:pointer;}
 // FULL SCREEN BACKGROUND CONTAINER
 #cBackground {position:fixed;top:0;right:0;bottom:0;left:0;background:#f5f5f5 url('#{$imgPath}bg_skier.jpg') no-repeat center center;background-size:cover;}
 
-// CONTAINERS AND SUCH
-#cL1, #cL2 {width:100%;min-height:100%;position:relative;}
-#cL1 {overflow:hidden;}
-#cL2, #cSidebar {@include cssTransform(translate3d(0,0,0)); @include cssTransition(all .25s ease-in);}
+#bodyWrap, #bodyContent {width:100%;min-height:100%;position:relative;}
+#bodyContent, .sidebar {@include cssTransform(translate3d(0,0,0)); @include cssTransition(all .25s ease-in);}
 
-// SIDEBAR
-#cL1 {padding-bottom:40px;
-  #cSidebar {position:absolute;top:0;right:100%;bottom:0;width:100%;
-    //-webkit-overflow-scrolling: touch; FAILS ON IOS 7
-    .sidebarInner {height:100%;margin-right:35px;overflow-y:auto;background:#f5f5f5; @include boxShadow(inset -8px 0 8px rgba(0,0,0,.25));
-      .container {
-        .row:first-child {padding-top:1em;
-          input[type="text"] {margin-bottom:1em;@include rounded(1.25em);}
+#bodyWrap {padding-bottom:40px;overflow:hidden;
+  .sidebar {position:absolute;top:0;bottom:0;width:100%;
+    .sidebarInner {height:100%;overflow-y:auto;background:#f5f5f5;}
+    &.left {right:100%;
+      .sidebarInner {margin-right:35px;@include boxShadow(inset -8px 0 8px rgba(0,0,0,.25));
+        .container {
+          .row:first-child {padding-top:1em;
+            input[type="text"] {margin-bottom:1em;@include rounded(1.25em);}
+          }
         }
       }
     }
-  }
-
-  // SIDEBAR CSS3 ANIMATIONS (just toggle the body class)
-  &.sidebar-viz {height:100%;
-    #cL2 {@include cssTransform(translate3d(100%,0,0));left:-35px;
-      #topBar {background:#c7254e; @include boxShadow(none);}
+    &.right {left:100%;z-index:2;
+      a.closer {font-size:26px;text-align:center;color:#fff;position:absolute;height:100%;width:35px;left:0;background:rgba(0,0,0,.5);
+        span.glyphicon {position:absolute;top:50%;margin-top:-15px;left:4px;}
+      }
+      .sidebarInner {margin-left:35px;@include boxShadow(0 0 8px rgba(0,0,0,.25));}
     }
-    #cSidebar {@include cssTransform(translate3d(100%,0,0));}
   }
 
-  #footerNav {
-    position:absolute;bottom:0;left:0;right:0;height:40px;background:rgba(0,0,0,.65);
+  &.show-left {height:100%;
+    #bodyContent {@include cssTransform(translate3d(100%,0,0));left:-35px;}
+    .sidebar.left {@include cssTransform(translate3d(100%,0,0));}
+  }
+
+  &.show-right {height:100%;
+    .sidebar.right {@include cssTransform(translate3d(-100%,0,0));}
   }
 }
 
-// MAIN BODY CONTENT (TEMPLATE AREA)
-#cL2 {
+#bodyContent {position:relative;z-index:1;
   #topBar {color:#fff;font-size:1.55em;position:relative;width:100%;background:rgba(255,255,255,.52); @include clearfix; @include boxShadow(0 0 8px rgba(0,0,0,.75));
     a {color:inherit;display:block;padding:6px 8px 5px;}
     .locationTitle {position:absolute;top:0;right:0;left:0;text-align:center;font-weight:200;padding-top:6px;text-shadow:0 1px 0 #000;}
   }
   .container.content {padding-top:1.6em;}
 }
+
 
 // WRAPPER WHERE ALL THE TEMPLATES GET LOADED INTO. ANY FILES IN pages/*.scss SHOULD WRAP EVERYTHING
 // INSIDE OF THIS ID
