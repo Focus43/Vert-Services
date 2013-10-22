@@ -1,10 +1,29 @@
+<!--<script type="text/ng-template" id="sessionTemplate">-->
+    <!--<div class="template">-->
+        <!--<li ng-repeat="session in sessions">-->
+            <!--<span class="date">{{session.sessionStartDate}} </span><br>-->
+            <!--&lt;!&ndash;<span class="location">{{event.meetingLocation}}</span><br>&ndash;&gt;-->
+            <!--&lt;!&ndash;<span class="description">{{event.meetingDescription}}</span>&ndash;&gt;-->
+        <!--</li>-->
+    <!--</div>-->
+<!--</script>-->
+
 <div>
     <ul>
         <li ng-repeat="event in events">
-            <button class="name btn btn-primary" ng-click="showDetail(event, $event)">{{event.meeting}}</button><br>
+            <!--<a class="editCard btn btn-sm" toggle-class="#bodyWrap,show-right" ng-click="">Edit</a>-->
+            <!--<button class="name btn btn-primary" ng-click="getSessionsForMeeting(event, events)">{{event.meeting}}</button><br>-->
+            <a toggle-class="#bodyWrap,show-right" ng-click="showSessions(event)">toggle sidebar</a>
             <span class="date">{{event.meetingStartDate}} - {{event.meetingEndDate}}</span><br>
             <span class="location">{{event.meetingLocation}}</span><br>
             <span class="description">{{event.meetingDescription}}</span>
         </li>
     </ul>
+
+    <!--<div ng-repeat="entry in sessions">-->
+
+        <!--<div ng-include="" src="'sessionTemplate'" ng-init="obj=sessions"></div>-->
+
+    <!--</div>-->
+
 </div>

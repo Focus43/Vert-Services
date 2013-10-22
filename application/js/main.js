@@ -9,7 +9,6 @@
     // @application :: namespace
     var snowPro = angular.module('snowPro', ['ngResource', 'vertservice']);
 
-
     /**
      * On initialize
      */
@@ -22,7 +21,6 @@
             incld: ''
         };
     });
-
 
     var vertService = angular.module('vertservice', ['ngResource']).
         config(['$locationProvider', '$httpProvider', '$routeProvider', '$compileProvider', function($locationProvider, $httpProvider, $routeProvider, $compileProvider){
@@ -47,9 +45,9 @@
             // $httpProvider.defaults.headers.common['Authorization'] = ProCard.securitytoken;   // replace with token
             delete $httpProvider.defaults.headers.common["X-Requested-With"];
         }]).
-        factory('ProCard', function($resource, $rootScope) {
+        factory('ProCard', ['$resource', '$rootScope', function($resource, $rootScope) {
 
-            var ProCard = $resource('http://rest.thesnowpros.org/member/:verb', { verb: '@verb', callback: 'JSON_CALLBACK'}, {
+            var ProCard = $resource('http://rest.thesnowpros.org/member/procard', { callback: 'JSON_CALLBACK'}, {
                 get: { method: 'JSONP', params: { memnum:$rootScope.userID } },
                 send: { method: 'POST' }
             });
@@ -66,15 +64,15 @@
             };
 
             return ProCard;
-        }).
-        factory("Calendar", function ($resource, $rootScope) {
+        }]).
+        factory("Calendar", ['$resource', '$rootScope', function ($resource, $rootScope) {
 
             var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
                 get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
             });
 
             return Calendar;
-        }).
+        }]).
         factory('Contacts', ['$resource', function( $resource ){
 
             var ContactList = $resource('http://rest.thesnowpros.org/member/contacts', { callback: 'JSON_CALLBACK' }, {
@@ -83,7 +81,31 @@
 
             return ContactList;
 
+        }]).
+        factory("Sessions", ['$resource', '$rootScope', function($resource, $rootScope) {
+            var Sessions = $resource('http://rest.thesnowpros.org/meeting/sessions', { callback: 'JSON_CALLBACK' }, {
+                get: { method: 'JSONP', isArray: true, params: { id: "@id" } },
+                getSessionsForId: { method: 'JSONP', isArray: true, params: { id: "@id" } }
+            });
+
+            Sessions.prototype.getSessions = function (id, cb) {
+                console.log("getSessions");
+                console.log(cb);
+                return Sessions.getSessionsForId({}, { id: id },
+                    angular.extend({}, this, {_id:id}), cb);
+            };
+
+            return Sessions;
         }]);
+
+    /**
+     * Service for shared state between controller of meeting sessions
+
+    snowPro.service('SessionService', function(){
+        return {
+
+        }
+    });*/
 
 
     /**
@@ -112,46 +134,65 @@
 
         $rootScope.sidebar.incld = '_pro-card-edit.html';
 
-        ProCard.get({ verb:'procard' }, function( data ) {
+        ProCard.get({}, function( data ) {
             $scope._proCard = data;
         });
-
-//        ProCard.get({ verb:'contacts' }, function( data ) {
-//            $scope._contacts = data;
-//        });
     }]);
 
 
     /**
      * Calendar controller
      */
-    snowPro.controller('CalendarCtrl', function( $scope, $rootScope, $resource, Calendar ){
+    snowPro.controller('CalendarCtrl', function( $scope, $rootScope, $resource, Calendar, Sessions ){
         $rootScope.pageName = 'Calendar';
 
-        this.Sessions = $resource('http://rest.thesnowpros.org/meeting/sessions', { callback: 'JSON_CALLBACK' }, {
-            get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
-        });
+        $rootScope.sidebar.incld = '_calendar-sessions.html';
 
         Calendar.get( { det: 'snap' }, function (data) {
             $scope.events = data;
         });
 
-        $scope.controller = this;
+//        $scope.getSessionsForMeeting = function (event, events) {
+//            var _sessions = new Sessions();
+//            _sessions.getSessions(event.meetingId, function (data) {
+//                console.log("done");
+//                $rootScope.sessions = data;
+//                $scope.sessions = data;
+//
+//                angular.element( document.querySelector("#bodyWrap") )
+//                    .toggleClass("show-right");
 
-        $scope.showDetail = function (meeting, $event) {
-            var _target = $($event.target);
+//        $scope.showDetail = function (meeting, $event) {
+//            var _target = $($event.target);
+//
+//            this.controller.Sessions.get({ id: meeting.meetingId }, function (data) {
+//                console.log(data);
+//                $scope.sessions = data;
+//                var eventDetail = $('#event-detail');
+//                eventDetail.show();
+//                eventDetail.html(data);
+//            });
+//
+//        };
 
-            this.controller.Sessions.get({ id: meeting.meetingId }, function (data) {
-                console.log(data);
-                $scope.sessions = data;
-                var eventDetail = $('#event-detail');
-                eventDetail.show();
-                eventDetail.html(data);
-            });
-
+        $scope.showSessions = function( meeting ){
+            $rootScope.$broadcast('loadSessionsForEvent', meeting);
         };
 
     });
+
+
+    snowPro.controller('CalendarSessionsCtrl', ['$scope', 'Sessions', function($scope, Sessions){
+        $scope.meetingSessions = [];
+
+        $scope.$on('loadSessionsForEvent', function( _event, meeting ){
+            console.log(meeting);
+            Sessions.get({id: meeting.meetingId}, function(data){
+                $scope.meetingSessions = data;
+                console.log('Session data:', data);
+            });
+        });
+    }]);
 
 
     /**
