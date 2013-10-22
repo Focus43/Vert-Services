@@ -78,29 +78,18 @@ angular.module('vertservice', ['ngResource']).
 //        $httpProvider.defaults.headers.common['Authorization'] = ProCard.securitytoken;   // replace with token
         delete $httpProvider.defaults.headers.common["X-Requested-With"];
     }).
-    factory('Member', function($resource) {
-
-        var Member = $resource("http://rest.thesnowpros.org/member/profile?ctyp=json&mnum=:personId", { personId:'@id' });
-        // TODO: add sendCard action (if it uses similar url
-
-        Member.prototype.update = function(cb) {
-            return Member.update({personId: this.personId},
-                angular.extend({}, this, {_id:undefined}), cb);
-        };
-
-        Member.prototype.destroy = function(cb) {
-            return Member.remove({personId: this.personId}, cb);
-        };
-
-        return Member;
-    }).
     factory('ProCard', function($resource) {
 
-        var ProCard = $resource("http://rest.thesnowpros.org/member/procard?id=:personId", { personId:'@id' });
+        var ProCard = $resource('http://rest.thesnowpros.org/member/:verb', { verb: '@verb', callback: 'JSON_CALLBACK'}, {
+            get: { method: 'JSONP' },   // TODO: put userId param up here?
+            send: { method: 'POST' }
+        });
 
-        ProCard.prototype.send = function (contactId, cb) {
+        ProCard.prototype.send = function (config, cb) {
             console.log("send it!");
             // send request to vert server
+            return ProCard.send(config,
+                angular.extend({}, this, {_id:undefined}), cb);
         };
 
         ProCard.prototype.update = function(cb) {
@@ -117,36 +106,19 @@ angular.module('vertservice', ['ngResource']).
         return Contact;
     })
     .factory("Calendar", function ($resource) {
-        var Calendar = $resource("http://rest.thesnowpros.org/events?type=:eventType&division::division", { eventType:'@type', division:'@division' });
+
+        var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
+            get: {method: 'JSONP'}
+        });
 
         return Calendar;
     });
 
 
-function MemberController ($scope, Member) {
-
-    // TODO: this currently just gets the map for member info
-    // Need to come up with a getAll type method in the Member factory to use here
-    $scope.members = Member.query();
-
-    Member.get({personId:ProCardApp.currentUserId}, function( data ) {
-        $scope.member = data.result;
-    });
-
-    $scope.save = function (mem) {
-        var member = new Member(mem);
-        member.$save();
-    };
-
-    $scope.preferedResortAssosciation = function (member) {
-        return member.resorts[0];
-    };
-
-}
 
 function ProCardController ($scope, ProCard) {
 
-    ProCard.get({personId:ProCardApp.currentUserId}, function( data ) {
+    ProCard.get({ verb:'procard', memnum:ProCardApp.currentUserId }, function( data ) {
         $scope.procard = data;
     });
 
@@ -182,9 +154,11 @@ function ProCardController ($scope, ProCard) {
         var _target = $($event.target);
         var contactId = _target.siblings(".id").attr("data-contactId");
         var procard = new ProCard(card);
+
         // TODO: remove this when send is linked up, since hide should happen on success
         $("div.contact-list").hide();
-        procard.send(contactId, function () {
+
+        procard.send( { verb:'communications', memnum: ProCardApp.currentUserId, id: contactId }, function () {
             $("div.contact-list").hide();
             confirm("Your card was sent to " + contactId);
         });
@@ -203,19 +177,19 @@ function ContactListController ($scope, Contact) {
 
 function CalendarController ($scope, Calendar) {
 
-    Calendar.get({eventType: '', division: ProCardApp.currentUserDivision }, function( data ) {
+    Calendar.get( function (data) {
+        console.log(data);
         $scope.events = data;
     });
-
 }
 
 angular.module ('procard', ['vertservice']).
     config( function($routeProvider, $locationProvider) {
         // TODO: remove random number to get caching back
         $routeProvider.
-            when('/myprocard/:personId', { controller:MemberController, templateUrl:'/memberCard.html?' + Math.random()*1000  }).
-            when('/sendmyprocard/:personId', { controller:MemberController, templateUrl:'/sendCard.html?' + Math.random()*1000 }).
-            when('/myinfo/:personId', { controller:MemberController, templateUrl:'/memberInfo.html?' + Math.random()*1000  }).
+//            when('/myprocard/:personId', { controller:MemberController, templateUrl:'/memberCard.html?' + Math.random()*1000  }).
+//            when('/sendmyprocard/:personId', { controller:MemberController, templateUrl:'/sendCard.html?' + Math.random()*1000 }).
+//            when('/myinfo/:personId', { controller:MemberController, templateUrl:'/memberInfo.html?' + Math.random()*1000  }).
             when('/calendar', { controller:CalendarController, templateUrl:'/calendar.html?' + Math.random()*1000  }).
 //            when('/edit/:tripId', { controller:EditController, templateUrl:'/tripDetail.html?' + Math.random()*1000 }).
 //            when('/new', { controller:CreateCtrl, templateUrl:'/tripDetail.html?' + Math.random()*1000 }).
@@ -226,3 +200,42 @@ angular.module ('procard', ['vertservice']).
 
 
 ProCardApp.init();
+
+
+//factory('Member', function($resource) {
+//
+//    var Member = $resource("http://rest.thesnowpros.org/member/profile?ctyp=json&mnum=:personId", { personId:'@id' });
+//    // TODO: add sendCard action (if it uses similar url
+//
+//    Member.prototype.update = function(cb) {
+//        return Member.update({personId: this.personId},
+//            angular.extend({}, this, {_id:undefined}), cb);
+//    };
+//
+//    Member.prototype.destroy = function(cb) {
+//        return Member.remove({personId: this.personId}, cb);
+//    };
+//
+//    return Member;
+//}).
+
+//function MemberController ($scope, Member) {
+//
+//    // TODO: this currently just gets the map for member info
+//    // Need to come up with a getAll type method in the Member factory to use here
+//    $scope.members = Member.query();
+//
+//    Member.get({personId:ProCardApp.currentUserId}, function( data ) {
+//        $scope.member = data.result;
+//    });
+//
+//    $scope.save = function (mem) {
+//        var member = new Member(mem);
+//        member.$save();
+//    };
+//
+//    $scope.preferedResortAssosciation = function (member) {
+//        return member.resorts[0];
+//    };
+//
+//}

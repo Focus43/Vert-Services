@@ -40,12 +40,12 @@
     PROCARD<br>
     <div ng-controller="ProCardController">
 
-        <img class="school" width="115" height="115" src="data:image/png;base64, {{procard.schoolImage}}" >
+        <!--<img class="school" width="115" height="115" src="data:image/png;base64, {{procard.schoolImage}}" >-->
         <span class='name'>{{procard.name}}</span><span class='nickname'>{{nickNameDisplay(procard.nickName)}}</span> <br>
 
         <ul class="badges">
-            <li><img class="shield tenure" width="115" height="115" src="data:image/png;base64, {{procard.memberTenureShield}}" > </li>
-            <li ng-repeat="designation in procard.memberProfessionalDesignations | limitTo:3"><img class="shield {{designation.certificationAwardShortName}}" width="115" height="115" src="data:image/png;base64, {{designation.shield}}" > </li>
+            <!--<li><img class="shield tenure" width="115" height="115" src="data:image/png;base64, {{procard.memberTenureShield}}" > </li>-->
+            <!--<li ng-repeat="designation in procard.memberProfessionalDesignations | limitTo:3"><img class="shield {{designation.certificationAwardShortName}}" width="115" height="115" src="data:image/png;base64, {{designation.shield}}" > </li>-->
         </ul>
 
         <span class='phone'>{{procard.mobilePhone}}</span><br>
@@ -90,22 +90,22 @@
     <div ng-controller="CalendarController">
         <ul>
             <li ng-repeat="event in events">
-                <span class="name">{{event.name}}</span><br>
-                <span class="date">{{event.date}}</span><br>
-                <span class="location">{{event.location}}</span><br>
-                <span class="description">{{event.description}}</span>
+                <span class="name">{{event.meetingDescription}}</span><br>
+                <span class="date">{{event.meetingStartDate}} - {{event.meetingEndDate}}</span><br>
+                <span class="location">{{event.meetingLocation}}</span><br>
+                <span class="description">{{event.meetingDescription}}</span>
             </li>
         </ul>
     </div>
 
 
     <br><br><br><br>
-    <div ng-controller="MemberController">
-        LIST OF MEMBERS (Not needed?)
-        <ol>
-            <li ng-repeat="member in members">{{member.lastName}}</li>
-        </ol>
-    </div>
+    <!--<div ng-controller="MemberController">-->
+        <!--LIST OF MEMBERS (Not needed?)-->
+        <!--<ol>-->
+            <!--&lt;!&ndash;<li ng-repeat="member in members">{{member.lastName}}</li>&ndash;&gt;-->
+        <!--</ol>-->
+    <!--</div>-->
 
     <script async type="text/javascript" src="<%= assetPath %>js/vert-services.js"></script>
 </body>
