@@ -143,23 +143,35 @@
         $scope.$on('loadCardEditForm', function( _event, procard ){
             $scope._editCard = procard;
             $scope._editCard.updatedDesignationsShortnames = [];
-            $scope._editCard.updatedSchool = '';
+            $scope._editCard.schoolIdx = '';
 
-            $scope.controller.Schools.get({ id: procard.contactId }, function (data) {
+            $scope.controller.Schools.get({ id: "48B86DDF-423E-DE11-9555-005056834DF6" }, function (data) {
                 $scope._schoolOptions = data;
-
-                for (var i = 0; i < $scope._schoolOptions.length; i++) {
-                    if ($scope._schoolOptions[i].id === $scope._editCard.schoolId) {
-                        $scope._editCard.schoolId = $scope._schoolOptions[i];
-                        break;
-                    }
-                }
             });
 
             $scope.controller.Designations.get({ id: procard.contactId }, function (data) {
                 $scope._professionalDesignations = data;
             });
         });
+
+        $scope.$watch('_editCard.schoolId', function(newValue, oldValue, $scope) {
+             console.log(newValue);
+            console.log(oldValue);
+            if (oldValue && newValue) {
+                if (oldValue !== newValue) {
+                    $scope.getSchoolImageForId(newValue);
+                }
+            }
+        });
+
+        $scope.getSchoolImageForId = function (id) {
+            console.log("getSchoolImageForId");
+            for (var i = 0; i < $scope._schoolOptions.length; i++) {
+                if ($scope._schoolOptions[i].schoolId === id) {
+                    $scope._editCard.schoolImage = $scope._schoolOptions[i].schoolImage;
+                }
+            }
+        };
 
         $scope.save = function() {
             console.log("saving");
@@ -170,6 +182,7 @@
             });
         };
     }]);
+
 
     /**
      * Calendar controller

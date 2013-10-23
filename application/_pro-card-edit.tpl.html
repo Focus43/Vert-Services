@@ -3,12 +3,13 @@
     <br><br>
     <div >
         <form name="procardForm">
-            NAME: <input name="_editCard.name" ng-model="_editCard.name">  <br>
-            <!--<input name="schoolId" ng-model="_editCard.schoolId" >  <br>-->
-            SCHOOL: <select ng-model="_schoolAffiliationId" ng-options="o.id as o.school for o in _schoolOptions"></select> <br>
-            <input type="hidden" name="_editCard.updatedSchool" value="{{schoolOpt}}" >
-            CREDENTIALS: <select multiple ng-model="designations" ng-options="d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
-            <input type="hidden" name="_editCard.updatedDesignationsShortnames" value="{{designations}}" >
+            <!--NAME: <input name="_editCard.name" ng-model="_editCard.name">  <br>-->
+
+            SCHOOL: <select ng-model="_editCard.schoolId" ng-options="o.schoolId as o.school for o in _schoolOptions"></select> <br>
+            <input type="hidden" name="_editCard.schoolImage" value="getSchoolImageForId(_editCard.schoolId)" >
+
+            CREDENTIALS: <select multiple ng-model="_editCard.memberProfessionalDesignations" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
+
             PHONE: <input type="text" name="_editCard.mobilePhone" ng-model="_editCard.mobilePhone" >   <br>
             EMAIL: <input type="text" name="_editCard.emailAddress" ng-model="_editCard.emailAddress" > <br>
         </form>
@@ -17,8 +18,8 @@
         <!--<button ng-click="destroy(trip, $index);hide()"  ng-show="trip.objectId" class="btn btn-danger">Delete</button>-->
     </div>
 
-    {{ {_editCard.schoolId:schoolOpt}  }}     <br><br><br><br>
-    {{ {_editCard.memberProfessionalDesignations:designations}  }}
+    {{ {_editCard.memberProfessionalDesignations:__editCard.memberProfessionalDesignations}  }}     <br><br><br><br>
+    <!--{{ {_editCard.memberProfessionalDesignations:designations}  }}-->
 
 
     <div id="pageTemplateView" class="container content"> <!-- see ngCloak directive? -->
