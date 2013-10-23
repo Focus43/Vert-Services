@@ -5,7 +5,7 @@
         <form name="procardForm">
             NAME: <input name="_editCard.name" ng-model="_editCard.name">  <br>
             <!--<input name="schoolId" ng-model="_editCard.schoolId" >  <br>-->
-            SCHOOL: <select ng-model="_schoolAffiliation" ng-options="o.id as o.school for o in _schoolOptions track by o.schoolAffiliationId"></select> <br>
+            SCHOOL: <select ng-model="_schoolAffiliationId" ng-options="o.id as o.school for o in _schoolOptions"></select> <br>
             <input type="hidden" name="_editCard.updatedSchool" value="{{schoolOpt}}" >
             CREDENTIALS: <select multiple ng-model="designations" ng-options="d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
             <input type="hidden" name="_editCard.updatedDesignationsShortnames" value="{{designations}}" >

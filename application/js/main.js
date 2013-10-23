@@ -144,12 +144,16 @@
             $scope._editCard = procard;
             $scope._editCard.updatedDesignationsShortnames = [];
             $scope._editCard.updatedSchool = '';
-            $scope._schoolAffiliationId = procard.schoolId;
-            console.log("$scope._schoolAffiliationId = " + $scope._schoolAffiliationId);
 
             $scope.controller.Schools.get({ id: procard.contactId }, function (data) {
-                // TODO: update this to be just an array of option names?
                 $scope._schoolOptions = data;
+
+                for (var i = 0; i < $scope._schoolOptions.length; i++) {
+                    if ($scope._schoolOptions[i].id === $scope._editCard.schoolId) {
+                        $scope._editCard.schoolId = $scope._schoolOptions[i];
+                        break;
+                    }
+                }
             });
 
             $scope.controller.Designations.get({ id: procard.contactId }, function (data) {
