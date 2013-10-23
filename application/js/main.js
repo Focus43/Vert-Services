@@ -124,11 +124,19 @@
 
     }]);
 
-    snowPro.controller('EditProCardCtrl', ['$scope', 'ProCard', function($scope, ProCard){
+    snowPro.controller('EditProCardCtrl', ['$scope', '$resource', 'ProCard', function($scope, $resource, ProCard){
+
+        this.Schools = $resource('http://rest.thesnowpros.org/member/schools', { callback: 'JSON_CALLBACK' }, {
+            get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
+        });
+        $scope.controller = this;
 
         $scope.$on('loadCardEditForm', function( _event, procard ){
             $scope._editCard = procard;
             console.log($scope._editCard);
+            $scope.controller.Schools.get({ id: procard.contactId }, function (data) {
+                $scope._schoolOptions = data;
+            });
         });
 
         $scope.save = function() {
