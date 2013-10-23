@@ -90,7 +90,7 @@ module.exports = function(grunt) {
                 options: {
                     data: {
                         assetPath: 'assets/',
-                        pageTitle: 'VERT Services'
+                        pageTitle: 'SnowPros'
                     }
                 },
                 files: [{
@@ -106,7 +106,7 @@ module.exports = function(grunt) {
                 options: {
                     data: {
                         assetPath: 'assets/',
-                        pageTitle: 'VERT Services'
+                        pageTitle: 'SnowPros'
                     }
                 },
                 files: [{
