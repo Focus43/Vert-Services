@@ -59,8 +59,9 @@
             };
 
             ProCard.prototype.update = function(cb) {
-                return ProCard.update({personId: this.personId},
-                    angular.extend({}, this, {_id:undefined}), cb);
+                console.log(this);
+//                return ProCard.update({memnum: this.contactId},
+//                    angular.extend({}, this, {_id:undefined}), cb);
             };
 
             return ProCard;
@@ -105,7 +106,6 @@
         $rootScope.pageName = 'Login';
     }]);
 
-
     /**
      * Procard controller
      */
@@ -117,6 +117,27 @@
         ProCard.get({}, function( data ) {
             $scope._proCard = data;
         });
+
+        $scope.showEditForm = function( ){
+            $rootScope.$broadcast('loadCardEditForm', $scope._proCard);
+        };
+
+    }]);
+
+    snowPro.controller('EditProCardCtrl', ['$scope', 'ProCard', function($scope, ProCard){
+
+        $scope.$on('loadCardEditForm', function( _event, procard ){
+            $scope._editCard = procard;
+            console.log($scope._editCard);
+        });
+
+        $scope.save = function() {
+            console.log("saving");
+            console.dir($scope._editCard);
+            $scope._editCard.update(function() {
+                console.log("updated");
+            });
+        };
     }]);
 
 
@@ -137,7 +158,6 @@
         };
 
     });
-
 
     snowPro.controller('CalendarSessionsCtrl', ['$scope', 'Sessions', function($scope, Sessions){
         $scope.meetingSessions = [];

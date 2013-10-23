@@ -1,1 +1,21 @@
-pro card editing here
+<div ng-controller="EditProCardCtrl">
+
+    {{_editCard.name}}<br>
+    {{_editCard.mobilePhone}}<br>
+    {{_editCard.emailAddress}}
+    <br><br><br>
+    EDIT PROCARD
+    <br><br>
+    <div >
+        <form name="procardForm">
+            <input name="_editCard.name" ng-model="_editCard.name">
+            <input name="schoolId" ng-model="_editCard.schoolId" >
+            <!--<input type="text" name="startOdometer" ng-model="_procard.mobilePhone" >-->
+            <!--<input type="text" name="endOdometer" ng-model="_procard.emailAddress" >-->
+        </form>
+        <button class="btn">Cancel</button>
+        <!--<a href="#/list" class="btn">Cancel</a>-->
+        <button ng-click="save(_editCard);hide()" ng-disabled="procardForm.$pristine || procardForm.$invalid" class="btn btn-primary">Save</button>
+        <!--<button ng-click="destroy(trip, $index);hide()"  ng-show="trip.objectId" class="btn btn-danger">Delete</button>-->
+    </div>
+</div>
