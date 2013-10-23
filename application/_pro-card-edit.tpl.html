@@ -3,17 +3,23 @@
     <br><br>
     <div >
         <form name="procardForm">
-            <input name="_editCard.name" ng-model="_editCard.name">
-            <input name="schoolId" ng-model="_editCard.schoolId" >
-            <select ng-model="_editCard.schoolId" ng-options="o.name for o.id in _schoolOptions"></select>
-            <!--<input type="text" name="startOdometer" ng-model="_editCard.mobilePhone" >-->
-            <!--<input type="text" name="endOdometer" ng-model="_editCard.emailAddress" >-->
+            NAME: <input name="_editCard.name" ng-model="_editCard.name">  <br>
+            <!--<input name="schoolId" ng-model="_editCard.schoolId" >  <br>-->
+            SCHOOL: <select ng-model="schoolOpt" ng-options="o.id for o in _schoolOptions"></select> <br>
+            <input type="hidden" name="_editCard.updatedSchool" value="{{schoolOpt}}" >
+            CREDENTIALS: <select multiple ng-model="designations" ng-options="d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
+            <input type="hidden" name="_editCard.updatedDesignationsShortnames" value="{{designations}}" >
+            PHONE: <input type="text" name="_editCard.mobilePhone" ng-model="_editCard.mobilePhone" >   <br>
+            EMAIL: <input type="text" name="_editCard.emailAddress" ng-model="_editCard.emailAddress" > <br>
         </form>
-        <button class="btn">Cancel</button>
-        <!--<a href="#/list" class="btn">Cancel</a>-->
+        <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
         <button ng-click="save(_editCard);hide()" ng-disabled="procardForm.$pristine || procardForm.$invalid" class="btn btn-primary">Save</button>
         <!--<button ng-click="destroy(trip, $index);hide()"  ng-show="trip.objectId" class="btn btn-danger">Delete</button>-->
     </div>
+
+    {{ {_editCard.schoolId:schoolOpt}  }}     <br><br><br><br>
+    {{ {_editCard.memberProfessionalDesignations:designations}  }}
+
 
     <div id="pageTemplateView" class="container content"> <!-- see ngCloak directive? -->
         <div class="row">

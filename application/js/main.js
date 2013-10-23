@@ -59,7 +59,6 @@
             };
 
             ProCard.prototype.update = function(cb) {
-                console.log(this);
 //                return ProCard.update({memnum: this.contactId},
 //                    angular.extend({}, this, {_id:undefined}), cb);
             };
@@ -129,25 +128,35 @@
         this.Schools = $resource('http://rest.thesnowpros.org/member/schools', { callback: 'JSON_CALLBACK' }, {
             get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
         });
+        this.Designations = $resource('http://rest.thesnowpros.org/member/professionaldesignations', { callback: 'JSON_CALLBACK' }, {
+            get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
+        });
         $scope.controller = this;
 
         $scope.$on('loadCardEditForm', function( _event, procard ){
             $scope._editCard = procard;
-            console.log($scope._editCard);
+            $scope._editCard.updatedDesignationsShortnames = [];
+            $scope._editCard.updatedSchool = '';
+
             $scope.controller.Schools.get({ id: procard.contactId }, function (data) {
+                // TODO: update this to be just an array of option names?
                 $scope._schoolOptions = data;
+            });
+
+            $scope.controller.Designations.get({ id: procard.contactId }, function (data) {
+                $scope._professionalDesignations = data;
             });
         });
 
         $scope.save = function() {
             console.log("saving");
             console.dir($scope._editCard);
+            // TODO: I think we might have to parse what comes back from the form here, and then update _editCard
             $scope._editCard.update(function() {
                 console.log("updated");
             });
         };
     }]);
-
 
     /**
      * Calendar controller
