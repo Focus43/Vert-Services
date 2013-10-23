@@ -2,6 +2,8 @@
 $imgPath: '/assets/img/';
 $fontPath: '/assets/fonts/';
 
+$hotPink: #c7254e;
+
 @mixin fontSanchez {
   font-family:'Sanchez';
 }
@@ -48,6 +50,14 @@ $fontPath: '/assets/fonts/';
   -moz-transition: $transitions;
   -o-transition: $transitions;
   transition: $transitions;
+}
+
+@mixin cssFilter($filter){
+  -webkit-filter: $filter;
+  -moz-filter: $filter;
+  -o-filter: $filter;
+  -ms-filter: $filter;
+  filter: $filter;
 }
 
 @mixin cssTransform($transform){

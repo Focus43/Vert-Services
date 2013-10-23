@@ -72,7 +72,10 @@
             return ProCard;
         }]).
         factory("Calendar", ['$resource', '$rootScope', function ($resource, $rootScope) {
-            var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
+            /*var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
+                get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
+            });*/
+            var Calendar = $resource('http://10.0.5.130\\:8080/ajax_mocks/meetings.json', { callback: 'JSON_CALLBACK' }, {
                 get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
             });
 
@@ -177,7 +180,7 @@
 
         Calendar.get( { det: 'snap' }, function (data) {
             console.log('Calendar meetings:', data);
-            $scope.events = data;
+            $scope.meetings = data;
         });
 
         $scope.showSessions = function( meeting ){

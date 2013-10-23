@@ -2,14 +2,19 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <ul class="list-group">
+            <!--<ul class="list-group">
                 <li class="list-group-item" ng-repeat="event in events">
                     <a class="badge" toggle-class="#bodyWrap,show-right" ng-click="showSessions(event)">{{event.meeting}}</a>
                     <span class="date">{{event.meetingStartDate}} - {{event.meetingEndDate}}</span><br>
                     <span class="location">{{event.meetingLocation}}</span><br>
                     <span class="description">{{event.meetingDescription}}</span>
                 </li>
-            </ul>
+            </ul>-->
+
+            <div class="well well-sm" ng-repeat="mtng in meetings">
+                <span class="label label-info pull-right">{{mtng.meetingStartDate | date:'h:mm a'}}</span>
+                {{mtng.meeting}}
+            </div>
 
         </div>
     </div>

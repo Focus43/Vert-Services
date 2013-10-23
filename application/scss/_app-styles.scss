@@ -8,6 +8,7 @@ ul.horizontal {list-style:none;margin:0;padding:0;white-space:nowrap;@include cl
   }
   &.centerize li {float:none;}
 }
+.relativeWrap {position:relative;width:100%;height:100%;@include boxSizing;}
 
 // FULL SCREEN BACKGROUND CONTAINER
 #cBackground {position:fixed;top:0;right:0;bottom:0;left:0;background:#f5f5f5 url('#{$imgPath}bg_skier.jpg') no-repeat center center;background-size:cover;}
@@ -19,9 +20,9 @@ ul.horizontal {list-style:none;margin:0;padding:0;white-space:nowrap;@include cl
 
 #bodyWrap {padding-bottom:40px;overflow:hidden;z-index:1;position:relative;
   .sidebar {position:absolute;top:0;bottom:0;width:100%;
-    .sidebarInner {height:100%;overflow-y:auto;background:#f5f5f5;}
+    .sidebarInner {height:100%;overflow-y:auto;}
     &.left {right:100%;
-      .sidebarInner {margin-right:35px;@include boxShadow(inset -8px 0 8px rgba(0,0,0,.25));
+      .sidebarInner {margin-right:35px;background:#f5f5f5;@include boxShadow(inset -8px 0 8px rgba(0,0,0,.25));
         .container {
           .row:first-child {padding-top:1em;
             input[type="text"] {margin-bottom:1em;@include rounded(1.25em);}
@@ -30,16 +31,16 @@ ul.horizontal {list-style:none;margin:0;padding:0;white-space:nowrap;@include cl
       }
     }
     &.right {left:100%;z-index:2;
-      a.closer {font-size:26px;text-align:center;color:#fff;position:absolute;height:100%;width:35px;left:0;background:rgba(0,0,0,.5);cursor:pointer;
+      a.closer {font-size:26px;text-align:center;color:$hotPink;position:absolute;height:100%;width:35px;left:0;cursor:pointer;
         span.glyphicon {position:absolute;top:50%;margin-top:-15px;left:4px;}
       }
-      .sidebarInner {margin-left:35px;@include boxShadow(0 0 8px rgba(0,0,0,.25));}
+      .sidebarInner {margin-left:35px;background:rgba(255,255,255,.5);@include boxShadow(0 0 8px rgba(0,0,0,.25));}
     }
   }
 
   &.show-left {height:100%;
     #bodyContent {@include cssTransform(translate3d(100%,0,0));left:-35px;
-      #topBar {background-color:#c7254e;}
+      #topBar {background-color:$hotPink;}
     }
     .sidebar.left {@include cssTransform(translate3d(100%,0,0));}
   }
@@ -59,17 +60,21 @@ ul.horizontal {list-style:none;margin:0;padding:0;white-space:nowrap;@include cl
 }
 
 
-#fixedNav {opacity:1;height:40px;position:fixed;left:0;bottom:0;right:0;background:rgba(0,0,0,.65);z-index:2; @include cssTransition(all .35s ease);
-  $itemCount: 3;
-  ul li {width:100% / $itemCount;
-    a {color:#e5e5e5;font-size:16px;padding:.7em 0 0;
-      &:hover {text-decoration:none;}
+#fixedNav {background:#1d1d1d;opacity:1;position:fixed;left:0;bottom:0;right:0;z-index:2; @include cssTransition(all .35s ease);
+  ul {width:100%;height:100%;position:relative;z-index:2;
+    $colCount: 3;
+    li {width:100% / $colCount;
+      a {color:#f1f1f1;font-size:27px;padding:.3em 0;
+        &:hover {text-decoration:none;}
+        i.fa-calendar {top:-2px;position:relative;}
+      }
     }
   }
 }
 
 // SIBLING SELECTOR; WHEN #bodyWrap HAS class="show-*" APPLIED, THIS WILL ACTIVATE
 #bodyWrap[class*="show-"] + #fixedNav {z-index:0;opacity:0;}
+#bodyWrap.show-right #bodyContent {@include cssFilter(blur(8px));}
 
 
 // WRAPPER WHERE ALL THE TEMPLATES GET LOADED INTO. ANY FILES IN pages/*.scss SHOULD WRAP EVERYTHING
