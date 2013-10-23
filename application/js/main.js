@@ -144,19 +144,37 @@
             $scope._editCard = procard;
             $scope._editCard.updatedDesignationsShortnames = [];
             $scope._editCard.schoolIdx = '';
+            $scope._editCard.certificationCodes = [];
 
-            $scope.controller.Schools.get({ id: "48B86DDF-423E-DE11-9555-005056834DF6" }, function (data) {
+            $scope.controller.Schools.get({ id: procard.contactId }, function (data) {
                 $scope._schoolOptions = data;
             });
 
             $scope.controller.Designations.get({ id: procard.contactId }, function (data) {
                 $scope._professionalDesignations = data;
+                $scope._professionalDesignations.forEach( function (elm) {
+                    $scope._editCard.certificationCodes.push(elm.certificationCode);
+                });
             });
         });
 
+        $scope.$watch('_editCard.certificationCodes', function(newValue, oldValue, $scope) {
+            // HACK:
+//            if ( !newValue ) {
+//                return;
+//            }
+//            if ( newValue.length === 0 || !(typeof newValue[0] === 'string' || newValue[0] instanceof String) ) {
+//                    return;
+//            }
+
+            if (oldValue && newValue) {
+                if (oldValue !== newValue) {
+                    $scope.translateNewDesignations(newValue);
+                }
+            }
+        });
+
         $scope.$watch('_editCard.schoolId', function(newValue, oldValue, $scope) {
-             console.log(newValue);
-            console.log(oldValue);
             if (oldValue && newValue) {
                 if (oldValue !== newValue) {
                     $scope.getSchoolImageForId(newValue);
@@ -165,12 +183,26 @@
         });
 
         $scope.getSchoolImageForId = function (id) {
-            console.log("getSchoolImageForId");
             for (var i = 0; i < $scope._schoolOptions.length; i++) {
                 if ($scope._schoolOptions[i].schoolId === id) {
                     $scope._editCard.schoolImage = $scope._schoolOptions[i].schoolImage;
                 }
             }
+        };
+
+        $scope.translateNewDesignations = function (newDesignations) {
+
+            var _possibleDesignations = $scope._professionalDesignations;
+
+            $scope._editCard.memberProfessionalDesignations = _possibleDesignations.filter( function (element, index, array) {
+
+                for (var i = 0; i < newDesignations.length; i++) {
+
+                    if (element.certificationCode === newDesignations[i]) {
+                        return true;
+                    }
+                }
+            });
         };
 
         $scope.save = function() {

@@ -8,7 +8,7 @@
             SCHOOL: <select ng-model="_editCard.schoolId" ng-options="o.schoolId as o.school for o in _schoolOptions"></select> <br>
             <input type="hidden" name="_editCard.schoolImage" value="getSchoolImageForId(_editCard.schoolId)" >
 
-            CREDENTIALS: <select multiple ng-model="_editCard.memberProfessionalDesignations" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
+            CREDENTIALS: <select multiple ng-model="_editCard.certificationCodes" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
 
             PHONE: <input type="text" name="_editCard.mobilePhone" ng-model="_editCard.mobilePhone" >   <br>
             EMAIL: <input type="text" name="_editCard.emailAddress" ng-model="_editCard.emailAddress" > <br>
