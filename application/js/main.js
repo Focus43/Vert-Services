@@ -65,6 +65,7 @@
             };
 
             ProCard.prototype.update = function(cb) {
+                cb();
 //                return ProCard.update({memnum: this.contactId},
 //                    angular.extend({}, this, {_id:undefined}), cb);
             };
@@ -143,7 +144,8 @@
         });
         $scope.controller = this;
 
-        $scope.$on('loadCardEditForm', function( _event, procard ){
+        $scope.$on('loadCardEditForm', function( _event, procard ) {
+            $scope._backupCard = jQuery.extend(true, {}, procard);
             $scope._editCard = procard;
             $scope._editCard.updatedDesignationsShortnames = [];
             $scope._editCard.schoolIdx = '';
@@ -198,10 +200,10 @@
 
         $scope.save = function() {
             console.log("saving");
-            console.dir($scope._editCard);
-            // TODO: I think we might have to parse what comes back from the form here, and then update _editCard
             $scope._editCard.update(function() {
                 console.log("updated");
+                // TODO: implement this if not-successful update
+//                $scope._editCard = $scope._backupCard;
             });
         };
     }]);

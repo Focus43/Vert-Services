@@ -1,81 +1,38 @@
+<style>
+    input.ng-invalid {
+        border: 2px solid red;
+    }
+</style>
+
+
 <div ng-controller="EditProCardCtrl">
     EDIT PROCARD
     <br><br>
     <div >
         <form name="procardForm">
-            <!--NAME: <input name="_editCard.name" ng-model="_editCard.name">  <br>-->
 
-            SCHOOL: <select ng-model="_editCard.schoolId" ng-options="o.schoolId as o.school for o in _schoolOptions"></select> <br>
+            SCHOOL: <br>
+            <div class="affiliation">
+                <img ng-src="data:image/png;base64, {{_editCard.schoolImage}}" class="img-responsive img-rounded" />
+            </div>
+            <select ng-model="_editCard.schoolId" ng-options="o.schoolId as o.school for o in _schoolOptions"></select> <br>
 
-            CREDENTIALS: <select multiple ng-model="_editCard.certificationCodes" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
-
+            CREDENTIALS:<br>
+            <div class="badges">
+                <!-- designation shields -->
+                <div class="shield" ng-repeat="designation in _editCard.memberProfessionalDesignations | limitTo:3">
+                    <img class="img-responsive {{designation.certificationAwardShortName}}" ng-src="data:image/png;base64, {{designation.shield}}" />
+                </div>
+            </div>
+            <br>
+            <select multiple ng-model="_editCard.certificationCodes" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
+            <!--We COULD add ngPattern="{string}" to make sure the user enters number in correct format ..... -->
             PHONE: <input type="text" name="_editCard.mobilePhone" ng-model="_editCard.mobilePhone" >   <br>
-            EMAIL: <input type="text" name="_editCard.emailAddress" ng-model="_editCard.emailAddress" > <br>
+
+            <!-- With type = email, angular validates that this is an email address. class ng-invalid gets added (see top of doc) -->
+            EMAIL: <input type="email" name="_editCard.emailAddress" ng-model="_editCard.emailAddress" > <br>
         </form>
         <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
         <button ng-click="save(_editCard);hide()" ng-disabled="procardForm.$pristine || procardForm.$invalid" class="btn btn-primary">Save</button>
-        <!--<button ng-click="destroy(trip, $index);hide()"  ng-show="trip.objectId" class="btn btn-danger">Delete</button>-->
     </div>
-
-    {{ {_editCard.memberProfessionalDesignations:__editCard.memberProfessionalDesignations}  }}     <br><br><br><br>
-    <!--{{ {_editCard.memberProfessionalDesignations:designations}  }}-->
-
-
-    <div id="pageTemplateView" class="container content"> <!-- see ngCloak directive? -->
-        <div class="row">
-            <div class="col-sm-12">
-                <div id="proCardOmg">
-                    <div class="topHalf">
-                        <div class="affiliation pseudoCol">
-                            <a class="logo">
-                                <!-- <img src="<%= assetPath %>img/placeholders/jh_logo.png" class="img-responsive img-rounded" /> -->
-                                <img ng-src="data:image/png;base64, {{_editCard.schoolImage}}" class="img-responsive img-rounded" />
-                            </a>
-                        </div>
-                        <div class="basicInfo pseudoCol">
-                            <div class="infoInner">
-                                <h4>{{_editCard.name}}<small>PSIA-AASI Certified Instructor</small></h4>
-                                <a class="mailCard btn btn-sm">
-                                    <i class="glyphicon glyphicon-paperclip"></i>
-                                </a>
-                                <div class="badgeRow">
-                                    <!-- designation shields -->
-                                    <a class="shield" ng-repeat="designation in _editCard.memberProfessionalDesignations | limitTo:3">
-                                        <img class="img-responsive {{designation.certificationAwardShortName}}" ng-src="data:image/png;base64, {{designation.shield}}" />
-                                    </a>
-
-                                    <!-- member tenure *always last* -->
-                                    <a class="shield">
-                                        <!-- <img src="<%= assetPath %>/img/placeholders/badge_1.png" class="img-responsive" /> -->
-                                        <img ng-src="data:image/png;base64, {{_editCard.memberTenureShield}}" class="img-responsive" />
-                                    </a>
-
-                                    <!-- <a class="shield">
-                                        <img src="<%= assetPath %>/img/placeholders/badge_2.png" class="img-responsive" />
-                                    </a>
-                                    <a class="shield">
-                                        <img src="<%= assetPath %>/img/placeholders/badge_2.png" class="img-responsive" />
-                                    </a>
-                                    <a class="shield">
-                                        <img src="<%= assetPath %>/img/placeholders/badge_1.png" class="img-responsive" />
-                                    </a> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bottomHalf">
-                        <p class="contact">
-                            <strong>{{_editCard.school}}</strong><br />
-                            {{_editCard.emailAddress}}<br />
-                            {{_editCard.mobilePhone}}
-                        </p>
-
-                        <!-- <a class="editCard btn btn-sm" toggle-class="#editProCard,active">Edit</a> -->
-                        <a class="editCard btn btn-sm" toggle-class="#bodyWrap,show-right" ng-click="showEditForm()">Edit</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
