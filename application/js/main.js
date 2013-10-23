@@ -126,7 +126,7 @@
     snowPro.controller('EditProCardCtrl', ['$scope', '$resource', 'ProCard', function($scope, $resource, ProCard){
 
         this.Schools = $resource('http://rest.thesnowpros.org/member/schools', { callback: 'JSON_CALLBACK' }, {
-            get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
+            get: { method: 'JSONP', isArray: true, params: { id: "@id", img: true } }
         });
         this.Designations = $resource('http://rest.thesnowpros.org/member/professionaldesignations', { callback: 'JSON_CALLBACK' }, {
             get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
@@ -137,6 +137,8 @@
             $scope._editCard = procard;
             $scope._editCard.updatedDesignationsShortnames = [];
             $scope._editCard.updatedSchool = '';
+            $scope._schoolAffiliationId = procard.schoolId;
+            console.log("$scope._schoolAffiliationId = " + $scope._schoolAffiliationId);
 
             $scope.controller.Schools.get({ id: procard.contactId }, function (data) {
                 // TODO: update this to be just an array of option names?
