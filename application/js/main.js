@@ -139,7 +139,7 @@
             get: { method: 'JSONP', isArray: true, params: { id: "@id", img: true } }
         });
         this.Designations = $resource('http://rest.thesnowpros.org/member/professionaldesignations', { callback: 'JSON_CALLBACK' }, {
-            get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
+            get: { method: 'JSONP', isArray: true, params: { id: "@id", img: true  } }
         });
         $scope.controller = this;
 
@@ -162,14 +162,6 @@
         });
 
         $scope.$watch('_editCard.certificationCodes', function(newValue, oldValue, $scope) {
-            // HACK:
-//            if ( !newValue ) {
-//                return;
-//            }
-//            if ( newValue.length === 0 || !(typeof newValue[0] === 'string' || newValue[0] instanceof String) ) {
-//                    return;
-//            }
-
             if (oldValue && newValue) {
                 if (oldValue !== newValue) {
                     $scope.translateNewDesignations(newValue);
@@ -194,13 +186,9 @@
         };
 
         $scope.translateNewDesignations = function (newDesignations) {
-
             var _possibleDesignations = $scope._professionalDesignations;
-
             $scope._editCard.memberProfessionalDesignations = _possibleDesignations.filter( function (element, index, array) {
-
                 for (var i = 0; i < newDesignations.length; i++) {
-
                     if (element.certificationCode === newDesignations[i]) {
                         return true;
                     }
