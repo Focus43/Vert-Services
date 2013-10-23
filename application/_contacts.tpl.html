@@ -4,10 +4,6 @@
 
             <ul class="list-group">
                 <li class="list-group-item" ng-repeat="contact in contacts | orderObjectBy:'firstName'">
-                    <!--<a target="_blank">{{contact.name}}</a>-->
-                    <!--<a class="badge" href="tel://1-{{contact.mobilePhone | formatPhoneMobileLink}}">
-                        <span class="glyphicon glyphicon-phone"></span> {{contact.mobilePhone | formatPhone}}
-                    </a>-->
                     <span class="badge" toggle-sibling-visibility=".details">View</span>
                     {{contact.name}}
                     <div class="details">

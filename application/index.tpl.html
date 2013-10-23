@@ -23,13 +23,13 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12">
-                            <input type="text" class="form-control" placeholder="Search" />
+                            <input type="text" class="form-control" placeholder="Search" ng-model="searchLinks" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="link in links">
+                                <li class="list-group-item" ng-repeat="link in links | filter:searchLinks">
                                     <a href="{{link.url}}" target="_blank">{{link.text}}</a>
                                 </li>
                             </ul>
@@ -49,7 +49,7 @@
                     </a>
                 </div>
                 <div class="pull-right">
-                    <a><span class="glyphicon glyphicon-user"></span></a>
+                    <a href="/"><span class="glyphicon glyphicon-user"></span></a>
                 </div>
             </div>
 
@@ -70,6 +70,14 @@
             </div>
         </div>
 
+    </div>
+
+    <div id="fixedNav">
+        <ul class="horizontal centerize">
+            <li><a href="pro-card">ProCard</a></li>
+            <li><a href="calendar">Calendar</a></li>
+            <li><a href="contacts">Contacts</a></li>
+        </ul>
     </div>
 
     <script type="text/javascript" src="<%= assetPath %>js/vert-services.js"></script>

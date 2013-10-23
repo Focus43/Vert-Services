@@ -1,10 +1,16 @@
-/**
- * VertSolutions / The Snow Pros angular app.
- *
- * @resource Listing: rest.thesnowpros.org/map?ctyp=json
- * @type {*}
- */
 
+    /*jQuery(document, window).on('resize orientationchange webkitfullscreenchange fullscreenchange', function(){
+        alert('full screen!');
+    });
+
+    alert(window.navigator.standalone);*/
+
+    /**
+     * VertSolutions / The Snow Pros angular app.
+     *
+     * @resource Listing: rest.thesnowpros.org/map?ctyp=json
+     * @type {*}
+     */
 
     // @application :: namespace
     var snowPro = angular.module('snowPro', ['ngResource', 'vertservice']);
@@ -129,6 +135,7 @@
         $rootScope.sidebar.incld = '_calendar-sessions.html';
 
         Calendar.get( { det: 'snap' }, function (data) {
+            console.log('Calendar meetings:', data);
             $scope.events = data;
         });
 
@@ -139,12 +146,18 @@
     });
 
 
+    /**
+     * Calendar sessions (sidebar). Data is shared between the CalendarCtrl via the $broadcast
+     * event. Could also be done as a service to share data between controllers:
+     * http://stackoverflow.com/questions/9293423/can-one-controller-call-another-in-angularjs
+     */
     snowPro.controller('CalendarSessionsCtrl', ['$scope', 'Sessions', function($scope, Sessions){
         $scope.meetingSessions = [];
 
         $scope.$on('loadSessionsForEvent', function( _event, meeting ){
-            console.log(meeting);
+            console.log('Sessions for meeting:', meeting);
             Sessions.get({id: meeting.meetingId}, function(data){
+                console.log('Sessions:', data);
                 $scope.meetingSessions = data;
             });
         });
