@@ -242,7 +242,6 @@
         $scope.$on('loadCardSendForm', function( _event, procard ) {
 
             $scope._sendCard = procard;
-            $scope._communication = new Communications();
 
             $scope.sendController.Contacts.get({ id: procard.contactId }, function (data) {
                 $scope._contacts = data;
@@ -308,10 +307,17 @@
     /**
      * Contacts controller
      */
-    snowPro.controller('ContactsCtrl', ['$scope', '$rootScope', 'Contacts', function( $scope, $rootScope, Contacts ){
+    snowPro.controller('ContactsCtrl', ['$scope', '$rootScope', 'Contacts', 'Communications', function( $scope, $rootScope, Contacts, Communications ){
         $rootScope.pageName = 'Contacts';
 
         Contacts.get({}, function(data){
             $scope.contacts = data;
         });
+
+        $scope.sendCard = function (ProcardContactId) {
+            console.log(ProcardContactId);
+            Communications.send({ id: ProcardContactId }, function (data) {
+                console.log(data);
+            });
+        };
     }]);

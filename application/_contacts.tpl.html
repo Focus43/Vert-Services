@@ -13,6 +13,9 @@
                         <a href="mailto:{{contact.emailAddress}}">
                             <i class="fa fa-envelope-o"></i> <strong>{{contact.emailAddress}}</strong>
                         </a>
+                        <a ng-click="sendCard(contact.id)">
+                            <i class="fa fa-list-alt"> </i> <strong>Share ProCard</strong>
+                        </a>
                     </div>
                 </li>
             </ul>
