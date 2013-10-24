@@ -95,6 +95,14 @@
             });
 
             return Sessions;
+        }]).
+        factory('Communications', ['$resource', function( $resource ){
+            var Communications = $resource('http://rest.thesnowpros.org/member/communications', { callback: 'JSON_CALLBACK' }, {
+                get: { method: 'JSONP', isArray: true },
+                send: { method: 'POST'}
+            });
+
+            return Communications;
         }]);
 
 
@@ -129,7 +137,16 @@
         });
 
         $scope.showEditForm = function( ){
+            $("#edit").show();
+            $("#send").hide();
             $rootScope.$broadcast('loadCardEditForm', $scope._proCard);
+        };
+
+
+        $scope.showSendCard = function () {
+            $("#edit").hide();
+            $("#send").show();
+            $rootScope.$broadcast('loadCardSendForm', $scope._proCard);
         };
 
     }]);
@@ -145,6 +162,9 @@
         $scope.controller = this;
 
         $scope.$on('loadCardEditForm', function( _event, procard ) {
+
+            $("#edit").show();
+
             $scope._backupCard = jQuery.extend(true, {}, procard);
             $scope._editCard = procard;
             $scope._editCard.updatedDesignationsShortnames = [];
@@ -202,10 +222,54 @@
             console.log("saving");
             $scope._editCard.update(function() {
                 console.log("updated");
+                $("#edit").hide();
+                angular.element( document.querySelector("#bodyWrap") ).toggleClass("show-right");
                 // TODO: implement this if not-successful update
 //                $scope._editCard = $scope._backupCard;
             });
         };
+    }]);
+
+    /**
+     * Communications controller
+     */
+    snowPro.controller('CommunicationsCtrl', ['$scope', '$resource', 'ProCard', 'Communications', function($scope, $resource, ProCard, Communications){
+
+        this.Contacts = $resource('http://rest.thesnowpros.org/member/contacts', { callback: 'JSON_CALLBACK' }, {
+            get: { method: 'JSONP', isArray: true, params: { id: "@id", img: true } }
+        });
+
+        this.Carriers = $resource('http://rest.thesnowpros.org/mobilecarriers/list', { callback: 'JSON_CALLBACK' }, {
+            get: { method: 'JSONP', isArray: true }
+        });
+
+        $scope.sendController = this;
+
+        $scope.$on('loadCardSendForm', function( _event, procard ) {
+
+            $scope._sendCard = procard;
+            $scope._communication = new Communications();
+
+            $scope.sendController.Contacts.get({ id: procard.contactId }, function (data) {
+                $scope._contacts = data;
+            });
+
+            $scope.sendController.Carriers.get({  }, function (data) {
+                $scope._carrierOptions = data;
+                $scope._communication.mobileCarrierId = 1; // set default
+            });
+
+        });
+
+        $scope.sendCard = function (ProcardContactId) {
+            console.log($scope._sendCard);
+            console.log($scope._communication);
+            Communications.send({ id: ProcardContactId }, function (data) {
+                console.log(data);
+            });
+        };
+
+
     }]);
 
 

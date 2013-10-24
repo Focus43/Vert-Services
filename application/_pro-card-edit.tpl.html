@@ -4,33 +4,54 @@
     }
 </style>
 
+<div id="edit" style="display: none;">
+    <div ng-controller="EditProCardCtrl">
+        EDIT PROCARD
+        <br><br>
+        <div >
+            <form name="procardForm">
 
-<div ng-controller="EditProCardCtrl">
-    EDIT PROCARD
-    <br><br>
-    <div >
-        <form name="procardForm">
+                NAME: <input type="text" name="_editCard.preferredName" ng-model="_editCard.preferredName" >   <br>
 
-            NAME: <input type="text" name="_editCard.preferredName" ng-model="_editCard.preferredName" >   <br>
-
-            SCHOOL: <br>
-            <div class="affiliation">
-                <img ng-src="data:image/png;base64, {{_editCard.schoolImage}}" class="img-responsive img-rounded" />
-            </div>
-            <select ng-model="_editCard.schoolId" ng-options="o.schoolId as o.school for o in _schoolOptions"></select> <br>
-
-            CREDENTIALS:<br>
-            <div class="badges">
-                <!-- designation shields -->
-                <div class="shield" ng-repeat="designation in _editCard.memberProfessionalDesignations | limitTo:3">
-                    <img class="img-responsive {{designation.certificationAwardShortName}}" ng-src="data:image/png;base64, {{designation.shield}}" />
+                SCHOOL: <br>
+                <div class="affiliation">
+                    <img ng-src="data:image/png;base64, {{_editCard.schoolImage}}" class="img-responsive img-rounded" />
                 </div>
-            </div>
-            <br>
-            <select multiple ng-model="_editCard.certificationCodes" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
+                <select ng-model="_editCard.schoolId" ng-options="o.schoolId as o.school for o in _schoolOptions"></select> <br>
 
-        </form>
-        <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
-        <button ng-click="save(_editCard);hide()" ng-disabled="procardForm.$pristine || procardForm.$invalid" class="btn btn-primary">Save</button>
+                CREDENTIALS:<br>
+                <div class="badges">
+                    <!-- designation shields -->
+                    <div class="shield" ng-repeat="designation in _editCard.memberProfessionalDesignations | limitTo:3">
+                        <img class="img-responsive {{designation.certificationAwardShortName}}" ng-src="data:image/png;base64, {{designation.shield}}" />
+                    </div>
+                </div>
+                <br>
+                <select multiple ng-model="_editCard.certificationCodes" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
+
+            </form>
+            <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
+            <button ng-click="save(_editCard);hide()" ng-disabled="procardForm.$pristine || procardForm.$invalid" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</div>
+
+<div id="send" style="display: none;">
+    <div ng-controller="CommunicationsCtrl">
+        SEND PROCARD
+        <br><br>
+        <div >
+            <form name="sendcardForm">
+                NAME: <input type="text" name="_communication.Recipient" ng-model="_communication.Recipient" required>   <br>
+                EMAIL: <input type="email" name="_communication.emailAddress" ng-model="_communication.emailAddress" >   <br>
+                CELL: <input type="text" name="_communication.mobilePhone" ng-model="_communication.mobilePhone">   <br>
+                <select ng-init="_communication.mobileCarrierId=_carrierOptions[0]" ng-model="_communication.mobileCarrierId" ng-options="o.id as o.name for o in _carrierOptions"></select> <br>
+                <textarea name="_communication.message" ng-model="_communication.message"></textarea>
+                <br>
+                <select ng-model="_communication.ProCardContactId" ng-options="c.id as c.name for c in _contacts"></select>
+            </form>
+            <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
+            <button ng-click="sendCard();" ng-disabled="sendcardForm.$pristine || sendcardForm.$invalid" class="btn btn-primary">Send</button>
+        </div>
     </div>
 </div>
