@@ -11,6 +11,8 @@
     <div >
         <form name="procardForm">
 
+            NAME: <input type="text" name="_editCard.preferredName" ng-model="_editCard.preferredName" >   <br>
+
             SCHOOL: <br>
             <div class="affiliation">
                 <img ng-src="data:image/png;base64, {{_editCard.schoolImage}}" class="img-responsive img-rounded" />
@@ -26,11 +28,7 @@
             </div>
             <br>
             <select multiple ng-model="_editCard.certificationCodes" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
-            <!--We COULD add ngPattern="{string}" to make sure the user enters number in correct format ..... -->
-            PHONE: <input type="text" name="_editCard.mobilePhone" ng-model="_editCard.mobilePhone" >   <br>
 
-            <!-- With type = email, angular validates that this is an email address. class ng-invalid gets added (see top of doc) -->
-            EMAIL: <input type="email" name="_editCard.emailAddress" ng-model="_editCard.emailAddress" > <br>
         </form>
         <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
         <button ng-click="save(_editCard);hide()" ng-disabled="procardForm.$pristine || procardForm.$invalid" class="btn btn-primary">Save</button>
