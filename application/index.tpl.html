@@ -25,11 +25,6 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-12">
-                            <input type="text" class="form-control" placeholder="Search" ng-model="searchLinks" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
                             <ul class="list-group">
                                 <li class="list-group-item" ng-repeat="link in links | filter:searchLinks">
                                     <a href="{{link.url}}" target="_blank">{{link.text}}</a>
