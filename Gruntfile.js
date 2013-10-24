@@ -48,6 +48,8 @@ module.exports = function(grunt) {
         // Uglify
         uglify: {
             options: {
+                mangle: true,
+                compress: true,
                 banner: '<%= banner %>'
             },
             dist: {

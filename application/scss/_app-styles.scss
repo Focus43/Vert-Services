@@ -32,7 +32,7 @@ ul.horizontal {list-style:none;margin:0;padding:0;white-space:nowrap;@include cl
     }
     &.right {left:100%;z-index:2;
       a.closer {font-size:26px;text-align:center;color:$hotPink;position:absolute;height:100%;width:35px;left:0;cursor:pointer;
-        span.glyphicon {position:absolute;top:50%;margin-top:-15px;left:4px;}
+        i.fa {font-size:56px;position:absolute;top:50%;margin-top:-28px;left:8px;}
       }
       .sidebarInner {margin-left:35px;background:rgba(255,255,255,.5);@include boxShadow(0 0 8px rgba(0,0,0,.25));}
     }
@@ -53,8 +53,10 @@ ul.horizontal {list-style:none;margin:0;padding:0;white-space:nowrap;@include cl
 
 #bodyContent {position:relative;z-index:1;
   #topBar {color:#fff;font-size:1.55em;position:relative;width:100%;background:rgba(255,255,255,.52); @include clearfix; @include boxShadow(0 0 8px rgba(0,0,0,.75));
-    a {color:inherit;display:block;padding:6px 8px 5px;}
-    .locationTitle {position:absolute;top:0;right:0;left:0;text-align:center;font-weight:200;padding-top:6px;text-shadow:0 1px 0 #000;}
+    .pull-left, .pull-right {position:relative;z-index:2;
+      a {color:inherit;display:block;padding:6px 8px 5px;}
+    }
+    .locationTitle {position:absolute;top:0;right:0;left:0;text-align:center;font-weight:200;padding-top:6px;text-shadow:0 1px 0 #000;z-index:1;}
   }
   .container.content {padding-top:1.6em;}
 }

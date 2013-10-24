@@ -8,10 +8,10 @@
                     {{contact.name}}
                     <div class="details">
                         <a href="tel://1-{{contact.mobilePhone | formatPhoneMobileLink}}">
-                            <span class="glyphicon glyphicon-phone"></span> <strong>{{contact.mobilePhone | formatPhone}}</strong>
+                            <i class="fa fa-mobile"></i> <strong>{{contact.mobilePhone | formatPhone}}</strong>
                         </a>
                         <a href="mailto:{{contact.emailAddress}}">
-                            <span class="glyphicon glyphicon-edit"></span> <strong>{{contact.emailAddress}}</strong>
+                            <i class="fa fa-envelope-o"></i> <strong>{{contact.emailAddress}}</strong>
                         </a>
                     </div>
                 </li>
