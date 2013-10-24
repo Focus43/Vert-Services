@@ -1,5 +1,11 @@
 #pageTemplateView.contacts {
 
+  .container.content {padding:0;}
+
+  ul.list-group {
+
+  }
+
   .details {display:none;
     a {text-decoration:none;font-size:13px;display:inline-block;padding:5px 0 3px;margin-right:8px;
       &:hover {text-decoration:inherit;}

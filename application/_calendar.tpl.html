@@ -2,19 +2,21 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <!--<ul class="list-group">
-                <li class="list-group-item" ng-repeat="event in events">
-                    <a class="badge" toggle-class="#bodyWrap,show-right" ng-click="showSessions(event)">{{event.meeting}}</a>
-                    <span class="date">{{event.meetingStartDate}} - {{event.meetingEndDate}}</span><br>
-                    <span class="location">{{event.meetingLocation}}</span><br>
-                    <span class="description">{{event.meetingDescription}}</span>
-                </li>
-            </ul>-->
-
-            <div class="well well-sm" ng-repeat="mtng in meetings">
-                <span class="label label-info pull-right">{{mtng.meetingStartDate | date:'h:mm a'}}</span>
-                {{mtng.meeting}}
-                <a toggle-class="#bodyWrap,show-right" ng-click="showSessions(mtng)">Open</a>
+            <div class="well">
+                <div class="mtngRepeater" ng-repeat="mtng in meetings | sortObjectByDate:'meetingStartDate'">
+                    <span ng-show="ShowDateHeader(mtng.meetingStartDate)" class="date-line">{{mtng.meetingStartDate | date:'EEE MMM d, yyyy'}}</span>
+                    <a class="meeting" toggle-class="#bodyWrap,show-right" ng-click="showSessions(mtng)">
+                        <table>
+                            <tr>
+                                <td><span class="title">{{mtng.meeting}}</span></td>
+                                <td class="time">
+                                    <span>{{mtng.meetingStartDate | date:'MMM d, yyyy'}}</span>
+                                    <!--<span>{{mtng.meetingStartDate | date:'h:mm a'}}</span>-->
+                                </td>
+                            </tr>
+                        </table>
+                    </a>
+                </div>
             </div>
 
         </div>

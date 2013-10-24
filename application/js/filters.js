@@ -45,3 +45,19 @@
             return (input || '').replace(/[^a-z0-9\s]/gi,'').replace(' ', '-').toLowerCase();
         };
     });
+
+
+    /**
+     * Take an array of objects whereas an object contains { attribute: 'date string' },
+     * and sort them.
+     */
+    angular.module('snowPro').filter('sortObjectByDate', function(){
+        return function(input, attribute){
+            if( !angular.isObject(input) ){ return input; }
+
+            return input.sort(function(a, b){
+                var _a = new Date(a[attribute]), _b = new Date(b[attribute]);
+                return (_a < _b) ? -1 : (_a > _b ? 1 : 0);
+            });
+        };
+    });

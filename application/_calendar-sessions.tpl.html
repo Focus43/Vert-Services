@@ -1,3 +1,10 @@
-<div ng-controller="CalendarSessionsCtrl">
-    <a class="btn btn-block" ng-repeat="session in meetingSessions">{{session.sessionId}}</a>
+<div id="calendarSessions" ng-controller="CalendarSessionsCtrl">
+    <div class="sessionRepeater" ng-repeat="session in meetingSessions | sortObjectByDate:'sessionStartDate'">
+        <span ng-show="ShowDateHeader(session.sessionStartDate)" class="date-line">{{session.sessionStartDate | date:'EEE MMM d, yyyy'}}</span>
+        <div class="session">
+            <a toggle-sibling-visibility=".descr"><span class="label label-info">{{session.sessionStartDate | date:'h:mm a'}}</span> {{session.session}}</a>
+            <p class="descr">{{session.sessionDescription || 'No Description Available'}}</p>
+        </div>
+    </div>
+
 </div>

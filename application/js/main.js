@@ -67,12 +67,12 @@
             return ProCard;
         }]).
         factory("Calendar", ['$resource', '$rootScope', function ($resource, $rootScope) {
-            var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
-                get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
-            });
-            /*var Calendar = $resource('http://10.0.5.130\\:8080/ajax_mocks/meetings.json', { callback: 'JSON_CALLBACK' }, {
+            /*var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
                 get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
             });*/
+            var Calendar = $resource('http://10.0.5.130\\:8080/ajax_mocks/meetings.json', { callback: 'JSON_CALLBACK' }, {
+                get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
+            });
 
             return Calendar;
         }]).
@@ -220,6 +220,15 @@
             $rootScope.$broadcast('loadSessionsForEvent', meeting);
         };
 
+        // used for the calendar view ngrepeat to output list headers
+        // http://stackoverflow.com/questions/15577791/angular-ng-repeat-with-header-views
+        $scope.currentMeetingDate = '-1';
+        $scope.ShowDateHeader = function( dateString ){
+            var _showHeader = (dateString !== $scope.currentMeetingDate);
+            $scope.currentMeetingDate = dateString;
+            return _showHeader;
+        };
+
     }]);
 
 
@@ -238,6 +247,16 @@
                 $scope.meetingSessions = data;
             });
         });
+
+        // same way we group and sort dates in the CalendarCtrl
+        // used for the calendar view ngrepeat to output list headers
+        // http://stackoverflow.com/questions/15577791/angular-ng-repeat-with-header-views
+        $scope.currentMeetingDate = '-1';
+        $scope.ShowDateHeader = function( dateString ){
+            var _showHeader = (dateString !== $scope.currentMeetingDate);
+            $scope.currentMeetingDate = dateString;
+            return _showHeader;
+        };
     }]);
 
 

@@ -1,5 +1,42 @@
-#pageTemplateView {
+// MAIN CONTENT AREA (PAGE)
+#pageTemplateView.calendar {
+  .container.content {padding:0;}
 
+  .well {padding:0;margin:0;background:rgba(255,255,255,.85); @include rounded(0);
+    .mtngRepeater {
+      span.date-line {padding:4px 1em;line-height:1em;display:block;background:#fff;font-size:11px;text-transform:uppercase;border-bottom:#c9c9c9;}
+      a.meeting {display:block;
+        table {font-size:13px;border-bottom:1px solid #fff;vertical-align:middle;border-spacing:0;border-collapse:collapse;
+          tr {
+            td {
+              span.title {color:#333;display:block;padding:1em 1em .9em;}
+              &.time {white-space:nowrap;width:1%;color:#fff;font-size:11px;font-weight:bold;text-transform:uppercase;background:#31b0d5;
+                span {text-align:center;display:block;padding:0 .6em;}
+              }
+            }
+          }
+        }
+        &:hover, &:active {text-decoration:none;background:#f1f1f1;}
+      }
+      &:last-child a.meeting:last-child table {border-bottom:0;}
+    }
+  }
+}
 
+// SIDEBAR AREA (RIGHT)
+.sidebar.right {
+  #calendarSessions {
+    .sessionRepeater {
+      span.date-line {padding:4px 1em;margin:.3em 0;line-height:1em;display:block;background:#fff;font-size:11px;text-transform:uppercase;border-bottom:#c9c9c9;}
+      .session {display:block;
+        a {display:block;padding:.5em 1em;font-weight:bold;
+          span.label {position:relative;top:-1px;margin-right:8px;}
+          &:hover, &:active {text-decoration:none;}
+        }
+        p.descr {display:none;padding-left:1em;padding-right:1em;}
+      }
 
+      &:first-child span.date-line {margin-top:0;}
+    }
+  }
 }
