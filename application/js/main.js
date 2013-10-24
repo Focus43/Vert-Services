@@ -1,10 +1,4 @@
 
-    /*jQuery(document, window).on('resize orientationchange webkitfullscreenchange fullscreenchange', function(){
-        alert('full screen!');
-    });
-
-    alert(window.navigator.standalone);*/
-
     /**
      * VertSolutions / The Snow Pros angular app.
      *
@@ -18,7 +12,7 @@
     /**
      * On initialize
      */
-    snowPro.run(function( $rootScope ){
+    snowPro.run(['$rootScope', function( $rootScope ){
         // hardcoded for now...
         $rootScope.userID = '13a4604b-433e-de11-9555-005056834df6';
 
@@ -26,7 +20,7 @@
         $rootScope.sidebar = {
             incld: ''
         };
-    });
+    }]);
 
     var vertService = angular.module('vertservice', ['ngResource']).
         config(['$locationProvider', '$httpProvider', '$routeProvider', '$compileProvider', function($locationProvider, $httpProvider, $routeProvider, $compileProvider){
@@ -89,7 +83,7 @@
 
             return ContactList;
         }]).
-        factory("Sessions", ['$resource', function($resource) {
+        factory("Sessions", ['$resource', function( $resource ) {
             var Sessions = $resource('http://rest.thesnowpros.org/meeting/sessions', { callback: 'JSON_CALLBACK' }, {
                 get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
             });
