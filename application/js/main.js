@@ -212,7 +212,7 @@
     /**
      * Calendar controller
      */
-    snowPro.controller('CalendarCtrl', function( $scope, $rootScope, $resource, Calendar, Sessions ){
+    snowPro.controller('CalendarCtrl', ['$scope', '$rootScope', 'Calendar', function( $scope, $rootScope, Calendar ){
         $rootScope.pageName = 'Calendar';
 
         $rootScope.sidebar.incld = '_calendar-sessions.html';
@@ -226,7 +226,7 @@
             $rootScope.$broadcast('loadSessionsForEvent', meeting);
         };
 
-    });
+    }]);
 
 
     /**
