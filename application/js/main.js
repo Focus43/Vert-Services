@@ -36,6 +36,7 @@
                 .when('/report-card', {templateUrl: '_report-card.html', controller: 'ReportCardCtrl'})
                 .when('/calendar', {templateUrl: '_calendar.html', controller: 'CalendarCtrl'})
                 .when('/contacts', {templateUrl: '_contacts.html', controller: 'ContactsCtrl'})
+                .when('/messages', {templateUrl: '_messages.html', controller: 'CommunicationsCtrl'})
                 .otherwise({redirectTo: '/', templateUrl: '_login.html', controller: 'LoginCtrl'});
 
             // white-list the tel: prefix for urls so we can auto-link phone numbers for mobile
@@ -90,7 +91,6 @@
             $scope.links = data;
         });
     }]);
-
 
     /**
      * Login controller
@@ -209,20 +209,22 @@
     /**
      * Communications controller
      */
-    snowPro.controller('CommunicationsCtrl', ['$scope', /*'$resource', 'ProCard',*/ 'Communications', 'Contacts', 'MobileCarriers', function($scope, /*$resource, ProCard,*/ Communications, Contacts, MobileCarriers){
+    snowPro.controller('CommunicationsCtrl', ['$scope', 'Communications', 'Contacts', 'MobileCarriers', function($scope, Communications, Contacts, MobileCarriers){
+        $scope.sentMessageList = Communications.query({}, function (data) {
+            return data;
+        });
 
         $scope.$on('loadCardSendForm', function( _event, procard ) {
             $scope._sendCard = procard;
 
-            Contacts.query({}, function(data){
+            Contacts.query({img: true}, function(data){
                 $scope._contacts = data;
             });
 
             MobileCarriers.query({}, function(data){
                 $scope._carrierOptions = data;
-                $scope._communication.mobileCarrierId = 1;
+//              $scope._communication.mobileCarrierId = 1; // set default
             });
-
         });
 
         $scope.toggleForms = function (evt) {
@@ -234,8 +236,6 @@
         };
 
         $scope.sendCard = function (ProcardContactId) {
-            console.log($scope._sendCard);
-            console.log($scope._communication);
             Communications.send({ id: ProcardContactId }, function (data) {
                 console.log(data);
             });
@@ -253,7 +253,7 @@
 
         $rootScope.sidebar.incld = '_calendar-sessions.html';
 
-        Calendar.query({}, function( data ){
+        Calendar.query({det: 'snap'}, function( data ){
             $scope.meetings = data;
         });
 
@@ -310,6 +310,7 @@
         });
 
         $scope.sendCard = function (ProcardContactId) {
+            console.log(ProcardContactId);
             Communications.send({ id: ProcardContactId }, function (data) {
                 console.log(data);
             });

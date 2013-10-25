@@ -1,39 +1,76 @@
 <style>
-    input.ng-invalid {
-        border: 2px solid red;
+
+    input, textarea, select {
+        width: 100%
     }
+
+    input.ng-invalid, select.ng-invalid {
+        border: 1px solid #ff6035;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 1.55em;
+        font-weight: 200;
+    }
+
+    span[required]:after,
+    span.required:after { content:" *"; }
 
     .hide-it {
         display: none;
     }
+
+    #edit, #send {
+        padding: .5em 1em;
+    }
+
+    div.or, div.send-option,
+    button.form-toggle {
+        width: 100%;
+        text-align: center;
+    }
+
+    div.send-option {
+        font-size: 1.35em;
+        font-weight: 200;
+    }
+
+    div.or {
+        font-size: 1.35em;
+    }
+
+    div.badges div.shield {
+        float: left;
+        margin-right: 5px;
+    }
+
 </style>
 
 <div id="edit" style="display: none;">
     <div ng-controller="EditProCardCtrl">
-        EDIT PROCARD
-        <br><br>
+        <h2>Edit Procard</h2>
         <div >
             <form name="procardForm">
-
-                NAME: <input type="text" name="_editCard.preferredName" ng-model="_editCard.preferredName" >   <br>
-
-                SCHOOL: <br>
+                <span ng-required="!_editCard.preferredName">Name:</span> <br>
+                <input type="text" name="_editCard.preferredName" ng-model="_editCard.preferredName"  ng-required="!_editCard.preferredName">   <br>
+                <br>
+                <span ng-required="!_editCard.schoolImage">School:</span> <br>
                 <div class="affiliation">
                     <img ng-src="data:image/png;base64, {{_editCard.schoolImage}}" class="img-responsive img-rounded" />
                 </div>
-                <select ng-model="_editCard.schoolId" ng-options="o.schoolId as o.school for o in _schoolOptions"></select> <br>
-
-                CREDENTIALS:<br>
+                <select ng-model="_editCard.schoolId" ng-options="o.schoolId as o.school for o in _schoolOptions" ng-required="!_editCard.schoolId"></select> <br>
+                <br>
+                <span ng-required="!_editCard.certificationCodes">Credentials:</span> <br>
                 <div class="badges">
-                    <!-- designation shields -->
                     <div class="shield" ng-repeat="designation in _editCard.memberProfessionalDesignations | limitTo:3">
                         <img class="img-responsive {{designation.certificationAwardShortName}}" ng-src="data:image/png;base64, {{designation.shield}}" />
                     </div>
                 </div>
                 <br>
-                <select multiple ng-model="_editCard.certificationCodes" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations"></select> <br>
-
+                <select multiple ng-model="_editCard.certificationCodes" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations" ng-required="!_editCard.certificationCodes"></select> <br>
             </form>
+            <br>
             <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
             <button ng-click="save(_editCard);hide()" ng-disabled="procardForm.$pristine || procardForm.$invalid" class="btn btn-primary">Save</button>
         </div>
@@ -42,32 +79,42 @@
 
 <div id="send" style="display: none;">
     <div ng-controller="CommunicationsCtrl">
-        SEND PROCARD
-        <br><br>
+        <h2>Send Procard</h2>
         <div id="sendId">
-            <br><br>
-            <button class="btn btn-primary" ng-click="toggleForms($event)">Manually Enter Contact</button>
-            <br><br>
+            <button class="btn btn-primary form-toggle" ng-click="toggleForms($event)">Manually Enter Contact</button>
+            <div class="or">or</div>
+            <div class="send-option">Choose From Contact List</div>
+            <br>
             <form name="sendcardWithIdForm">
+                Message:<br>
                 <textarea name="_communication.message" ng-model="_communication.message"></textarea>
                 <br>
-                <select ng-model="_communication.ProCardContactId" ng-options="c.id as c.name for c in _contacts"></select>
+                <span required>Email:</span><br>
+                <select ng-model="_communication.ProCardContactId" ng-options="c.id as c.name for c in _contacts" required></select>
             </form>
+            <br>
             <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
             <button ng-click="sendCard();" ng-disabled="sendcardWithIdForm.$pristine || sendcardWithIdForm.$invalid" class="btn btn-primary">Send</button>
         </div>
 
         <div id="sendName" class="hide-it">
-            <br><br>
-            <button class="btn btn-primary" ng-click="toggleForms($event)">Choose From Contact List</button>
-            <br><br>
+            <button class="btn btn-primary form-toggle" ng-click="toggleForms($event)">Choose From Contact List</button>
+            <div class="or">or</div>
+            <div class="send-option">Manually Enter Contact</div>
+            <br>
             <form name="sendcardWithNameForm">
-                NAME: <input type="text" name="_communication.Recipient" ng-model="_communication.Recipient" required>   <br>
-                EMAIL: <input type="email" name="_communication.emailAddress" ng-model="_communication.emailAddress" >   <br>
-                CELL: <input type="text" name="_communication.mobilePhone" ng-model="_communication.mobilePhone">   <br>
-                <select ng-init="_communication.mobileCarrierId=_carrierOptions[0]" ng-model="_communication.mobileCarrierId" ng-options="o.id as o.name for o in _carrierOptions"></select> <br>
+                Name:<br>
+                <input type="text" name="_communication.Recipient" ng-model="_communication.Recipient" required>   <br>
+                <span ng-required="!_communication.mobilePhone">Email:</span><br>
+                <input type="email" name="_communication.emailAddress" ng-model="_communication.emailAddress" ng-required="!_communication.mobilePhone">   <br>
+                <span ng-required="!_communication.emailAddress">Cell:</span><br>
+                <input type="text" name="_communication.mobilePhone" ng-model="_communication.mobilePhone"  ng-required="!_communication.emailAddress">   <br>
+                <span ng-required="!_communication.emailAddress">Cell Provider:</span><br>
+                <select ng-init="communication.mobilePhone=_carrierOptions[0]" ng-model="_communication.mobileCarrierId" ng-options="o.id as o.name for o in _carrierOptions" ng-required="_communication.mobilePhone"></select> <br>
+                Message:<br>
                 <textarea name="_communication.message" ng-model="_communication.message"></textarea>
             </form>
+            <br>
             <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
             <button ng-click="sendCard();" ng-disabled="sendcardWithNameForm.$pristine || sendcardWithNameForm.$invalid" class="btn btn-primary">Send</button>
         </div>
