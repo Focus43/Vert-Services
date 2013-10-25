@@ -24,6 +24,10 @@
 
     var vertService = angular.module('vertservice', ['ngResource']).
         config(['$locationProvider', '$httpProvider', '$routeProvider', '$compileProvider', function($locationProvider, $httpProvider, $routeProvider, $compileProvider){
+
+            $httpProvider.defaults.headers.common['Authorization'] = "NzlmYTNjZDAtNDAzZS1kZTExLTk1NTUtMDA1MDU2ODM0ZGY2";   // replace with token
+            delete $httpProvider.defaults.headers.common["X-Requested-With"];
+
             // push state vs hash-based urls
             $locationProvider.html5Mode(true);
 
@@ -42,8 +46,6 @@
             // https://groups.google.com/forum/#!topic/angular/YiP02I1wkNU
             $compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
 
-            // $httpProvider.defaults.headers.common['Authorization'] = ProCard.securitytoken;   // replace with token
-            delete $httpProvider.defaults.headers.common["X-Requested-With"];
         }]).
         factory('ProCard', ['$resource', '$rootScope', function($resource, $rootScope) {
 
@@ -346,3 +348,4 @@
             });
         };
     }]);
+
