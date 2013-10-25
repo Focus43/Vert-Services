@@ -2,17 +2,22 @@
 
   .container.content {padding:0;}
 
-  ul.list-group {
-
-  }
-
-  .details {display:none;
-    a {text-decoration:none;font-size:13px;display:inline-block;padding:5px 0 3px;margin-right:8px;
-      &:hover {text-decoration:inherit;}
-      .fa {color:#222;font-size:15px;
-        &.fa-mobile {font-size:17px;position:relative;top:1px;}
+  .well {padding:0;margin:0;background:rgba(255,255,255,.85); @include rounded(0);
+    .contact {border-bottom:1px solid #fff;
+      a.line-item {color:#333;display:block;padding:1em 1em .9em;@include clearfix;
+        span {float:left;display:inline-block;}
+        i {position:relative;top:2px;}
       }
-      strong {text-decoration:underline;}
+
+      .details {padding:0 1em .9em;display:none;@include clearfix;
+        a {text-decoration:none;font-size:13px;display:inline-block;padding:5px 0 3px;margin-right:8px;
+          &:hover {text-decoration:inherit;}
+          .fa {color:#222;font-size:15px;
+            &.fa-mobile {font-size:17px;position:relative;top:1px;}
+          }
+          strong {text-decoration:underline;}
+        }
+      }
     }
   }
 

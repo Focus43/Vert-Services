@@ -2,10 +2,12 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="contact in contacts | orderObjectBy:'firstName'">
-                    <span class="badge" toggle-sibling-visibility=".details">View</span>
-                    {{contact.name}}
+            <div class="well">
+                <div class="contact" ng-repeat="contact in contacts | orderObjectBy:'firstName'">
+                    <a class="line-item" toggle-sibling-visibility=".details">
+                        <span class="pull-left">{{contact.name}}</span>
+                        <i class="fa fa-plus-circle pull-right"></i>
+                    </a>
                     <div class="details">
                         <a href="tel://1-{{contact.mobilePhone | formatPhoneMobileLink}}">
                             <i class="fa fa-mobile"></i> <strong>{{contact.mobilePhone | formatPhone}}</strong>
@@ -17,8 +19,8 @@
                             <i class="fa fa-list-alt"> </i> <strong>Share ProCard</strong>
                         </a>
                     </div>
-                </li>
-            </ul>
+                </div>
+            </div>
 
         </div>
     </div>
