@@ -44,6 +44,7 @@
 
             // $httpProvider.defaults.headers.common['Authorization'] = ProCard.securitytoken;   // replace with token
             delete $httpProvider.defaults.headers.common["X-Requested-With"];
+            delete $httpProvider.defaults.headers.common["Content-Type"];
         }]).
         factory('ProCard', ['$resource', '$rootScope', function($resource, $rootScope) {
 
@@ -67,12 +68,12 @@
             return ProCard;
         }]).
         factory("Calendar", ['$resource', '$rootScope', function ($resource, $rootScope) {
-            /*var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
-                get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
-            });*/
-            var Calendar = $resource('http://10.0.5.130\\:8080/ajax_mocks/meetings.json', { callback: 'JSON_CALLBACK' }, {
+            var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
                 get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
             });
+            /*var Calendar = $resource('http://10.0.5.130\\:8080/ajax_mocks/meetings.json', { callback: 'JSON_CALLBACK' }, {
+                get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
+            });*/
 
             return Calendar;
         }]).
