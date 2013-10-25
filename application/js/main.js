@@ -1,32 +1,18 @@
 
     /**
      * VertSolutions / The Snow Pros angular app.
-     *
-     * @resource Listing: rest.thesnowpros.org/map?ctyp=json
-     * @type {*}
      */
-
-    // @application :: namespace
-    var snowPro = angular.module('snowPro', ['ngResource', 'vertservice']);
-
-    /**
-     * On initialize
-     */
-    snowPro.run(['$rootScope', function( $rootScope ){
-        // hardcoded for now...
-        $rootScope.userID = '13a4604b-433e-de11-9555-005056834df6';
-
+    var snowPro = angular.module('snowPro', ['ngResource', 'vertservice']).run(['$rootScope', function( $rootScope ){
         // right sidebar includes
-        $rootScope.sidebar = {
-            incld: ''
-        };
+        $rootScope.sidebar = {incld: ''};
     }]);
 
+
+    /**
+     * Vertservice module; mixin to snowPro
+     */
     var vertService = angular.module('vertservice', ['ngResource']).
         config(['$locationProvider', '$httpProvider', '$routeProvider', '$compileProvider', function($locationProvider, $httpProvider, $routeProvider, $compileProvider){
-
-            // current user is resolved server-side w/ the token
-            $httpProvider.defaults.headers.common['Authorization'] = "VsToken MTNhNDYwNGItNDMzZS1kZTExLTk1NTUtMDA1MDU2ODM0ZGY2";   // replace with token
 
             // push state vs hash-based urls
             $locationProvider.html5Mode(true);
@@ -95,8 +81,24 @@
     /**
      * Login controller
      */
-    snowPro.controller('LoginCtrl', ['$scope', '$rootScope', function( $scope, $rootScope ){
+    snowPro.controller('LoginCtrl', ['$scope', '$rootScope', '$http', function( $scope, $rootScope, $http ){
         $rootScope.pageName = 'Login';
+
+        $scope.doLogin = function(){
+            var _base64Token = Base64.encode( $scope.form_data.username + ':' + $scope.form_data.password );
+
+            // Send token request and on success, set all future requests to include the
+            // token in Authorization header
+            $http.get('http://rest.thesnowpros.org/security/token', {
+                headers: {'Authorization': 'Basic ' + _base64Token}
+            }).success(function( _token ){
+                $http.defaults.headers.common['Authorization'] = 'VsToken ' + _token;
+            });
+        };
+
+        $scope.isDisabled = function(){
+            return $scope.loginForm.$invalid;
+        };
     }]);
 
 
@@ -127,6 +129,9 @@
 
     }]);
 
+    /**
+     * Controller for editing the procard
+     */
     snowPro.controller('EditProCardCtrl', ['$scope', '$resource', 'ProCard', function($scope, $resource, ProCard){
 
         this.Schools = $resource('http://rest.thesnowpros.org/member/schools', { }, { });
@@ -142,6 +147,8 @@
             $scope._editCard.updatedDesignationsShortnames = [];
             $scope._editCard.schoolIdx = '';
             $scope._editCard.certificationCodes = [];
+
+            console.log($scope);
 
             $scope.controller.Schools.query({ id: procard.contactId, img: true }, function (data) {
                 $scope._schoolOptions = data;
@@ -248,8 +255,6 @@
                 console.log(data);
             });
         };
-
-
     }]);
 
     /**

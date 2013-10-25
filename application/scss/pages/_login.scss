@@ -5,7 +5,9 @@
       i {font-size:.7em;color:#c7254e;text-transform:lowercase;font-weight:400;}
       strong {font-weight:400;}
     }
-    .form-group:last-child {margin-bottom:0;}
+    form {margin-bottom:0;
+      .form-group:last-child {margin-bottom:0;}
+    }
   }
 
 }
