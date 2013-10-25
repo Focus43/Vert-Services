@@ -190,12 +190,24 @@
         };
 
         $scope.save = function() {
-            $scope._editCard.update(function() {
-                $("#edit").hide();
-                angular.element( document.querySelector("#bodyWrap") ).toggleClass("show-right");
-                // TODO: implement this if not-successful update
-//                $scope._editCard = $scope._backupCard;
-            });
+//            $scope._editCard.update(function() {
+//                $("#edit").hide();
+//                angular.element( document.querySelector("#bodyWrap") ).toggleClass("show-right");
+//                // TODO: implement this if not-successful update
+////                $scope._editCard = $scope._backupCard;
+//            });
+
+            $scope._editCard.update(
+                function success(data) {
+                    console.log(data);
+                    $("#edit").hide();
+                    angular.element( document.querySelector("#bodyWrap") ).toggleClass("show-right");
+                },
+                function err(data) {
+                    console.log("ERROR");
+                    console.log(data);
+                    $scope._editCard = $scope._backupCard;
+                });
         };
     }]);
 
