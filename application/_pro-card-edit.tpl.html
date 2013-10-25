@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <br>
-                <select multiple ng-model="_editCard.certificationCodes" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations" ng-required="!_editCard.certificationCodes"></select> <br>
+                <select multiple ng-model="_editCard.certificationCodes" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations" ng-required="!_editCard.certificationCodes" ng-change="translateNewDesignations(_editCard.certificationCodes)"></select> <br>
             </form>
             <br>
             <button class="btn" toggle-class="#bodyWrap,show-right" ng-click="restoreCard()">Cancel</button>
@@ -94,7 +94,7 @@
             </form>
             <br>
             <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
-            <button ng-click="sendCard();" ng-disabled="sendcardWithIdForm.$pristine || sendcardWithIdForm.$invalid" class="btn btn-primary">Send</button>
+            <button ng-click="sendCardId(_communication.ProCardContactId);" ng-disabled="sendcardWithIdForm.$pristine || sendcardWithIdForm.$invalid" class="btn btn-primary">Send</button>
         </div>
 
         <div id="sendName" class="hide-it">
@@ -116,7 +116,7 @@
             </form>
             <br>
             <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
-            <button ng-click="sendCard();" ng-disabled="sendcardWithNameForm.$pristine || sendcardWithNameForm.$invalid" class="btn btn-primary">Send</button>
+            <button ng-click="sendCardManual(_communication);" ng-disabled="sendcardWithNameForm.$pristine || sendcardWithNameForm.$invalid" class="btn btn-primary">Send</button>
         </div>
     </div>
 </div>
