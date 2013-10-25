@@ -206,6 +206,7 @@
                 function err(data) {
                     console.log("ERROR");
                     console.log(data);
+                    alert("Something went wrong, and the update didn't save.");
                     $scope._editCard = $scope._backupCard;
                 });
         };
@@ -257,7 +258,7 @@
                     console.log(data);
                 },
                 function err(data) {
-                    console.log("ERROR");
+                    alert("Something went wrong, and the card didn't send.");
                     console.log(data);
                 });
         };
@@ -268,7 +269,7 @@
                     console.log(data);
                 },
                 function err(data) {
-                    console.log("ERROR");
+                    alert("Something went wrong, and the card didn't send.");
                     console.log(data);
                 });
         };
