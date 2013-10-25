@@ -36,7 +36,7 @@
                 .when('/report-card', {templateUrl: '_report-card.html', controller: 'ReportCardCtrl'})
                 .when('/calendar', {templateUrl: '_calendar.html', controller: 'CalendarCtrl'})
                 .when('/contacts', {templateUrl: '_contacts.html', controller: 'ContactsCtrl'})
-                .when('/messages', {templateUrl: '_messages.html', controller: 'CommunicationsCtrl'})
+                .when('/messages', {templateUrl: '_messages.html', controller: 'MessagesCtrl'})
                 .otherwise({redirectTo: '/', templateUrl: '_login.html', controller: 'LoginCtrl'});
 
             // white-list the tel: prefix for urls so we can auto-link phone numbers for mobile
@@ -129,12 +129,8 @@
 
     snowPro.controller('EditProCardCtrl', ['$scope', '$resource', 'ProCard', function($scope, $resource, ProCard){
 
-        this.Schools = $resource('http://rest.thesnowpros.org/member/schools', { callback: 'JSON_CALLBACK' }, {
-            get: { method: 'JSONP', isArray: true, params: { id: "@id", img: true } }
-        });
-        this.Designations = $resource('http://rest.thesnowpros.org/member/professionaldesignations', { callback: 'JSON_CALLBACK' }, {
-            get: { method: 'JSONP', isArray: true, params: { id: "@id", img: true  } }
-        });
+        this.Schools = $resource('http://rest.thesnowpros.org/member/schools', { }, { });
+        this.Designations = $resource('http://rest.thesnowpros.org/member/professionaldesignations', { }, { });
         $scope.controller = this;
 
         $scope.$on('loadCardEditForm', function( _event, procard ) {
@@ -147,11 +143,11 @@
             $scope._editCard.schoolIdx = '';
             $scope._editCard.certificationCodes = [];
 
-            $scope.controller.Schools.get({ id: procard.contactId }, function (data) {
+            $scope.controller.Schools.query({ id: procard.contactId, img: true }, function (data) {
                 $scope._schoolOptions = data;
             });
 
-            $scope.controller.Designations.get({ id: procard.contactId }, function (data) {
+            $scope.controller.Designations.query({ id: procard.contactId, img: true }, function (data) {
                 $scope._professionalDesignations = data;
                 $scope._professionalDesignations.forEach( function (elm) {
                     $scope._editCard.certificationCodes.push(elm.certificationCode);
@@ -194,10 +190,22 @@
             });
         };
 
+        $scope.restoreCard = function () {
+            console.log("$scope._editCard");
+            console.log($scope._editCard);
+
+//            $scope._editCard = jQuery.extend(true, $scope._editCard, $scope._backupCard);
+
+            $scope._editCard = $scope._backupCard;
+            console.log("$scope._editCard after");
+            console.log($scope._editCard);
+        };
+
         $scope.save = function() {
             console.log("saving");
             $scope._editCard.update(function() {
                 console.log("updated");
+                console.log($scope._editCard);
                 $("#edit").hide();
                 angular.element( document.querySelector("#bodyWrap") ).toggleClass("show-right");
                 // TODO: implement this if not-successful update
@@ -244,6 +252,50 @@
 
     }]);
 
+    /**
+     * Messages controller
+     */
+    snowPro.controller('MessagesCtrl', ['$scope', '$rootScope', 'Communications', function($scope, $rootScope, Communications){
+
+        $rootScope.sidebar.incld = '_message-detail.html';
+
+        Communications.query({}, function (data) {
+            $scope.sentMessageList =  data;
+        });
+
+        $scope.dateSent = '-1';
+        $scope.ShowHeader = function( dateString ){
+            var _showHeader = (dateString !== $scope.dateSent);
+            $scope.dateSent = dateString;
+            return _showHeader;
+        };
+
+        $scope.showMessage = function( message ){
+            $rootScope.$broadcast('loadMessage', message);
+        };
+
+    }]);
+
+    /**
+     * Message Detail controller
+     */
+    snowPro.controller('MessageDetailCtrl', ['$scope', '$rootScope', 'Communications', function($scope, $rootScope, Communications){
+
+        $scope.$on('loadMessage', function( _event, message ){
+            $scope.message = message;
+        });
+
+        // same way we group and sort dates in the CalendarCtrl
+        // used for the calendar view ngrepeat to output list headers
+        // http://stackoverflow.com/questions/15577791/angular-ng-repeat-with-header-views
+        $scope.dateSent = '-1';
+        $scope.ShowHeader = function( dateString ){
+            var _showHeader = (dateString !== $scope.dateSent);
+            $scope.dateSent = dateString;
+            return _showHeader;
+        };
+    }]);
+
 
     /**
      * Calendar controller
@@ -265,8 +317,8 @@
         // http://stackoverflow.com/questions/15577791/angular-ng-repeat-with-header-views
         $scope.currentMeetingDate = '-1';
         $scope.ShowDateHeader = function( dateString ){
-            var _showHeader = (dateString !== $scope.currentMeetingDate);
-            $scope.currentMeetingDate = dateString;
+            var _showHeader = (dateString !== $scope.meetingStartDate);
+            $scope.meetingStartDate = dateString;
             return _showHeader;
         };
 
@@ -297,7 +349,6 @@
             return _showHeader;
         };
     }]);
-
 
     /**
      * Contacts controller

@@ -71,7 +71,7 @@
                 <select multiple ng-model="_editCard.certificationCodes" ng-options="d.certificationCode as d.certificationAwardShortName for d in _professionalDesignations" ng-required="!_editCard.certificationCodes"></select> <br>
             </form>
             <br>
-            <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
+            <button class="btn" toggle-class="#bodyWrap,show-right" ng-click="restoreCard()">Cancel</button>
             <button ng-click="save(_editCard);hide()" ng-disabled="procardForm.$pristine || procardForm.$invalid" class="btn btn-primary">Save</button>
         </div>
     </div>

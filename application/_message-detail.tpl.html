@@ -1,0 +1,8 @@
+<div id="calendarSessions" ng-controller="MessageDetailCtrl">
+        <span ng-show="ShowHeader(message.sendDate)" class="date-line">{{message.dateSent | date:'EEE MMM d, yyyy'}}</span>
+        <div class="session">
+            <span>Sent to: {{message.deliveryAddress}}</span>
+            <p class="descr">{{message.message || 'No Message Available'}}</p>
+        </div>
+
+</div>
