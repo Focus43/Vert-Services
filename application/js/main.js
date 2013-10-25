@@ -25,8 +25,8 @@
     var vertService = angular.module('vertservice', ['ngResource']).
         config(['$locationProvider', '$httpProvider', '$routeProvider', '$compileProvider', function($locationProvider, $httpProvider, $routeProvider, $compileProvider){
 
-            $httpProvider.defaults.headers.common['Authorization'] = "NzlmYTNjZDAtNDAzZS1kZTExLTk1NTUtMDA1MDU2ODM0ZGY2";   // replace with token
-            delete $httpProvider.defaults.headers.common["X-Requested-With"];
+            // current user is resolved server-side w/ the token
+            $httpProvider.defaults.headers.common['Authorization'] = "VsToken MTNhNDYwNGItNDMzZS1kZTExLTk1NTUtMDA1MDU2ODM0ZGY2";   // replace with token
 
             // push state vs hash-based urls
             $locationProvider.html5Mode(true);
@@ -36,21 +36,16 @@
                 .when('/report-card', {templateUrl: '_report-card.html', controller: 'ReportCardCtrl'})
                 .when('/calendar', {templateUrl: '_calendar.html', controller: 'CalendarCtrl'})
                 .when('/contacts', {templateUrl: '_contacts.html', controller: 'ContactsCtrl'})
-                .otherwise({
-                    redirectTo: '/',
-                    templateUrl: '_login.html',
-                    controller: 'LoginCtrl'
-                });
+                .otherwise({redirectTo: '/', templateUrl: '_login.html', controller: 'LoginCtrl'});
 
             // white-list the tel: prefix for urls so we can auto-link phone numbers for mobile
             // https://groups.google.com/forum/#!topic/angular/YiP02I1wkNU
             $compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
 
         }]).
-        factory('ProCard', ['$resource', '$rootScope', function($resource, $rootScope) {
+        factory('ProCard', ['$resource', function( $resource ) {
 
-            var ProCard = $resource('http://rest.thesnowpros.org/member/procard', { callback: 'JSON_CALLBACK'}, {
-                get: { method: 'JSONP', params: { memnum:$rootScope.userID } },
+            var ProCard = $resource('http://rest.thesnowpros.org/member/procard', {}, {
                 send: { method: 'POST' }
             });
 
@@ -68,37 +63,22 @@
 
             return ProCard;
         }]).
-        factory("Calendar", ['$resource', '$rootScope', function ($resource, $rootScope) {
-            var Calendar = $resource('http://rest.thesnowpros.org/division/meetings', { callback: 'JSON_CALLBACK' }, {
-                get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
-            });
-            //var Calendar = $resource('http://10.0.5.130\\:8080/ajax_mocks/meetings.json', { callback: 'JSON_CALLBACK' }, {
-            //    get: { method: 'JSONP', isArray: true, params: { memnum:$rootScope.userID } }
-            //});
-
-            return Calendar;
+        factory("Calendar", ['$resource', function ($resource) {
+            return $resource('http://rest.thesnowpros.org/division/meetings');
         }]).
         factory('Contacts', ['$resource', function( $resource ){
-            var ContactList = $resource('http://rest.thesnowpros.org/member/contacts', { callback: 'JSON_CALLBACK' }, {
-                get: { method: 'JSONP', isArray: true }
-            });
-
-            return ContactList;
+            return $resource('http://rest.thesnowpros.org/member/contacts');
         }]).
         factory("Sessions", ['$resource', function( $resource ) {
-            var Sessions = $resource('http://rest.thesnowpros.org/meeting/sessions', { callback: 'JSON_CALLBACK' }, {
-                get: { method: 'JSONP', isArray: true, params: { id: "@id" } }
-            });
-
-            return Sessions;
+            return $resource('http://rest.thesnowpros.org/meeting/sessions');
+        }]).
+        factory('MobileCarriers', ['$resource', function( $resource ){
+            return $resource('http://rest.thesnowpros.org/mobilecarriers/list');
         }]).
         factory('Communications', ['$resource', function( $resource ){
-            var Communications = $resource('http://rest.thesnowpros.org/member/communications', { callback: 'JSON_CALLBACK' }, {
-                get: { method: 'JSONP', isArray: true },
-                send: { method: 'POST'}
+            return $resource('http://rest.thesnowpros.org/member/communications', {}, {
+                send: { method: 'POST' }
             });
-
-            return Communications;
         }]);
 
 
@@ -106,7 +86,7 @@
      * Slide-in sidebar controller
      */
     snowPro.controller('LeftSidebarCtrl', ['$scope', '$http', function( $scope, $http ){
-        $http.jsonp('http://rest.thesnowpros.org/asea/sitelinks?callback=JSON_CALLBACK').success(function( data ){
+        $http.get('http://rest.thesnowpros.org/asea/sitelinks').success(function( data ){
             $scope.links = data;
         });
     }]);
@@ -229,29 +209,18 @@
     /**
      * Communications controller
      */
-    snowPro.controller('CommunicationsCtrl', ['$scope', '$resource', 'ProCard', 'Communications', function($scope, $resource, ProCard, Communications){
-
-        this.Contacts = $resource('http://rest.thesnowpros.org/member/contacts', { callback: 'JSON_CALLBACK' }, {
-            get: { method: 'JSONP', isArray: true, params: { id: "@id", img: true } }
-        });
-
-        this.Carriers = $resource('http://rest.thesnowpros.org/mobilecarriers/list', { callback: 'JSON_CALLBACK' }, {
-            get: { method: 'JSONP', isArray: true }
-        });
-
-        $scope.sendController = this;
+    snowPro.controller('CommunicationsCtrl', ['$scope', /*'$resource', 'ProCard',*/ 'Communications', 'Contacts', 'MobileCarriers', function($scope, /*$resource, ProCard,*/ Communications, Contacts, MobileCarriers){
 
         $scope.$on('loadCardSendForm', function( _event, procard ) {
-
             $scope._sendCard = procard;
 
-            $scope.sendController.Contacts.get({ id: procard.contactId }, function (data) {
+            Contacts.query({}, function(data){
                 $scope._contacts = data;
             });
 
-            $scope.sendController.Carriers.get({  }, function (data) {
+            MobileCarriers.query({}, function(data){
                 $scope._carrierOptions = data;
-                $scope._communication.mobileCarrierId = 1; // set default
+                $scope._communication.mobileCarrierId = 1;
             });
 
         });
@@ -284,8 +253,7 @@
 
         $rootScope.sidebar.incld = '_calendar-sessions.html';
 
-        Calendar.get( { det: 'snap' }, function (data) {
-            console.log('Calendar meetings:', data);
+        Calendar.query({}, function( data ){
             $scope.meetings = data;
         });
 
@@ -314,9 +282,7 @@
         $scope.meetingSessions = [];
 
         $scope.$on('loadSessionsForEvent', function( _event, meeting ){
-            console.log('Sessions for meeting:', meeting);
-            Sessions.get({id: meeting.meetingId}, function(data){
-                console.log('Sessions:', data);
+            Sessions.query({id: meeting.meetingId}, function( data ){
                 $scope.meetingSessions = data;
             });
         });
@@ -339,12 +305,11 @@
     snowPro.controller('ContactsCtrl', ['$scope', '$rootScope', 'Contacts', 'Communications', function( $scope, $rootScope, Contacts, Communications ){
         $rootScope.pageName = 'Contacts';
 
-        Contacts.get({}, function(data){
+        Contacts.query({}, function(data){
             $scope.contacts = data;
         });
 
         $scope.sendCard = function (ProcardContactId) {
-            console.log(ProcardContactId);
             Communications.send({ id: ProcardContactId }, function (data) {
                 console.log(data);
             });
