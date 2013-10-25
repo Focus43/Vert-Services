@@ -44,8 +44,7 @@
 
             ProCard.prototype.update = function(cb) {
                 cb();
-//                return ProCard.update({memnum: this.contactId},
-//                    angular.extend({}, this, {_id:undefined}), cb);
+//                return ProCard.update({}, angular.extend({}, this, {_id:undefined}), cb);
             };
 
             return ProCard;
@@ -162,14 +161,6 @@
             });
         });
 
-        $scope.$watch('_editCard.certificationCodes', function(newValue, oldValue, $scope) {
-            if (oldValue && newValue) {
-                if (oldValue !== newValue) {
-                    $scope.translateNewDesignations(newValue);
-                }
-            }
-        });
-
         $scope.$watch('_editCard.schoolId', function(newValue, oldValue, $scope) {
             if (oldValue && newValue) {
                 if (oldValue !== newValue) {
@@ -198,26 +189,33 @@
         };
 
         $scope.restoreCard = function () {
-            console.log("$scope._editCard");
-            console.log($scope._editCard);
-
-//            $scope._editCard = jQuery.extend(true, $scope._editCard, $scope._backupCard);
-
-            $scope._editCard = $scope._backupCard;
-            console.log("$scope._editCard after");
-            console.log($scope._editCard);
+            $scope._editCard = jQuery.extend(true, $scope._editCard, $scope._backupCard);
+            // also update certification codes
+            $scope._editCard.certificationCodes = $scope._editCard.memberProfessionalDesignations.map( function (obj) {
+                return obj.certificationCode;
+            });
         };
 
         $scope.save = function() {
-            console.log("saving");
-            $scope._editCard.update(function() {
-                console.log("updated");
-                console.log($scope._editCard);
-                $("#edit").hide();
-                angular.element( document.querySelector("#bodyWrap") ).toggleClass("show-right");
-                // TODO: implement this if not-successful update
-//                $scope._editCard = $scope._backupCard;
-            });
+//            $scope._editCard.update(function() {
+//                $("#edit").hide();
+//                angular.element( document.querySelector("#bodyWrap") ).toggleClass("show-right");
+//                // TODO: implement this if not-successful update
+////                $scope._editCard = $scope._backupCard;
+//            });
+
+            $scope._editCard.update(
+                function success(data) {
+                    console.log(data);
+                    $("#edit").hide();
+                    angular.element( document.querySelector("#bodyWrap") ).toggleClass("show-right");
+                },
+                function err(data) {
+                    console.log("ERROR");
+                    console.log(data);
+                    alert("Something went wrong, and the update didn't save.");
+                    $scope._editCard = $scope._backupCard;
+                });
         };
     }]);
 
@@ -250,10 +248,37 @@
             _showContainer.toggleClass("hide-it");
         };
 
-        $scope.sendCard = function (ProcardContactId) {
-            Communications.send({ id: ProcardContactId }, function (data) {
-                console.log(data);
+        $scope.sendCardId = function (ProcardContactId) {
+
+            var _contact = $scope._contacts.filter( function (elm) {
+                return elm.id === ProcardContactId;
             });
+
+            var _contactInfo = {
+                ProcardContactId: ProcardContactId,
+                emailAddress: _contact[0].emailAddress,
+                Recipient: _contact[0].name
+            };
+
+            Communications.send( _contactInfo,
+                function success(data) {
+                    console.log(data);
+                },
+                function err(data) {
+                    alert("Something went wrong, and the card didn't send.");
+                    console.log(data);
+                });
+        };
+
+        $scope.sendCardManual = function ( _contactInfo ) {
+            Communications.send( _contactInfo,
+                function success(data) {
+                    console.log(data);
+                },
+                function err(data) {
+                    alert("Something went wrong, and the card didn't send.");
+                    console.log(data);
+                });
         };
     }]);
 
@@ -366,10 +391,25 @@
         });
 
         $scope.sendCard = function (ProcardContactId) {
-            console.log(ProcardContactId);
-            Communications.send({ id: ProcardContactId }, function (data) {
-                console.log(data);
+
+            var _contact = $scope.contacts.filter( function (elm) {
+                return elm.id === ProcardContactId;
             });
+
+            var _contactInfo = {
+                ProcardContactId: ProcardContactId,
+                emailAddress: _contact[0].emailAddress,
+                Recipient: _contact[0].name
+            };
+
+            Communications.send( _contactInfo,
+                function success(data) {
+                    console.log(data);
+                },
+                function err(data) {
+                    console.log("ERROR");
+                    console.log(data);
+                });
         };
     }]);
 
