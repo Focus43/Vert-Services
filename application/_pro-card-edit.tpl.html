@@ -2,6 +2,10 @@
     input.ng-invalid {
         border: 2px solid red;
     }
+
+    .hide-it {
+        display: none;
+    }
 </style>
 
 <div id="edit" style="display: none;">
@@ -40,18 +44,32 @@
     <div ng-controller="CommunicationsCtrl">
         SEND PROCARD
         <br><br>
-        <div >
-            <form name="sendcardForm">
-                NAME: <input type="text" name="_communication.Recipient" ng-model="_communication.Recipient" required>   <br>
-                EMAIL: <input type="email" name="_communication.emailAddress" ng-model="_communication.emailAddress" >   <br>
-                CELL: <input type="text" name="_communication.mobilePhone" ng-model="_communication.mobilePhone">   <br>
-                <select ng-init="_communication.mobileCarrierId=_carrierOptions[0]" ng-model="_communication.mobileCarrierId" ng-options="o.id as o.name for o in _carrierOptions"></select> <br>
+        <div id="sendId">
+            <br><br>
+            <button class="btn btn-primary" ng-click="toggleForms($event)">Manually Enter Contact</button>
+            <br><br>
+            <form name="sendcardWithIdForm">
                 <textarea name="_communication.message" ng-model="_communication.message"></textarea>
                 <br>
                 <select ng-model="_communication.ProCardContactId" ng-options="c.id as c.name for c in _contacts"></select>
             </form>
             <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
-            <button ng-click="sendCard();" ng-disabled="sendcardForm.$pristine || sendcardForm.$invalid" class="btn btn-primary">Send</button>
+            <button ng-click="sendCard();" ng-disabled="sendcardWithIdForm.$pristine || sendcardWithIdForm.$invalid" class="btn btn-primary">Send</button>
+        </div>
+
+        <div id="sendName" class="hide-it">
+            <br><br>
+            <button class="btn btn-primary" ng-click="toggleForms($event)">Choose From Contact List</button>
+            <br><br>
+            <form name="sendcardWithNameForm">
+                NAME: <input type="text" name="_communication.Recipient" ng-model="_communication.Recipient" required>   <br>
+                EMAIL: <input type="email" name="_communication.emailAddress" ng-model="_communication.emailAddress" >   <br>
+                CELL: <input type="text" name="_communication.mobilePhone" ng-model="_communication.mobilePhone">   <br>
+                <select ng-init="_communication.mobileCarrierId=_carrierOptions[0]" ng-model="_communication.mobileCarrierId" ng-options="o.id as o.name for o in _carrierOptions"></select> <br>
+                <textarea name="_communication.message" ng-model="_communication.message"></textarea>
+            </form>
+            <button class="btn" toggle-class="#bodyWrap,show-right">Cancel</button>
+            <button ng-click="sendCard();" ng-disabled="sendcardWithNameForm.$pristine || sendcardWithNameForm.$invalid" class="btn btn-primary">Send</button>
         </div>
     </div>
 </div>
