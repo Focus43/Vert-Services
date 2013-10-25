@@ -36,6 +36,7 @@
                 .when('/report-card', {templateUrl: '_report-card.html', controller: 'ReportCardCtrl'})
                 .when('/calendar', {templateUrl: '_calendar.html', controller: 'CalendarCtrl'})
                 .when('/contacts', {templateUrl: '_contacts.html', controller: 'ContactsCtrl'})
+                .when('/messages', {templateUrl: '_messages.html', controller: 'CommunicationsCtrl'})
                 .otherwise({
                     redirectTo: '/',
                     templateUrl: '_login.html',
@@ -65,6 +66,7 @@
 //                return ProCard.update({memnum: this.contactId},
 //                    angular.extend({}, this, {_id:undefined}), cb);
             };
+
 
             return ProCard;
         }]).
@@ -110,7 +112,6 @@
             $scope.links = data;
         });
     }]);
-
 
     /**
      * Login controller
@@ -241,6 +242,10 @@
 
         $scope.sendController = this;
 
+        $scope.sentMessageList = Communications.get({}, function (data) {
+            return data;
+        });
+
         $scope.$on('loadCardSendForm', function( _event, procard ) {
 
             $scope._sendCard = procard;
@@ -251,7 +256,7 @@
 
             $scope.sendController.Carriers.get({  }, function (data) {
                 $scope._carrierOptions = data;
-                $scope._communication.mobileCarrierId = 1; // set default
+//                $scope._communication.mobileCarrierId = 1; // set default
             });
 
         });

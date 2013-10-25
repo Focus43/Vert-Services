@@ -1,0 +1,24 @@
+<div class="container content">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="well">
+                <div class="mtngRepeater" ng-controller="CommunicationsCtrl" ng-repeat="msg in sentMessageList | sortObjectByDate:'sentDate'">
+                    <span ng-show="ShowDateHeader(msg.sentDate)" class="date-line">{{mtng.sentDate | date:'EEE MMM d, yyyy'}}</span>
+                    <a class="meeting" toggle-class="#bodyWrap,show-right" ng-click="showSessions(msg)">
+                        <table>
+                            <tr>
+                                <td><span class="title">{{msg.title}}</span></td>
+                                <td class="time">
+                                    <span>{{msg.meetingStartDate | date:'MMM d, yyyy'}}</span>
+                                    <!--<span>{{mtng.meetingStartDate | date:'h:mm a'}}</span>-->
+                                </td>
+                            </tr>
+                        </table>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
