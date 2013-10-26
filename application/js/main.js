@@ -379,7 +379,7 @@
     /**
      * Contacts controller
      */
-    snowPro.controller('ContactsCtrl', ['$scope', '$rootScope', 'Contacts', 'Communications', function( $scope, $rootScope, Contacts, Communications ){
+    snowPro.controller('ContactsCtrl', ['$scope', '$rootScope', '$http', 'Contacts', 'Communications', function( $scope, $rootScope, $http, Contacts, Communications ){
         $rootScope.pageName = 'Contacts';
 
         Contacts.query({}, function(data){
@@ -388,24 +388,25 @@
 
         $scope.sendCard = function (ProcardContactId) {
 
-//            var _contact = $scope.contacts.filter( function (elm) {
-//                return elm.id === ProcardContactId;
-//            });
-//
-//            var _contactInfo = {
-//                ProcardContactId: ProcardContactId,
-//                emailAddress: _contact[0].emailAddress,
-//                Recipient: _contact[0].name
-//            };
+            var _contact = $scope.contacts.filter( function (elm) {
+                return elm.id === ProcardContactId;
+            });
 
-            Communications.send( {}, { ProcardContactId: ProcardContactId },
-                function success(data) {
-                    console.log(data);
-                },
-                function err(data) {
-                    console.log("ERROR");
-                    console.log(data);
-                });
+            var _contactInfo = {
+                ProcardContactId: ProcardContactId,
+                emailAddress: _contact[0].emailAddress,
+                Recipient: _contact[0].name
+            };
+
+            $http.post('http://rest.thesnowpros.org/member/communications', {}, {params: _contactInfo});
+
+
+
+//            var _comm = new Communications(_contactInfo);
+//            _comm.send( {} ,
+//                function (data) {
+//                    console.log(data);
+//                });
         };
     }]);
 
