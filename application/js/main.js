@@ -33,7 +33,7 @@
         factory('ProCard', ['$resource', function( $resource ) {
 
             var ProCard = $resource('http://rest.thesnowpros.org/member/procard', {}, {
-                send: { method: 'POST' }
+                send: { method: 'POST', params:{ ProcardContactId: "@ProcardContactId", Recipient: "@Recipient", emailAddress: "@emailAddress", message: "@message"} }
             });
 
             ProCard.prototype.send = function (config, cb) {
@@ -257,10 +257,11 @@
                 return elm.id === ProcardContactId;
             });
 
+            var _recipient =  _contact[0].name.replace(" ", "_");
             var _contactInfo = {
                 ProcardContactId: ProcardContactId,
                 emailAddress: _contact[0].emailAddress,
-                Recipient: _contact[0].name
+                Recipient: _recipient
             };
 
             Communications.send( _contactInfo,
@@ -395,17 +396,17 @@
 
         $scope.sendCard = function (ProcardContactId) {
 
-            var _contact = $scope.contacts.filter( function (elm) {
-                return elm.id === ProcardContactId;
-            });
+//            var _contact = $scope.contacts.filter( function (elm) {
+//                return elm.id === ProcardContactId;
+//            });
+//
+//            var _contactInfo = {
+//                ProcardContactId: ProcardContactId,
+//                emailAddress: _contact[0].emailAddress,
+//                Recipient: _contact[0].name
+//            };
 
-            var _contactInfo = {
-                ProcardContactId: ProcardContactId,
-                emailAddress: _contact[0].emailAddress,
-                Recipient: _contact[0].name
-            };
-
-            Communications.send( _contactInfo,
+            Communications.send( {}, { ProcardContactId: ProcardContactId },
                 function success(data) {
                     console.log(data);
                 },
