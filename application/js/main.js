@@ -80,7 +80,7 @@
     /**
      * Login controller
      */
-    snowPro.controller('LoginCtrl', ['$scope', '$rootScope', '$http', function( $scope, $rootScope, $http ){
+    snowPro.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$location', function( $scope, $rootScope, $http, $location ){
         $rootScope.pageName = 'Login';
 
         $scope.doLogin = function(){
@@ -92,6 +92,9 @@
                 headers: {'Authorization': 'Basic ' + _base64Token}
             }).success(function( _token ){
                 $http.defaults.headers.common['Authorization'] = 'VsToken ' + _token;
+                $location.path('/pro-card');
+            }).error(function(data, status, headers, config){
+                $scope.error = 'Login failed, please try again';
             });
         };
 
@@ -114,15 +117,15 @@
         });
 
         $scope.showEditForm = function( ){
-            $("#edit").show();
-            $("#send").hide();
+            jQuery("#edit").show();
+            jQuery("#send").hide();
             $rootScope.$broadcast('loadCardEditForm', $scope._proCard);
         };
 
 
         $scope.showSendCard = function () {
-            $("#edit").hide();
-            $("#send").show();
+            jQuery("#edit").hide();
+            jQuery("#send").show();
             $rootScope.$broadcast('loadCardSendForm', $scope._proCard);
         };
 
@@ -139,7 +142,7 @@
 
         $scope.$on('loadCardEditForm', function( _event, procard ) {
 
-            $("#edit").show();
+            jQuery("#edit").show();
 
             $scope._backupCard = jQuery.extend(true, {}, procard);
             $scope._editCard = procard;
@@ -207,7 +210,7 @@
             $scope._editCard.update(
                 function success(data) {
                     console.log(data);
-                    $("#edit").hide();
+                    jQuery("#edit").hide();
                     angular.element( document.querySelector("#bodyWrap") ).toggleClass("show-right");
                 },
                 function err(data) {
@@ -241,7 +244,7 @@
         });
 
         $scope.toggleForms = function (evt) {
-            var _hideContainer = $(evt.target).parent();
+            var _hideContainer = jQuery(evt.target).parent();
             var _showContainer = _hideContainer.siblings(".hide-it");
 
             _hideContainer.toggleClass("hide-it");

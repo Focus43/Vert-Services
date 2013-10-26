@@ -7,6 +7,8 @@
                     <div class="col-sm-12">
 
                         <form name="loginForm">
+                            <div class="alert alert-danger" ng-show="error"><i class="fa fa-exclamation-circle"></i> {{error}}</div>
+                            
                             <div class="form-group">
                                 <input required ng-model="form_data.username" type="text" class="form-control" placeholder="Email or username" />
                             </div>
