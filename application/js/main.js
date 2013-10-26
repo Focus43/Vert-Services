@@ -15,7 +15,7 @@
         config(['$locationProvider', '$httpProvider', '$routeProvider', '$compileProvider', function($locationProvider, $httpProvider, $routeProvider, $compileProvider){
 
             // override
-            $httpProvider.defaults.headers.common['Authorization'] = "VsToken MTNhNDYwNGItNDMzZS1kZTExLTk1NTUtMDA1MDU2ODM0ZGY2";
+            //$httpProvider.defaults.headers.common['Authorization'] = "VsToken MTNhNDYwNGItNDMzZS1kZTExLTk1NTUtMDA1MDU2ODM0ZGY2";
 
             // push state vs hash-based urls
             $locationProvider.html5Mode(true);
@@ -297,7 +297,8 @@
     /**
      * Messages controller
      */
-    snowPro.controller('MessagesCtrl', ['$scope', '$rootScope', 'Communications', function($scope, $rootScope, Communications){
+    snowPro.controller('MessagesCtrl', ['$scope', '$rootScope', '$filter', 'Communications', function($scope, $rootScope, $filter, Communications){
+        $rootScope.pageName = 'Messages';
 
         $rootScope.sidebar.incld = '_message-detail.html';
 
@@ -307,8 +308,9 @@
 
         $scope.dateSent = '-1';
         $scope.ShowHeader = function( dateString ){
-            var _showHeader = (dateString !== $scope.dateSent);
-            $scope.dateSent = dateString;
+            var _date = $filter('date')(dateString, 'MMM d, yyyy');
+            var _showHeader = (_date !== $scope.dateSent);
+            $scope.dateSent = _date;
             return _showHeader;
         };
 
@@ -322,20 +324,9 @@
      * Message Detail controller
      */
     snowPro.controller('MessageDetailCtrl', ['$scope', '$rootScope', 'Communications', function($scope, $rootScope, Communications){
-
         $scope.$on('loadMessage', function( _event, message ){
             $scope.message = message;
         });
-
-        // same way we group and sort dates in the CalendarCtrl
-        // used for the calendar view ngrepeat to output list headers
-        // http://stackoverflow.com/questions/15577791/angular-ng-repeat-with-header-views
-        $scope.dateSent = '-1';
-        $scope.ShowHeader = function( dateString ){
-            var _showHeader = (dateString !== $scope.dateSent);
-            $scope.dateSent = dateString;
-            return _showHeader;
-        };
     }]);
 
 

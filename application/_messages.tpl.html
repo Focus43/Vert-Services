@@ -3,18 +3,10 @@
         <div class="col-sm-12">
 
             <div class="well" ng-controller="MessagesCtrl">
-                <div class="mtngRepeater" ng-repeat="msg in sentMessageList | sortObjectByDate:'dateSent' | reverse">
+                <div class="msgsRepeater" ng-repeat="msg in sentMessageList | sortObjectByDate:'dateSent' | reverse">
                     <span ng-show="ShowHeader(msg.dateSent)" class="date-line">{{msg.dateSent | date:'EEE MMM d, yyyy'}}</span>
-                    <a class="meeting" toggle-class="#bodyWrap,show-right" ng-click="showMessage(msg)">
-                        <table>
-                            <tr>
-                                <td><span class="title">{{msg.recipient}}</span></td>
-                                <td class="time">
-                                    <span>{{msg.dateSent | date:'MMM d, yyyy'}}</span>
-                                    <!--<span>{{mtng.meetingStartDate | date:'h:mm a'}}</span>-->
-                                </td>
-                            </tr>
-                        </table>
+                    <a class="message" toggle-class="#bodyWrap,show-right" ng-click="showMessage(msg)">
+                        {{msg.recipient}}
                     </a>
                 </div>
             </div>
