@@ -14,6 +14,9 @@
     var vertService = angular.module('vertservice', ['ngResource']).
         config(['$locationProvider', '$httpProvider', '$routeProvider', '$compileProvider', function($locationProvider, $httpProvider, $routeProvider, $compileProvider){
 
+            // override
+            $httpProvider.defaults.headers.common['Authorization'] = "VsToken MTNhNDYwNGItNDMzZS1kZTExLTk1NTUtMDA1MDU2ODM0ZGY2";
+
             // push state vs hash-based urls
             $locationProvider.html5Mode(true);
 
@@ -62,9 +65,7 @@
             return $resource('http://rest.thesnowpros.org/mobilecarriers/list');
         }]).
         factory('Communications', ['$resource', function( $resource ){
-            return $resource('http://rest.thesnowpros.org/member/communications', {}, {
-                send: { method: 'POST' }
-            });
+            return $resource('http://rest.thesnowpros.org/member/communications');
         }]);
 
 
@@ -225,7 +226,7 @@
     /**
      * Communications controller
      */
-    snowPro.controller('CommunicationsCtrl', ['$scope', 'Communications', 'Contacts', 'MobileCarriers', function($scope, Communications, Contacts, MobileCarriers){
+    snowPro.controller('CommunicationsCtrl', ['$scope', '$http', 'Communications', 'Contacts', 'MobileCarriers', function($scope, $http, Communications, Contacts, MobileCarriers){
         $scope.sentMessageList = Communications.query({}, function (data) {
             return data;
         });
@@ -239,7 +240,6 @@
 
             MobileCarriers.query({}, function(data){
                 $scope._carrierOptions = data;
-//              $scope._communication.mobileCarrierId = 1; // set default
             });
         });
 
@@ -264,25 +264,33 @@
                 Recipient: _recipient
             };
 
-            Communications.send( _contactInfo,
-                function success(data) {
-                    console.log(data);
-                },
-                function err(data) {
-                    alert("Something went wrong, and the card didn't send.");
-                    console.log(data);
-                });
+            // Send update
+            $http({
+                method: 'POST',
+                url: 'http://rest.thesnowpros.org/member/communications',
+                params: _contactInfo,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            }).success(function(){
+                alert('Pro Card Sent!');
+                angular.element( document.querySelector("#bodyWrap") ).removeClass("show-right");
+            });
         };
 
         $scope.sendCardManual = function ( _contactInfo ) {
-            Communications.send( _contactInfo,
-                function success(data) {
-                    console.log(data);
-                },
-                function err(data) {
-                    alert("Something went wrong, and the card didn't send.");
-                    console.log(data);
-                });
+            // Send update
+            $http({
+                method: 'POST',
+                url: 'http://rest.thesnowpros.org/member/communications',
+                params: _contactInfo,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            }).success(function(){
+                alert('Pro Card Sent!');
+                angular.element( document.querySelector("#bodyWrap") ).removeClass("show-right");
+            });
         };
     }]);
 
@@ -387,7 +395,7 @@
     /**
      * Contacts controller
      */
-    snowPro.controller('ContactsCtrl', ['$scope', '$rootScope', '$http', 'Contacts', 'Communications', function( $scope, $rootScope, $http, Contacts, Communications ){
+    snowPro.controller('ContactsCtrl', ['$scope', '$rootScope', '$http', 'Contacts', function( $scope, $rootScope, $http, Contacts){
         $rootScope.pageName = 'Contacts';
 
         Contacts.query({}, function(data){
@@ -406,15 +414,17 @@
                 Recipient: _contact[0].name
             };
 
-            $http.post('http://rest.thesnowpros.org/member/communications', {}, {params: _contactInfo});
+            // Send update
+            $http({
+                method: 'POST',
+                url: 'http://rest.thesnowpros.org/member/communications',
+                params: _contactInfo,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            });
 
 
-
-//            var _comm = new Communications(_contactInfo);
-//            _comm.send( {} ,
-//                function (data) {
-//                    console.log(data);
-//                });
         };
     }]);
 
