@@ -2,8 +2,8 @@
 
 This is the development repository for VERT's ProCard application.
 
-#### Vagrant / Project Dependencies ####
-
+### Vagrant / Project Dependencies ###
+---
 Instead of requiring a number of specific tools/libraries/languages be installed on your local machine to contribute to
 the project, all you need are two open-source tools for:
 
@@ -24,10 +24,39 @@ Your primary system will remain completely unpolluted, and the VM can be torn do
 whenever you see fit. The first time you run the VM, Vagrant will download and build all dependencies and may take
 a while. Subsequent runs will skip the provisioning process and launch the VM in a matter of seconds.
 
-#### Installation ####
-
+### Installation ###
+---
 * Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) and [Vagrant](http://www.vagrantup.com/).
 Installers are available for Windows, OSX, and Linux OSs.
-* Checkout this repository via GIT to any directory on your system. It can be anywhere.
-* From the command line, change directories to the `{repository_root}/vagrant_vm`, then run `vagrant up`
+* From the command line:
+    * `$: git clone` (clone this repository to your local machine; location does not matter).
+    * `$: cd {repository_root}/vagrant_vm` (change directory to repository root).
+    * `$: vagrant up` (execute vagrant up command).
+* Watch the magic. Or do something else... it can take a while for the initial VM build.
 
+### Vagrant Workflow & Project Tools ###
+---
+As mentioned above, Vagrant allows you to write code using whichever tools you see fit on your local machine. However,
+when you want to see your work in browser, instead of serving the code from a web server on your host machine, you'll
+visit **http://localhost:8080**, which will forward the request to the web server running within the VM.
+
+For clarification - when you run `vagrant up` and the VM gets launched, Vagrant will automatically mount the project
+directory as a shared folder inside the linux VM at `/home/vagrant/app/`. Whenever you work on the project, you should
+SSH into the VM by navigating to the /vagrant_vm directory in your project root (on your host machine), then doing
+
+    $: vagrant ssh
+
+Once logged in, `$: cd app/`, and notice that the files listed in that directory *exactly* mimick the file structure on
+your host system. The web server inside of the VM points to the directory {project_root}/builds/dev when you visit
+**localhost:8080** in your web browser. GruntJS (expanded below) is configured to output files into this directory as
+you make changes to the source code.
+
+#### GruntJS and SASS ####
+This project uses the [GruntJS](http://gruntjs.com/) task runner for watching changes to your javascript and css files
+during development, and will run on-the-fly a set of automated tasks upon saving changes to disk. Automated tasks include:
+* Javascript syntax linting (rules are configurable for strictness)
+* File concatenation (compile all your separate javascript libraries/dependencies into a single file)
+* Javascript and CSS minification
+
+**SASS**: all CSS is written using the excellent SASS ruby gem. See the documentation at [sass-lang.com](http://sass-lang.com/)
+for a reference.

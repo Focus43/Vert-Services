@@ -18,8 +18,6 @@ Vagrant.configure("2") do |config|
 
   # nginx
   config.vm.network :forwarded_port, guest: 80, host: 8080
-  # if you want to use rails or sinatra
-  config.vm.network :forwarded_port, guest: 3000, host: 3000
 
   # synced folders and port forwarding
   config.ssh.forward_agent = true
